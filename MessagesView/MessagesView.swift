@@ -146,8 +146,7 @@ extension MessagesView : UICollectionViewDataSource {
             return footerView
             
         default:
-            
-            assert(false, "Unexpected element kind")
+            fatalError("Unexpected element kind")
         }
     }
     
