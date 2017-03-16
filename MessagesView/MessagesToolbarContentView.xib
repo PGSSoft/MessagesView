@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MessagesToolbarContentView" customModule="MessagesView" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="432" height="78"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Ec-dF-1Fn">
+                    <rect key="frame" x="5" y="23" width="32" height="32"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Left" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="amt-9f-7ms">
+                            <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                            <gestureRecognizers/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="5FL-42-iuv"/>
+                        <constraint firstAttribute="height" constant="32" id="cYB-sO-iBC"/>
+                        <constraint firstAttribute="bottom" secondItem="amt-9f-7ms" secondAttribute="bottom" id="gjN-DZ-EdN"/>
+                        <constraint firstItem="amt-9f-7ms" firstAttribute="top" secondItem="6Ec-dF-1Fn" secondAttribute="top" id="iLl-Hv-oSq"/>
+                        <constraint firstAttribute="trailing" secondItem="amt-9f-7ms" secondAttribute="trailing" id="jpS-t0-dPH"/>
+                        <constraint firstItem="amt-9f-7ms" firstAttribute="leading" secondItem="6Ec-dF-1Fn" secondAttribute="leading" id="lR9-B1-bxl"/>
+                    </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="xhb-ke-ACy" appends="YES" id="02m-NP-wt6"/>
+                    </connections>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PQK-3g-SCZ">
+                    <rect key="frame" x="395" y="23" width="32" height="32"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Right" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Su6-aD-T5D">
+                            <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="MYB-Wx-cqp"/>
+                        <constraint firstAttribute="width" constant="32" id="jYG-QT-6AO"/>
+                    </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="elv-KC-W68" appends="YES" id="LTt-wu-Dan"/>
+                    </connections>
+                </view>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="HI there!" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2fz-9A-LKF" customClass="MessageEditorTextView" customModule="MessagesView" customModuleProvider="target">
+                    <rect key="frame" x="45" y="23" width="342" height="32"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="SKR-DX-wgE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <connections>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="NV7-hY-BcX"/>
+                    </connections>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="6Ec-dF-1Fn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="O8I-TR-3kN"/>
+                <constraint firstItem="PQK-3g-SCZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Pxs-M0-H80"/>
+                <constraint firstAttribute="trailing" secondItem="PQK-3g-SCZ" secondAttribute="trailing" constant="5" id="XRU-LU-oYt"/>
+                <constraint firstItem="2fz-9A-LKF" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="fyX-rz-vog"/>
+                <constraint firstItem="PQK-3g-SCZ" firstAttribute="leading" secondItem="2fz-9A-LKF" secondAttribute="trailing" constant="8" id="t1t-co-ENK"/>
+                <constraint firstItem="6Ec-dF-1Fn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="t4L-Tu-3n9"/>
+                <constraint firstItem="2fz-9A-LKF" firstAttribute="leading" secondItem="6Ec-dF-1Fn" secondAttribute="trailing" constant="8" id="uzs-iw-yRl"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="leftButtonContainerView" destination="6Ec-dF-1Fn" id="suE-xL-rj1"/>
+                <outlet property="messageEditorTextView" destination="2fz-9A-LKF" id="XAX-zO-Xq1"/>
+                <outlet property="rightButtonContainerView" destination="PQK-3g-SCZ" id="6Mm-8u-5xY"/>
+            </connections>
+            <point key="canvasLocation" x="71" y="-195"/>
+        </view>
+        <tapGestureRecognizer id="elv-KC-W68" userLabel="Right Button Tap Gesture Recognizer">
+            <connections>
+                <action selector="didPressRightButton:" destination="iN0-l3-epB" id="19T-qt-gl3"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="xhb-ke-ACy" userLabel="Left Button Tap Gesture Recognizer">
+            <connections>
+                <action selector="didPressLeftButton:" destination="iN0-l3-epB" id="TDE-cf-0ry"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+</document>

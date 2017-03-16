@@ -2,8 +2,8 @@
 //  MessagesView.h
 //  MessagesView
 //
-//  Created by pgs-dkanak on 16/03/17.
-//  Copyright © 2017 pgs-dkanak. All rights reserved.
+//  Created by pgs-dkanak on 28/02/17.
+//  Copyright © 2017 PGS Software. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
