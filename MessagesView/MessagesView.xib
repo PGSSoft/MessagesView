@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -25,94 +25,11 @@
                     <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="44"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="L0d-27-qxR">
                         <size key="itemSize" width="301" height="120"/>
-                        <size key="headerReferenceSize" width="0.0" height="20"/>
-                        <size key="footerReferenceSize" width="0.0" height="10"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
-                    <cells>
-                        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MessageCollectionViewCell2" id="dPT-hR-Mlw" userLabel="MessageCollectionViewCell" customClass="MessageCollectionViewCell" customModule="MessagesView" customModuleProvider="target">
-                            <rect key="frame" x="37" y="20" width="301" height="120"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                <rect key="frame" x="0.0" y="0.0" width="301" height="120"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Fre-Ce-1Ch">
-                                        <rect key="frame" x="4" y="0.0" width="293" height="120"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EKj-Kr-zz0">
-                                                <rect key="frame" x="4" y="0.0" width="285" height="120"/>
-                                                <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget vehicula quam. Phasellus fermentum arcu et nibh vehicula vestibulum. Integer sed.</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="EKj-Kr-zz0" firstAttribute="top" secondItem="Fre-Ce-1Ch" secondAttribute="top" id="euy-sZ-0e5"/>
-                                            <constraint firstAttribute="bottom" secondItem="EKj-Kr-zz0" secondAttribute="bottom" id="hn3-x3-EXu"/>
-                                            <constraint firstItem="EKj-Kr-zz0" firstAttribute="leading" secondItem="Fre-Ce-1Ch" secondAttribute="leading" constant="4" id="iqh-Sg-7vR"/>
-                                            <constraint firstAttribute="trailing" secondItem="EKj-Kr-zz0" secondAttribute="trailing" constant="4" id="mhx-cC-yaB"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j00-ga-9fV">
-                                        <rect key="frame" x="0.0" y="110" width="10" height="10"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="10" id="a4H-bE-iWo"/>
-                                            <constraint firstAttribute="width" constant="10" id="rAH-7Q-Go1"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WDs-XP-7Va">
-                                        <rect key="frame" x="291" y="110" width="10" height="10"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="10" id="CEf-Jj-qLZ"/>
-                                            <constraint firstAttribute="width" constant="10" id="nKr-3W-jxg"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                            </view>
-                            <constraints>
-                                <constraint firstAttribute="trailing" secondItem="Fre-Ce-1Ch" secondAttribute="trailing" constant="4" id="42y-wT-4ee"/>
-                                <constraint firstItem="Fre-Ce-1Ch" firstAttribute="top" secondItem="dPT-hR-Mlw" secondAttribute="top" id="Bfo-kO-YJO"/>
-                                <constraint firstItem="Fre-Ce-1Ch" firstAttribute="leading" secondItem="dPT-hR-Mlw" secondAttribute="leading" constant="4" id="RHC-8y-qpE"/>
-                                <constraint firstAttribute="bottom" secondItem="j00-ga-9fV" secondAttribute="bottom" id="XWB-Fs-WWv"/>
-                                <constraint firstAttribute="trailing" secondItem="WDs-XP-7Va" secondAttribute="trailing" id="euM-pk-7iY"/>
-                                <constraint firstAttribute="bottom" secondItem="Fre-Ce-1Ch" secondAttribute="bottom" id="oXs-X8-cwa"/>
-                                <constraint firstItem="j00-ga-9fV" firstAttribute="leading" secondItem="dPT-hR-Mlw" secondAttribute="leading" id="qZV-mh-Mgc"/>
-                                <constraint firstAttribute="bottom" secondItem="WDs-XP-7Va" secondAttribute="bottom" id="rMg-44-9GB"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                    <real key="value" value="10"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="textBackgroundColor">
-                                    <color key="value" red="0.21960217949999999" green="1" blue="0.87681885400000004" alpha="1" colorSpace="calibratedRGB"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="tailStrokeColor">
-                                    <color key="value" red="0.21960217949999999" green="1" blue="0.87681885400000004" alpha="1" colorSpace="calibratedRGB"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="tailFillColor">
-                                    <color key="value" red="1" green="0.0" blue="0.1775650433" alpha="1" colorSpace="calibratedRGB"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <outlet property="leftArrowView" destination="j00-ga-9fV" id="sfC-SA-3Zc"/>
-                                <outlet property="messageBackgroundView" destination="Fre-Ce-1Ch" id="wJz-P2-U4X"/>
-                                <outlet property="rightArrowView" destination="WDs-XP-7Va" id="lmh-wb-PvZ"/>
-                                <outlet property="textLabel" destination="EKj-Kr-zz0" id="h2F-NV-Je4"/>
-                            </connections>
-                        </collectionViewCell>
-                    </cells>
-                    <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MessagesCollectionViewHeader" id="quO-Jc-8K3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </collectionReusableView>
-                    <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MessagesCollectionViewFooter" id="CPG-d1-kUz">
-                        <rect key="frame" x="0.0" y="140" width="375" height="10"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </collectionReusableView>
+                    <cells/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="fQj-re-a1Y"/>
                         <outlet property="delegate" destination="-1" id="sFQ-em-SnE"/>
