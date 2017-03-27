@@ -33,6 +33,9 @@ public class MessagesView: UIView {
     @IBOutlet weak var messagesCollectionView: UICollectionView!
     @IBOutlet weak var messagesInputToolbar: MessagesInputToolbar!
     
+    fileprivate let messageMargin : CGFloat = 60.0
+    fileprivate let defaultCellSize : CGSize = CGSize(width: 250.0, height: 100.0)
+    
     public var delegate : MessagesViewDelegate?
     public var dataSource: MessagesViewDataSource?
     
@@ -121,11 +124,12 @@ extension MessagesView : UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Key.messageCollectionViewCell, for: indexPath) as? MessageCollectionViewCell ?? MessageCollectionViewCell()
         if let message = dataSource?.messages[indexPath.row] {
-            print("cell \(indexPath)")
             cell.message = message
             cell.addTails()
             cell.showTail(side: message.onRight ? .right : .left)
+            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin)
         }
+        cell.setNeedsLayout()
         return cell
     }
     
@@ -165,6 +169,17 @@ extension MessagesView : UICollectionViewDelegateFlowLayout {
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 250, height: 100) //TODO: calculate accurate size
+        guard  let message = dataSource?.messages[indexPath.row].text,
+        let cell = MessageCollectionViewCell.fromNib() else {
+            return defaultCellSize
+        }
+        
+        let maxWidth = collectionView.bounds.size.width - collectionView.contentInset.left - collectionView.contentInset.right
+        let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
+        let requiredWidth = maxWidth - cellMargins
+
+        var size = cell.size(message: message, containerInsets: requiredWidth - messageMargin)
+        size.width = requiredWidth
+        return size
     }
 }
