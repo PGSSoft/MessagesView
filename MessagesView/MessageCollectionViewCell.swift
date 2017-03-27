@@ -44,7 +44,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var backgroundLeadingConstraint: NSLayoutConstraint!
     
     static var leftArrowImage = MessageCollectionViewCell.createArrowImage(inSize: CGSize(width: 10.0, height: 10.0)) ?? UIImage()
-    static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored)
+    static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored).withRenderingMode(.alwaysTemplate)
     
     static let patternCell = MessageCollectionViewCell.fromNib()
     static var hostPeerSide = Side.right
@@ -126,7 +126,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
         context?.fillPath()
         context?.strokePath()
         
-        let result = UIGraphicsGetImageFromCurrentImageContext()
+        let result = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysTemplate)
         UIGraphicsEndImageContext()
         return result
     }
@@ -154,5 +154,13 @@ class MessageCollectionViewCell: UICollectionViewCell {
         labelWidthLayoutConstraint.constant = containerInsets - labelMargins
         
         return contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+    }
+
+    func applySettings(settings: MessagesViewSettings) {
+        textLabel.textColor = settings.messageCellTextColor
+        messageBackgroundView.backgroundColor = settings.messageCellBackgroundColor
+        leftArrowView.tintColor = settings.messageCellBackgroundColor
+        rightArrowView.tintColor = settings.messageCellBackgroundColor
+
     }
 }

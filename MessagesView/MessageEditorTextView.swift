@@ -26,5 +26,10 @@ class MessageEditorTextView: UITextView {
     func setupTextView() {
         self.backgroundColor = UIColor.yellow
     }
+    
+    func applySettings(settings: MessagesViewSettings) {
+        self.textColor = settings.textInputFieldTextColor
+        self.backgroundColor = settings.textInputFieldBackgroundColor
+    }
 
 }

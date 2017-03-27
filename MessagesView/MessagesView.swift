@@ -28,13 +28,32 @@ public protocol MessagesViewPeer {
     var id : String {get}
 }
 
+@IBDesignable
 public class MessagesView: UIView {
 
     @IBOutlet weak var messagesCollectionView: UICollectionView!
     @IBOutlet weak var messagesInputToolbar: MessagesInputToolbar!
     
+
     fileprivate let messageMargin : CGFloat = 60.0
     fileprivate let defaultCellSize : CGSize = CGSize(width: 250.0, height: 100.0)
+
+    @IBInspectable public var messageCellTextColor: UIColor = UIColor.black
+    @IBInspectable public var messageCellBackgroundColor: UIColor = UIColor.black
+    @IBInspectable public var collectionViewBackgroundColor: UIColor = UIColor.yellow
+    @IBInspectable public var textInputFieldTextColor: UIColor = UIColor.yellow
+    @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.yellow
+    @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
+    
+    @IBInspectable public var leftButtonText: String = "Left"
+    @IBInspectable public var leftButtonTextColor: UIColor = UIColor.black
+    @IBInspectable public var leftButtonBackgroundColor: UIColor = UIColor.gray
+    @IBInspectable public var leftButtonBackgroundImage: UIImage?
+    
+    @IBInspectable public var rightButtonText: String = "right"
+    @IBInspectable public var rightButtonTextColor: UIColor = UIColor.black
+    @IBInspectable public var rightButtonBackgroundColor: UIColor = UIColor.gray
+    @IBInspectable public var rightButtonBackgroundImage: UIImage?
     
     public var delegate : MessagesViewDelegate?
     public var dataSource: MessagesViewDataSource?
@@ -64,6 +83,11 @@ public class MessagesView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        applySettingsFromInpectables(settings: &settings)
     }
     
     private func setup() {
@@ -114,6 +138,24 @@ public class MessagesView: UIView {
             self.messagesCollectionView.reloadData()
         }
     }
+    
+    func applySettingsFromInpectables(settings: inout MessagesViewSettings) {
+        settings.messageCellTextColor = self.messageCellTextColor
+        settings.messageCellBackgroundColor = self.messageCellBackgroundColor
+        settings.collectionViewBackgroundColor = self.collectionViewBackgroundColor
+        settings.textInputFieldTextColor = self.textInputFieldTextColor
+        settings.textInputFieldBackgroundColor = self.textInputFieldBackgroundColor
+        
+        settings.leftButtonText = self.leftButtonText
+        settings.leftButtonTextColor = self.leftButtonTextColor
+        settings.leftButtonBackgroundColor = self.leftButtonBackgroundColor
+        settings.leftButtonBackgroundImage = self.leftButtonBackgroundImage
+        
+        settings.rightButtonText = self.rightButtonText
+        settings.rightButtonTextColor = self.rightButtonTextColor
+        settings.rightButtonBackgroundColor = self.rightButtonBackgroundColor
+        settings.rightButtonBackgroundImage = self.rightButtonBackgroundImage
+    }
 }
 
 extension MessagesView : UICollectionViewDataSource {
@@ -126,6 +168,7 @@ extension MessagesView : UICollectionViewDataSource {
         if let message = dataSource?.messages[indexPath.row] {
             cell.message = message
             cell.addTails()
+            cell.applySettings(settings: settings)
             cell.showTail(side: message.onRight ? .right : .left)
             cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin)
         }

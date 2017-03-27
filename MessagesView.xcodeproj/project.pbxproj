@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05925ADF1E82D21B00421928 /* MessagesView.swift in Headers */ = {isa = PBXBuildFile; fileRef = 05ECAFA51E7ADFEF00833D84 /* MessagesView.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		05925AE71E82E24A00421928 /* MessagesViewSettings.swift in Headers */ = {isa = PBXBuildFile; fileRef = 05ECAFAA1E7ADFEF00833D84 /* MessagesViewSettings.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		05B94A351E842FC400CAB715 /* ColorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B94A341E842FC400CAB715 /* ColorUtils.swift */; };
 		05ECAF8E1E7ADF8400833D84 /* MessagesView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05ECAF841E7ADF8400833D84 /* MessagesView.framework */; };
 		05ECAF931E7ADF8400833D84 /* MessagesViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05ECAF921E7ADF8400833D84 /* MessagesViewTests.swift */; };
 		05ECAF951E7ADF8400833D84 /* MessagesView.h in Headers */ = {isa = PBXBuildFile; fileRef = 05ECAF871E7ADF8400833D84 /* MessagesView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -36,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		05B94A341E842FC400CAB715 /* ColorUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorUtils.swift; sourceTree = "<group>"; };
 		05ECAF841E7ADF8400833D84 /* MessagesView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessagesView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05ECAF871E7ADF8400833D84 /* MessagesView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessagesView.h; sourceTree = "<group>"; };
 		05ECAF881E7ADF8400833D84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				05ECAF871E7ADF8400833D84 /* MessagesView.h */,
+				05B94A341E842FC400CAB715 /* ColorUtils.swift */,
 				05ECAF881E7ADF8400833D84 /* Info.plist */,
 				05ECAF9E1E7ADFEF00833D84 /* MessageCollectionViewCell.swift */,
 				05ECAF9F1E7ADFEF00833D84 /* MessageCollectionViewCell.xib */,
@@ -246,6 +251,7 @@
 				05ECAFB41E7ADFEF00833D84 /* MessagesViewController.swift in Sources */,
 				05ECAFAF1E7ADFEF00833D84 /* MessagesInputToolbar.swift in Sources */,
 				05ECAFB21E7ADFEF00833D84 /* MessagesView.swift in Sources */,
+				05B94A351E842FC400CAB715 /* ColorUtils.swift in Sources */,
 				05ECAFAD1E7ADFEF00833D84 /* MessageEditorTextView.swift in Sources */,
 				05ECAFB71E7ADFEF00833D84 /* MessagesViewSettings.swift in Sources */,
 				05ECAFAB1E7ADFEF00833D84 /* MessageCollectionViewCell.swift in Sources */,

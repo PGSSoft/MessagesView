@@ -22,6 +22,24 @@ public class MessagesViewSettings {
     var messageCollectionViewHeaderBackgroundColor = UIColor.green
     var messageCollectionViewFooterBackgroundColor = UIColor.blue
     
+    //MARK: IBInspectables from MessageView
+    var messageCellTextColor: UIColor = UIColor.black
+    var messageCellBackgroundColor: UIColor = UIColor.red
+    var collectionViewBackgroundColor: UIColor = UIColor.yellow
+    var textInputFieldTextColor: UIColor = UIColor.yellow
+    var textInputFieldBackgroundColor: UIColor = UIColor.yellow
+    var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
+    
+    var leftButtonText: String = "Left"
+    var leftButtonTextColor: UIColor = UIColor.black
+    var leftButtonBackgroundColor: UIColor = UIColor.gray
+    var leftButtonBackgroundImage: UIImage?
+
+    var rightButtonText: String = "Right"
+    var rightButtonTextColor: UIColor = UIColor.black
+    var rightButtonBackgroundColor: UIColor = UIColor.gray
+    var rightButtonBackgroundImage: UIImage?
+    
     // MARK: Presets
     var action : [String : (Void)->() ] = [:]
     var rightButtonAction : (Void)->() { return action[rightButtonActionName] ?? {} }

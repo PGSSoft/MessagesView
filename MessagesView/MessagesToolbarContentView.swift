@@ -18,11 +18,19 @@ class MessagesToolbarContentView: UIView {
     }
     */
     
-    @IBOutlet weak var leftButtonContainerView: UIView!
-    @IBOutlet weak var rightButtonContainerView: UIView!
+    @IBOutlet weak var leftButtonContainerView: UIImageView!
+    @IBOutlet weak var leftButtonLabel: UILabel!
+    
+    @IBOutlet weak var rightButtonContainerView: UIImageView!
+    @IBOutlet weak var rightButtonLabel: UILabel!
+    
     @IBOutlet weak var messageEditorTextView: MessageEditorTextView!
     
-    var settings = MessagesViewSettings()
+    var settings = MessagesViewSettings() {
+        didSet {
+            apply(settings: settings)
+        }
+    }
     var messageText : String {
         return messageEditorTextView.text
     }
@@ -67,5 +75,21 @@ extension MessagesToolbarContentView : UITextFieldDelegate {
             print(#function)
         #endif
         return true
+    }
+}
+
+extension MessagesToolbarContentView : CustomizableControl {
+    func apply(settings: MessagesViewSettings) {
+        messageEditorTextView.applySettings(settings: settings)
+        
+        leftButtonLabel.text = settings.leftButtonText
+        leftButtonLabel.textColor = settings.leftButtonTextColor
+        leftButtonContainerView.backgroundColor = settings.leftButtonBackgroundColor
+        leftButtonContainerView.image = settings.leftButtonBackgroundImage
+        
+        rightButtonLabel.text = settings.rightButtonText
+        rightButtonLabel.textColor = settings.rightButtonTextColor
+        rightButtonContainerView.backgroundColor = settings.rightButtonBackgroundColor
+        rightButtonContainerView.image = settings.rightButtonBackgroundImage
     }
 }
