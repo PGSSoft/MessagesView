@@ -145,4 +145,14 @@ class MessageCollectionViewCell: UICollectionViewCell {
         
         return mutablePath
     }
+    
+    func size(message: String, containerInsets: CGFloat) -> CGSize {
+        let labelMargins = labelLeadingConstraint.constant + backgroundLeadingConstraint.constant + backgroundTrailingConstraint.constant + labelTrailingConstraint.constant
+        
+        textLabel.text = message
+        textLabel.preferredMaxLayoutWidth = containerInsets - labelMargins
+        labelWidthLayoutConstraint.constant = containerInsets - labelMargins
+        
+        return contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+    }
 }

@@ -150,8 +150,7 @@ extension MessagesView : UICollectionViewDataSource {
             return footerView
             
         default:
-            
-            assert(false, "Unexpected element kind")
+            fatalError("Unexpected element kind")
         }
     }
     
@@ -170,8 +169,7 @@ extension MessagesView : UICollectionViewDelegateFlowLayout {
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let message = dataSource?.messages[indexPath.row].text,
-            
+        guard  let message = dataSource?.messages[indexPath.row].text,
         let cell = MessageCollectionViewCell.fromNib() else {
             return defaultCellSize
         }
@@ -179,14 +177,8 @@ extension MessagesView : UICollectionViewDelegateFlowLayout {
         let maxWidth = collectionView.bounds.size.width - collectionView.contentInset.left - collectionView.contentInset.right
         let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
         let requiredWidth = maxWidth - cellMargins
-        
-        let labelMargins = cell.labelLeadingConstraint.constant + cell.backgroundLeadingConstraint.constant + cell.backgroundTrailingConstraint.constant + cell.labelTrailingConstraint.constant
-        
-        cell.textLabel.text = message
-        cell.textLabel.preferredMaxLayoutWidth = requiredWidth - messageMargin - labelMargins
-        cell.labelWidthLayoutConstraint.constant = requiredWidth - messageMargin - labelMargins
 
-        var size = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        var size = cell.size(message: message, containerInsets: requiredWidth - messageMargin)
         size.width = requiredWidth
         return size
     }
