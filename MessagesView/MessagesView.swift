@@ -45,12 +45,18 @@ public class MessagesView: UIView {
     @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.yellow
     @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     
+    @IBInspectable public var buttonSlideAnimationDuration: TimeInterval = 0.5
+    
     @IBInspectable public var leftButtonText: String = "Left"
+    @IBInspectable public var leftButtonShow: Bool = true
+    @IBInspectable public var leftButtonShowAnimated: Bool = true
     @IBInspectable public var leftButtonTextColor: UIColor = UIColor.black
     @IBInspectable public var leftButtonBackgroundColor: UIColor = UIColor.gray
     @IBInspectable public var leftButtonBackgroundImage: UIImage?
     
-    @IBInspectable public var rightButtonText: String = "right"
+    @IBInspectable public var rightButtonText: String = "Right"
+    @IBInspectable public var rightButtonShow: Bool = true
+    @IBInspectable public var rightButtonShowAnimated: Bool = true
     @IBInspectable public var rightButtonTextColor: UIColor = UIColor.black
     @IBInspectable public var rightButtonBackgroundColor: UIColor = UIColor.gray
     @IBInspectable public var rightButtonBackgroundImage: UIImage?
@@ -87,7 +93,8 @@ public class MessagesView: UIView {
     
     public override func awakeFromNib() {
         super.awakeFromNib()
-        applySettingsFromInpectables(settings: &settings)
+        readSettingsFromInpectables(settings: &settings)
+        apply(settings: settings)
     }
     
     private func setup() {
@@ -106,6 +113,14 @@ public class MessagesView: UIView {
         
         self.settings = set
         messagesInputToolbar.settings = settings
+    }
+    
+    public func leftButton(show: Bool, animated: Bool) {
+        messagesInputToolbar.leftButton(show: show, animated: animated)
+    }
+    
+    public func rightButton(show: Bool, animated: Bool) {
+        messagesInputToolbar.rightButton(show: show, animated: animated)
     }
     
     private func pinSubviewToEdges(subview: UIView) {
@@ -139,22 +154,33 @@ public class MessagesView: UIView {
         }
     }
     
-    func applySettingsFromInpectables(settings: inout MessagesViewSettings) {
+    private func readSettingsFromInpectables(settings: inout MessagesViewSettings) {
         settings.messageCellTextColor = self.messageCellTextColor
         settings.messageCellBackgroundColor = self.messageCellBackgroundColor
         settings.collectionViewBackgroundColor = self.collectionViewBackgroundColor
         settings.textInputFieldTextColor = self.textInputFieldTextColor
         settings.textInputFieldBackgroundColor = self.textInputFieldBackgroundColor
         
+        settings.buttonSlideAnimationDuration = self.buttonSlideAnimationDuration
+        
         settings.leftButtonText = self.leftButtonText
+        settings.leftButtonShow = self.leftButtonShow
+        settings.leftButtonShowAnimated = self.leftButtonShowAnimated
         settings.leftButtonTextColor = self.leftButtonTextColor
         settings.leftButtonBackgroundColor = self.leftButtonBackgroundColor
         settings.leftButtonBackgroundImage = self.leftButtonBackgroundImage
         
         settings.rightButtonText = self.rightButtonText
+        settings.rightButtonShow = self.rightButtonShow
+        settings.rightButtonShowAnimated = self.rightButtonShowAnimated
         settings.rightButtonTextColor = self.rightButtonTextColor
         settings.rightButtonBackgroundColor = self.rightButtonBackgroundColor
         settings.rightButtonBackgroundImage = self.rightButtonBackgroundImage
+    }
+    
+    private func apply(settings: MessagesViewSettings) {
+        leftButton(show: settings.leftButtonShow, animated: settings.leftButtonShowAnimated)
+        rightButton(show: settings.rightButtonShow, animated: settings.rightButtonShowAnimated)
     }
 }
 
@@ -176,22 +202,17 @@ extension MessagesView : UICollectionViewDataSource {
         return cell
     }
     
-    
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         switch kind {
-            
         case UICollectionElementKindSectionHeader:
-            
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Key.messagesCollectionViewHeader, for: indexPath)
             headerView.backgroundColor = settings.messageCollectionViewHeaderBackgroundColor
             return headerView
-            
         case UICollectionElementKindSectionFooter:
             let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Key.messagesCollectionViewFooter, for: indexPath)
             footerView.backgroundColor = settings.messageCollectionViewFooterBackgroundColor
             return footerView
-            
         default:
             fatalError("Unexpected element kind")
         }

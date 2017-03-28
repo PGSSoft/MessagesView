@@ -72,7 +72,7 @@
                     </connections>
                 </textView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.45614521969999999" green="1" blue="0.94555178470000001" alpha="1" colorSpace="calibratedRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="6Ec-dF-1Fn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="O8I-TR-3kN"/>
@@ -86,9 +86,13 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="leftButtonContainerView" destination="6Ec-dF-1Fn" id="suE-xL-rj1"/>
+                <outlet property="leftButtonContainerViewLeadingConstraint" destination="t4L-Tu-3n9" id="Fn9-fZ-nmw"/>
+                <outlet property="leftButtonContainerViewWidthConstraint" destination="5FL-42-iuv" id="DAg-Sg-mWn"/>
                 <outlet property="leftButtonLabel" destination="amt-9f-7ms" id="CbN-w7-Rhc"/>
                 <outlet property="messageEditorTextView" destination="2fz-9A-LKF" id="XAX-zO-Xq1"/>
                 <outlet property="rightButtonContainerView" destination="PQK-3g-SCZ" id="6Mm-8u-5xY"/>
+                <outlet property="rightButtonContainerViewTrailingConstraint" destination="XRU-LU-oYt" id="K4T-hP-832"/>
+                <outlet property="rightButtonContainerViewWidthConstraint" destination="jYG-QT-6AO" id="Txy-QV-Wmr"/>
                 <outlet property="rightButtonLabel" destination="Su6-aD-T5D" id="I71-W1-QNP"/>
             </connections>
             <point key="canvasLocation" x="71" y="-195"/>

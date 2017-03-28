@@ -30,12 +30,18 @@ public class MessagesViewSettings {
     var textInputFieldBackgroundColor: UIColor = UIColor.yellow
     var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     
+    var buttonSlideAnimationDuration = TimeInterval(0.5)
+    
     var leftButtonText: String = "Left"
+    var leftButtonShow: Bool = true
+    var leftButtonShowAnimated: Bool = true
     var leftButtonTextColor: UIColor = UIColor.black
     var leftButtonBackgroundColor: UIColor = UIColor.gray
     var leftButtonBackgroundImage: UIImage?
 
     var rightButtonText: String = "Right"
+    var rightButtonShow: Bool = true
+    var rightButtonShowAnimated: Bool = true
     var rightButtonTextColor: UIColor = UIColor.black
     var rightButtonBackgroundColor: UIColor = UIColor.gray
     var rightButtonBackgroundImage: UIImage?
