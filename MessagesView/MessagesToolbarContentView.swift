@@ -128,6 +128,8 @@ class MessagesToolbarContentView: UIView {
     func apply(settings: MessagesViewSettings) {
         messageEditorTextView.applySettings(settings: settings)
         
+        backgroundColor = settings.inputToolbarBackgroundColor
+        
         leftButtonLabel.text = settings.leftButtonText
         leftButtonLabel.textColor = settings.leftButtonTextColor
         leftButtonContainerView.backgroundColor = settings.leftButtonBackgroundColor

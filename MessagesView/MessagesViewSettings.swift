@@ -31,6 +31,7 @@ public class MessagesViewSettings {
     var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     
     var buttonSlideAnimationDuration = TimeInterval(0.5)
+    var inputToolbarBackgroundColor = UIColor.white
     
     var leftButtonText: String = "Left"
     var leftButtonShow: Bool = true
@@ -79,7 +80,7 @@ public class MessagesViewSettings {
     }
     
     public static func defaultMessageViewSettings() -> MessagesViewSettings {
-        var settings = MessagesViewSettings()
+        let settings = MessagesViewSettings()
         settings.leftButtonActionName = Action.printLeftDebug
         settings.rightButtonActionName = Action.send
 
@@ -95,7 +96,7 @@ public class MessagesViewSettings {
     }
     
     public static func testChatSettings() -> MessagesViewSettings {
-        var settings = MessagesViewSettings()
+        let settings = MessagesViewSettings()
         settings.leftButtonActionName = Action.sendFromMyself
         settings.rightButtonActionName = Action.send
         

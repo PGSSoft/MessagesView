@@ -31,7 +31,7 @@ public protocol MessagesViewPeer {
 @IBDesignable
 public class MessagesView: UIView {
 
-    @IBOutlet weak var messagesCollectionView: UICollectionView!
+    @IBOutlet weak var messagesCollectionView: MessagesCollectionView!
     @IBOutlet weak var messagesInputToolbar: MessagesInputToolbar!
     
 
@@ -46,6 +46,7 @@ public class MessagesView: UIView {
     @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     
     @IBInspectable public var buttonSlideAnimationDuration: TimeInterval = 0.5
+    @IBInspectable public var inputToolbarBackgroundColor: UIColor = UIColor.white
     
     @IBInspectable public var leftButtonText: String = "Left"
     @IBInspectable public var leftButtonShow: Bool = true
@@ -93,6 +94,12 @@ public class MessagesView: UIView {
     
     public override func awakeFromNib() {
         super.awakeFromNib()
+        readSettingsFromInpectables(settings: &settings)
+        apply(settings: settings)
+    }
+    
+    public override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
         readSettingsFromInpectables(settings: &settings)
         apply(settings: settings)
     }
@@ -162,6 +169,7 @@ public class MessagesView: UIView {
         settings.textInputFieldBackgroundColor = self.textInputFieldBackgroundColor
         
         settings.buttonSlideAnimationDuration = self.buttonSlideAnimationDuration
+        settings.inputToolbarBackgroundColor = self.inputToolbarBackgroundColor
         
         settings.leftButtonText = self.leftButtonText
         settings.leftButtonShow = self.leftButtonShow
@@ -179,6 +187,8 @@ public class MessagesView: UIView {
     }
     
     private func apply(settings: MessagesViewSettings) {
+        messagesInputToolbar.settings = settings
+        messagesCollectionView.apply(settings: settings)
         leftButton(show: settings.leftButtonShow, animated: settings.leftButtonShowAnimated)
         rightButton(show: settings.rightButtonShow, animated: settings.rightButtonShowAnimated)
     }
