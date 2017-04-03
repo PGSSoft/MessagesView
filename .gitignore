@@ -1,2 +1,10 @@
-*.xcuserdata
+
+## Various Xcode settings and user-related
+*.pbxuser
+*.xccheckout
+*.xcuserdatad
+*.xcscheme
 *.xcuserstate
+
+## OSX
+.DS_Store

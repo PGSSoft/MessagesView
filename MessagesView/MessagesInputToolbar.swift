@@ -34,4 +34,12 @@ class MessagesInputToolbar: UIToolbar {
         addSubview(toolbarContentView)
         toolbarContentView.frame = self.bounds
     }
+    
+    func rightButton(show: Bool, animated: Bool) {
+        toolbarContentView.righButton(show: show, animated: animated)
+    }
+    
+    func leftButton(show: Bool, animated: Bool) {
+        toolbarContentView.leftButton(show: show, animated: animated)
+    }
 }

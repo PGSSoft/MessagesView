@@ -36,8 +36,15 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var leftArrowView: UIView!
     @IBOutlet weak var rightArrowView: UIView!
     
+    @IBOutlet weak var labelWidthLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var labelLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var labelTrailingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var backgroundTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var backgroundLeadingConstraint: NSLayoutConstraint!
+    
     static var leftArrowImage = MessageCollectionViewCell.createArrowImage(inSize: CGSize(width: 10.0, height: 10.0)) ?? UIImage()
-    static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored)
+    static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored).withRenderingMode(.alwaysTemplate)
     
     static let patternCell = MessageCollectionViewCell.fromNib()
     static var hostPeerSide = Side.right
@@ -46,6 +53,8 @@ class MessageCollectionViewCell: UICollectionViewCell {
             textLabel.text = message?.text ?? ""
         }
     }
+    
+    private var backgroundMarginConstant : CGFloat = 0.0
     
     class func fromNib() -> MessageCollectionViewCell?
     {
@@ -72,6 +81,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         messageBackgroundView.backgroundColor = self.textBackgroundColor
         messageBackgroundView.layer.cornerRadius = self.cornerRadius
+        backgroundMarginConstant = self.backgroundTrailingConstraint.constant
     }
     
     func addTails() {
@@ -92,6 +102,17 @@ class MessageCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    func addMessageMargin(side: Side, margin: CGFloat) {
+        switch side {
+        case .left:
+            backgroundLeadingConstraint.constant = backgroundMarginConstant
+            backgroundTrailingConstraint.constant = backgroundMarginConstant + margin
+        case .right:
+            backgroundLeadingConstraint.constant = backgroundMarginConstant + margin
+            backgroundTrailingConstraint.constant = backgroundMarginConstant
+        }
+    }
+    
     static func createArrowImage(inSize size: CGSize) -> UIImage! {
         UIGraphicsBeginImageContext(size)
         let context = UIGraphicsGetCurrentContext()
@@ -105,7 +126,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
         context?.fillPath()
         context?.strokePath()
         
-        let result = UIGraphicsGetImageFromCurrentImageContext()
+        let result = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysTemplate)
         UIGraphicsEndImageContext()
         return result
     }
@@ -123,5 +144,23 @@ class MessageCollectionViewCell: UICollectionViewCell {
         mutablePath.closeSubpath()
         
         return mutablePath
+    }
+    
+    func size(message: String, containerInsets: CGFloat) -> CGSize {
+        let labelMargins = labelLeadingConstraint.constant + backgroundLeadingConstraint.constant + backgroundTrailingConstraint.constant + labelTrailingConstraint.constant
+        
+        textLabel.text = message
+        textLabel.preferredMaxLayoutWidth = containerInsets - labelMargins
+        labelWidthLayoutConstraint.constant = containerInsets - labelMargins
+        
+        return contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+    }
+
+    func applySettings(settings: MessagesViewSettings) {
+        textLabel.textColor = settings.messageCellTextColor
+        messageBackgroundView.backgroundColor = settings.messageCellBackgroundColor
+        leftArrowView.tintColor = settings.messageCellBackgroundColor
+        rightArrowView.tintColor = settings.messageCellBackgroundColor
+
     }
 }

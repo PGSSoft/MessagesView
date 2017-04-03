@@ -18,4 +18,7 @@ class MessagesCollectionView: UICollectionView {
     }
     */
 
+    func apply(settings: MessagesViewSettings) {
+        self.backgroundColor = settings.collectionViewBackgroundColor
+    }
 }
