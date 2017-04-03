@@ -30,6 +30,7 @@ class MessageEditorTextView: UITextView {
     func applySettings(settings: MessagesViewSettings) {
         self.textColor = settings.textInputFieldTextColor
         self.backgroundColor = settings.textInputFieldBackgroundColor
+        self.layer.cornerRadius = settings.textInputFieldCornerRadius
     }
 
 }

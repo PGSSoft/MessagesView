@@ -134,11 +134,13 @@ class MessagesToolbarContentView: UIView {
         leftButtonLabel.textColor = settings.leftButtonTextColor
         leftButtonContainerView.backgroundColor = settings.leftButtonBackgroundColor
         leftButtonContainerView.image = settings.leftButtonBackgroundImage
+        leftButtonContainerView.layer.cornerRadius = settings.leftButtonCornerRadius
         
         rightButtonLabel.text = settings.rightButtonText
         rightButtonLabel.textColor = settings.rightButtonTextColor
         rightButtonContainerView.backgroundColor = settings.rightButtonBackgroundColor
         rightButtonContainerView.image = settings.rightButtonBackgroundImage
+        rightButtonContainerView.layer.cornerRadius = settings.rightButtonCornerRadius        
     }
 }
 

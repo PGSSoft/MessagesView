@@ -32,6 +32,7 @@ public class MessagesViewSettings {
     
     var buttonSlideAnimationDuration = TimeInterval(0.5)
     var inputToolbarBackgroundColor = UIColor.white
+    var textInputFieldCornerRadius = CGFloat(0.0)
     
     var leftButtonText: String = "Left"
     var leftButtonShow: Bool = true
@@ -39,6 +40,7 @@ public class MessagesViewSettings {
     var leftButtonTextColor: UIColor = UIColor.black
     var leftButtonBackgroundColor: UIColor = UIColor.gray
     var leftButtonBackgroundImage: UIImage?
+    var leftButtonCornerRadius: CGFloat = 0.0
 
     var rightButtonText: String = "Right"
     var rightButtonShow: Bool = true
@@ -46,6 +48,7 @@ public class MessagesViewSettings {
     var rightButtonTextColor: UIColor = UIColor.black
     var rightButtonBackgroundColor: UIColor = UIColor.gray
     var rightButtonBackgroundImage: UIImage?
+    var rightButtonCornerRadius: CGFloat = 0.0
     
     // MARK: Presets
     var action : [String : (Void)->() ] = [:]

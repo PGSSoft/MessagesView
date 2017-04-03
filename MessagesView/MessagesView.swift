@@ -43,6 +43,7 @@ public class MessagesView: UIView {
     @IBInspectable public var collectionViewBackgroundColor: UIColor = UIColor.yellow
     @IBInspectable public var textInputFieldTextColor: UIColor = UIColor.yellow
     @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.yellow
+    @IBInspectable public var textInputFieldCornerRadius: CGFloat = 0.0
     @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     
     @IBInspectable public var buttonSlideAnimationDuration: TimeInterval = 0.5
@@ -54,6 +55,7 @@ public class MessagesView: UIView {
     @IBInspectable public var leftButtonTextColor: UIColor = UIColor.black
     @IBInspectable public var leftButtonBackgroundColor: UIColor = UIColor.gray
     @IBInspectable public var leftButtonBackgroundImage: UIImage?
+    @IBInspectable public var leftButtonCornerRadius: CGFloat = 0.0
     
     @IBInspectable public var rightButtonText: String = "Right"
     @IBInspectable public var rightButtonShow: Bool = true
@@ -61,6 +63,7 @@ public class MessagesView: UIView {
     @IBInspectable public var rightButtonTextColor: UIColor = UIColor.black
     @IBInspectable public var rightButtonBackgroundColor: UIColor = UIColor.gray
     @IBInspectable public var rightButtonBackgroundImage: UIImage?
+    @IBInspectable public var rightButtonCornerRadius: CGFloat = 0.0
     
     public var delegate : MessagesViewDelegate?
     public var dataSource: MessagesViewDataSource?
@@ -170,6 +173,7 @@ public class MessagesView: UIView {
         
         settings.buttonSlideAnimationDuration = self.buttonSlideAnimationDuration
         settings.inputToolbarBackgroundColor = self.inputToolbarBackgroundColor
+        settings.textInputFieldCornerRadius = self.textInputFieldCornerRadius
         
         settings.leftButtonText = self.leftButtonText
         settings.leftButtonShow = self.leftButtonShow
@@ -177,6 +181,7 @@ public class MessagesView: UIView {
         settings.leftButtonTextColor = self.leftButtonTextColor
         settings.leftButtonBackgroundColor = self.leftButtonBackgroundColor
         settings.leftButtonBackgroundImage = self.leftButtonBackgroundImage
+        settings.leftButtonCornerRadius = self.leftButtonCornerRadius
         
         settings.rightButtonText = self.rightButtonText
         settings.rightButtonShow = self.rightButtonShow
@@ -184,6 +189,7 @@ public class MessagesView: UIView {
         settings.rightButtonTextColor = self.rightButtonTextColor
         settings.rightButtonBackgroundColor = self.rightButtonBackgroundColor
         settings.rightButtonBackgroundImage = self.rightButtonBackgroundImage
+        settings.rightButtonCornerRadius = self.rightButtonCornerRadius
     }
     
     private func apply(settings: MessagesViewSettings) {
