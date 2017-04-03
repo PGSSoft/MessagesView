@@ -22,6 +22,34 @@ public class MessagesViewSettings {
     var messageCollectionViewHeaderBackgroundColor = UIColor.green
     var messageCollectionViewFooterBackgroundColor = UIColor.blue
     
+    //MARK: IBInspectables from MessageView
+    var messageCellTextColor: UIColor = UIColor.black
+    var messageCellBackgroundColor: UIColor = UIColor.red
+    var collectionViewBackgroundColor: UIColor = UIColor.yellow
+    var textInputFieldTextColor: UIColor = UIColor.yellow
+    var textInputFieldBackgroundColor: UIColor = UIColor.yellow
+    var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
+    
+    var buttonSlideAnimationDuration = TimeInterval(0.5)
+    var inputToolbarBackgroundColor = UIColor.white
+    var textInputFieldCornerRadius = CGFloat(0.0)
+    
+    var leftButtonText: String = "Left"
+    var leftButtonShow: Bool = true
+    var leftButtonShowAnimated: Bool = true
+    var leftButtonTextColor: UIColor = UIColor.black
+    var leftButtonBackgroundColor: UIColor = UIColor.gray
+    var leftButtonBackgroundImage: UIImage?
+    var leftButtonCornerRadius: CGFloat = 0.0
+
+    var rightButtonText: String = "Right"
+    var rightButtonShow: Bool = true
+    var rightButtonShowAnimated: Bool = true
+    var rightButtonTextColor: UIColor = UIColor.black
+    var rightButtonBackgroundColor: UIColor = UIColor.gray
+    var rightButtonBackgroundImage: UIImage?
+    var rightButtonCornerRadius: CGFloat = 0.0
+    
     // MARK: Presets
     var action : [String : (Void)->() ] = [:]
     var rightButtonAction : (Void)->() { return action[rightButtonActionName] ?? {} }
@@ -55,7 +83,7 @@ public class MessagesViewSettings {
     }
     
     public static func defaultMessageViewSettings() -> MessagesViewSettings {
-        var settings = MessagesViewSettings()
+        let settings = MessagesViewSettings()
         settings.leftButtonActionName = Action.printLeftDebug
         settings.rightButtonActionName = Action.send
 
@@ -71,7 +99,7 @@ public class MessagesViewSettings {
     }
     
     public static func testChatSettings() -> MessagesViewSettings {
-        var settings = MessagesViewSettings()
+        let settings = MessagesViewSettings()
         settings.leftButtonActionName = Action.sendFromMyself
         settings.rightButtonActionName = Action.send
         
