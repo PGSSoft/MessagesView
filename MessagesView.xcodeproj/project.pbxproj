@@ -22,9 +22,6 @@
 		05ECAFB11E7ADFEF00833D84 /* MessagesToolbarContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 05ECAFA41E7ADFEF00833D84 /* MessagesToolbarContentView.xib */; };
 		05ECAFB21E7ADFEF00833D84 /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05ECAFA51E7ADFEF00833D84 /* MessagesView.swift */; };
 		05ECAFB31E7ADFEF00833D84 /* MessagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 05ECAFA61E7ADFEF00833D84 /* MessagesView.xib */; };
-		05ECAFB41E7ADFEF00833D84 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05ECAFA71E7ADFEF00833D84 /* MessagesViewController.swift */; };
-		05ECAFB51E7ADFEF00833D84 /* MessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 05ECAFA81E7ADFEF00833D84 /* MessagesViewController.xib */; };
-		05ECAFB61E7ADFEF00833D84 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05ECAFA91E7ADFEF00833D84 /* MessagesViewModel.swift */; };
 		05ECAFB71E7ADFEF00833D84 /* MessagesViewSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05ECAFAA1E7ADFEF00833D84 /* MessagesViewSettings.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,9 +52,6 @@
 		05ECAFA41E7ADFEF00833D84 /* MessagesToolbarContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesToolbarContentView.xib; sourceTree = "<group>"; };
 		05ECAFA51E7ADFEF00833D84 /* MessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
 		05ECAFA61E7ADFEF00833D84 /* MessagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesView.xib; sourceTree = "<group>"; };
-		05ECAFA71E7ADFEF00833D84 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
-		05ECAFA81E7ADFEF00833D84 /* MessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesViewController.xib; sourceTree = "<group>"; };
-		05ECAFA91E7ADFEF00833D84 /* MessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		05ECAFAA1E7ADFEF00833D84 /* MessagesViewSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,9 +107,6 @@
 				05ECAFA41E7ADFEF00833D84 /* MessagesToolbarContentView.xib */,
 				05ECAFA51E7ADFEF00833D84 /* MessagesView.swift */,
 				05ECAFA61E7ADFEF00833D84 /* MessagesView.xib */,
-				05ECAFA71E7ADFEF00833D84 /* MessagesViewController.swift */,
-				05ECAFA81E7ADFEF00833D84 /* MessagesViewController.xib */,
-				05ECAFA91E7ADFEF00833D84 /* MessagesViewModel.swift */,
 				05ECAFAA1E7ADFEF00833D84 /* MessagesViewSettings.swift */,
 			);
 			path = MessagesView;
@@ -138,6 +129,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				05ECAF951E7ADF8400833D84 /* MessagesView.h in Headers */,
+				05925ADF1E82D21B00421928 /* MessagesView.swift in Headers */,
+				05925AE71E82E24A00421928 /* MessagesViewSettings.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,7 +221,6 @@
 			files = (
 				05ECAFB11E7ADFEF00833D84 /* MessagesToolbarContentView.xib in Resources */,
 				05ECAFB31E7ADFEF00833D84 /* MessagesView.xib in Resources */,
-				05ECAFB51E7ADFEF00833D84 /* MessagesViewController.xib in Resources */,
 				05ECAFAC1E7ADFEF00833D84 /* MessageCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,14 +240,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				05ECAFB01E7ADFEF00833D84 /* MessagesToolbarContentView.swift in Sources */,
-				05ECAFB41E7ADFEF00833D84 /* MessagesViewController.swift in Sources */,
 				05ECAFAF1E7ADFEF00833D84 /* MessagesInputToolbar.swift in Sources */,
 				05ECAFB21E7ADFEF00833D84 /* MessagesView.swift in Sources */,
 				05B94A351E842FC400CAB715 /* ColorUtils.swift in Sources */,
 				05ECAFAD1E7ADFEF00833D84 /* MessageEditorTextView.swift in Sources */,
 				05ECAFB71E7ADFEF00833D84 /* MessagesViewSettings.swift in Sources */,
 				05ECAFAB1E7ADFEF00833D84 /* MessageCollectionViewCell.swift in Sources */,
-				05ECAFB61E7ADFEF00833D84 /* MessagesViewModel.swift in Sources */,
 				05ECAFAE1E7ADFEF00833D84 /* MessagesCollectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
