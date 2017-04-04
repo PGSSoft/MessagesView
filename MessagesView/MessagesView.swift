@@ -38,10 +38,10 @@ public class MessagesView: UIView {
     fileprivate let messageMargin : CGFloat = 60.0
     fileprivate let defaultCellSize : CGSize = CGSize(width: 250.0, height: 100.0)
 
-    @IBInspectable public var messageCellTextColor: UIColor = UIColor.black
-    @IBInspectable public var messageCellBackgroundColor: UIColor = UIColor.black
+    @IBInspectable public var messageCellTextColor: UIColor = UIColor.green
+    @IBInspectable public var messageCellBackgroundColor: UIColor = UIColor.blue
     @IBInspectable public var collectionViewBackgroundColor: UIColor = UIColor.yellow
-    @IBInspectable public var textInputFieldTextColor: UIColor = UIColor.yellow
+    @IBInspectable public var textInputFieldTextColor: UIColor = UIColor.black
     @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.yellow
     @IBInspectable public var textInputFieldCornerRadius: CGFloat = 0.0
     @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)

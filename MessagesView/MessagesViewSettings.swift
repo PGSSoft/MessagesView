@@ -23,8 +23,8 @@ public class MessagesViewSettings {
     var messageCollectionViewFooterBackgroundColor = UIColor.blue
     
     //MARK: IBInspectables from MessageView
-    var messageCellTextColor: UIColor = UIColor.black
-    var messageCellBackgroundColor: UIColor = UIColor.red
+    var messageCellTextColor: UIColor = UIColor.green
+    var messageCellBackgroundColor: UIColor = UIColor.blue
     var collectionViewBackgroundColor: UIColor = UIColor.yellow
     var textInputFieldTextColor: UIColor = UIColor.yellow
     var textInputFieldBackgroundColor: UIColor = UIColor.yellow
