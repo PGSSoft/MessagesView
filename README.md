@@ -21,15 +21,17 @@ In project root directory say:
 > carthage update --no-use-binaries --platform iOS
 
 This will fetch the project and compile it to library form. When using carthage, you have two options:
-1. Use as you would use standard carthage module
-2. Embedding sources into your project
 
 ### a) Standard carthage module
+
+![embedding carthage framework](https://cloud.githubusercontent.com/assets/16896355/24654187/f16728c6-1938-11e7-806b-5ea14b4c7284.gif)
 
 Using standard cathage module requires you to go to Carthage/Build folder within your project and drag it into _**Embedded Binaries**_ section int your project **General settings**.
 This solution no 1. is pretty standard. Unfortunately it doesn't work with storyboard as we intended and you will not be able to customize MessagesView from storyboard directly. It will be working but have to be customized from code. Considering all conditions above we recommend _Embedding into your project_. 
 
 ### b) Embedding sources into your project
+
+![embedding source project](https://cloud.githubusercontent.com/assets/16896355/24654176/e46736a2-1938-11e7-9425-c856cc9de166.gif)
 
 to embed this project as source code you need to:
 1. Go to folder `Carthage/Checkouts/MessagesView` and drag `MessagesView.scodeproj` into your own project.
@@ -53,6 +55,7 @@ Example:
 - change button label caption
 - change button background color
 - change button background image
+![styling input field background and text field rounding](https://cloud.githubusercontent.com/assets/16896355/24654216/10f95768-1939-11e7-9163-79acc0753d62.gif)
 You can find full list of customizable properties in the Wiki. This will be prepared soon.
 
 
