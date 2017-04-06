@@ -47,10 +47,13 @@ class MessageCollectionViewCell: UICollectionViewCell {
     static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored).withRenderingMode(.alwaysTemplate)
     
     static let patternCell = MessageCollectionViewCell.fromNib()
-    static var hostPeerSide = Side.right
+    
+    var side: Side = .left
+    
     var message : MessagesViewChatMessage? {
         didSet {
             textLabel.text = message?.text ?? ""
+            side = (message?.onRight ?? false) ? .right : .left
         }
     }
     
@@ -157,10 +160,19 @@ class MessageCollectionViewCell: UICollectionViewCell {
     }
 
     func applySettings(settings: MessagesViewSettings) {
-        textLabel.textColor = settings.messageCellTextColor
-        messageBackgroundView.backgroundColor = settings.messageCellBackgroundColor
-        leftArrowView.tintColor = settings.messageCellBackgroundColor
-        rightArrowView.tintColor = settings.messageCellBackgroundColor
+        let textColor, backgroundColor: UIColor
+        switch side {
+        case .left:
+            textColor = settings.leftMessageCellTextColor
+            backgroundColor = settings.leftMessageCellBackgroundColor
+        case .right:
+            textColor = settings.rightMessageCellTextColor
+            backgroundColor = settings.rightMessageCellBackgroundColor
+        }
+        textLabel.textColor = textColor
+        messageBackgroundView.backgroundColor = backgroundColor
+        leftArrowView.tintColor = backgroundColor
+        rightArrowView.tintColor = backgroundColor
 
     }
 }

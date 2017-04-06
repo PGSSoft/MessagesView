@@ -34,24 +34,32 @@ public class MessagesView: UIView {
     @IBOutlet weak var messagesCollectionView: MessagesCollectionView!
     @IBOutlet weak var messagesInputToolbar: MessagesInputToolbar!
     
-
     fileprivate let messageMargin : CGFloat = 60.0
     fileprivate let defaultCellSize : CGSize = CGSize(width: 250.0, height: 100.0)
 
-    @IBInspectable public var messageCellTextColor: UIColor = UIColor.green
-    @IBInspectable public var messageCellBackgroundColor: UIColor = UIColor.blue
-    @IBInspectable public var collectionViewBackgroundColor: UIColor = UIColor.yellow
+    @IBInspectable public var leftMessageCellTextColor: UIColor = UIColor.black
+    @IBInspectable public var leftMessageCellBackgroundColor: UIColor = UIColor.antiflashWhite
+    @IBInspectable public var rightMessageCellTextColor: UIColor = UIColor.antiflashWhite
+    @IBInspectable public var rightMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    
+    @IBInspectable public var collectionViewBackgroundColor: UIColor = UIColor.white
+    
     @IBInspectable public var textInputFieldTextColor: UIColor = UIColor.black
-    @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.yellow
+    @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.clear
+    @IBInspectable public var textInputFieldTextPlaceholderText: String = "Write your message here"
     @IBInspectable public var textInputFieldCornerRadius: CGFloat = 0.0
     @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
+    
+    @IBInspectable public var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
+    @IBInspectable public var textInputFieldTopSeparatorLineColor: UIColor = UIColor.pumpkin
+    @IBInspectable public var textInputFieldTopSeparatorLineAlpha: CGFloat = 0.3
     
     @IBInspectable public var buttonSlideAnimationDuration: TimeInterval = 0.5
     @IBInspectable public var inputToolbarBackgroundColor: UIColor = UIColor.white
     
     @IBInspectable public var leftButtonText: String = "Left"
-    @IBInspectable public var leftButtonShow: Bool = true
-    @IBInspectable public var leftButtonShowAnimated: Bool = true
+    @IBInspectable public var leftButtonShow: Bool = false
+    @IBInspectable public var leftButtonShowAnimated: Bool = false
     @IBInspectable public var leftButtonTextColor: UIColor = UIColor.black
     @IBInspectable public var leftButtonBackgroundColor: UIColor = UIColor.gray
     @IBInspectable public var leftButtonBackgroundImage: UIImage?
@@ -165,11 +173,20 @@ public class MessagesView: UIView {
     }
     
     private func readSettingsFromInpectables(settings: inout MessagesViewSettings) {
-        settings.messageCellTextColor = self.messageCellTextColor
-        settings.messageCellBackgroundColor = self.messageCellBackgroundColor
+        settings.leftMessageCellTextColor = self.leftMessageCellTextColor
+        settings.leftMessageCellBackgroundColor = self.leftMessageCellBackgroundColor
+        settings.rightMessageCellTextColor = self.rightMessageCellTextColor
+        settings.rightMessageCellBackgroundColor = self.rightMessageCellBackgroundColor
+        
         settings.collectionViewBackgroundColor = self.collectionViewBackgroundColor
+        
         settings.textInputFieldTextColor = self.textInputFieldTextColor
         settings.textInputFieldBackgroundColor = self.textInputFieldBackgroundColor
+        
+        settings.textInputFieldTopSeparatorLineHeight = self.textInputFieldTopSeparatorLineHeight
+        settings.textInputFieldTopSeparatorLineAlpha = self.textInputFieldTopSeparatorLineAlpha
+        settings.textInputFieldTopSeparatorLineColor = self.textInputFieldTopSeparatorLineColor
+        settings.textInputFieldTextPlaceholderText = self.textInputFieldTextPlaceholderText
         
         settings.buttonSlideAnimationDuration = self.buttonSlideAnimationDuration
         settings.inputToolbarBackgroundColor = self.inputToolbarBackgroundColor
@@ -212,7 +229,7 @@ extension MessagesView : UICollectionViewDataSource {
             cell.addTails()
             cell.applySettings(settings: settings)
             cell.showTail(side: message.onRight ? .right : .left)
-            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin)
+            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin) // TODO: check when messageMargin changes and move it if possible
         }
         cell.setNeedsLayout()
         return cell

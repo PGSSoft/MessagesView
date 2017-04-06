@@ -23,10 +23,18 @@ public class MessagesViewSettings {
     var messageCollectionViewFooterBackgroundColor = UIColor.blue
     
     //MARK: IBInspectables from MessageView
-    var messageCellTextColor: UIColor = UIColor.green
-    var messageCellBackgroundColor: UIColor = UIColor.blue
+    var leftMessageCellTextColor: UIColor = UIColor.pastelGrey
+    var leftMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    var rightMessageCellTextColor: UIColor = UIColor.pastelGrey
+    var rightMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    
+    var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
+    var textInputFieldTopSeparatorLineAlpha: CGFloat = 1.0
+    var textInputFieldTopSeparatorLineColor: UIColor = UIColor.pumpkin
+    
     var collectionViewBackgroundColor: UIColor = UIColor.yellow
     var textInputFieldTextColor: UIColor = UIColor.yellow
+    var textInputFieldTextPlaceholderText: String = "Write your message here"
     var textInputFieldBackgroundColor: UIColor = UIColor.yellow
     var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     
