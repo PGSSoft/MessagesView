@@ -31,7 +31,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBInspectable var tailFillColor : UIColor = UIColor.blue
     
     @IBOutlet weak var textLabel: UILabel!
-    @IBOutlet weak var messageBackgroundView: UIView!
+    @IBOutlet weak var messageBackgroundView: UIImageView!
     
     @IBOutlet weak var leftArrowView: UIView!
     @IBOutlet weak var rightArrowView: UIView!
@@ -57,7 +57,8 @@ class MessageCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private var backgroundMarginConstant : CGFloat = 0.0
+    private var backgroundMarginConstant: CGFloat = 0.0
+    private var labelMarginConstant: CGFloat = 0.0
     
     class func fromNib() -> MessageCollectionViewCell?
     {
@@ -85,6 +86,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
         messageBackgroundView.backgroundColor = self.textBackgroundColor
         messageBackgroundView.layer.cornerRadius = self.cornerRadius
         backgroundMarginConstant = self.backgroundTrailingConstraint.constant
+        labelMarginConstant = self.labelLeadingConstraint.constant
     }
     
     func addTails() {
@@ -105,14 +107,22 @@ class MessageCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func addMessageMargin(side: Side, margin: CGFloat) {
+    func addMessageMargin(side: Side, margin: CGFloat, bubbleMargin: UIEdgeInsets?) {
+        var bubbleAdditionalMargin = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        if let margin = bubbleMargin {
+            bubbleAdditionalMargin = margin
+        }
         switch side {
         case .left:
             backgroundLeadingConstraint.constant = backgroundMarginConstant
             backgroundTrailingConstraint.constant = backgroundMarginConstant + margin
+            labelLeadingConstraint.constant = labelMarginConstant + bubbleAdditionalMargin.left
+            labelTrailingConstraint.constant = labelMarginConstant + bubbleAdditionalMargin.right
         case .right:
             backgroundLeadingConstraint.constant = backgroundMarginConstant + margin
             backgroundTrailingConstraint.constant = backgroundMarginConstant
+            labelLeadingConstraint.constant = labelMarginConstant + bubbleAdditionalMargin.left
+            labelTrailingConstraint.constant = labelMarginConstant + bubbleAdditionalMargin.right
         }
     }
     
@@ -169,10 +179,19 @@ class MessageCollectionViewCell: UICollectionViewCell {
             textColor = settings.rightMessageCellTextColor
             backgroundColor = settings.rightMessageCellBackgroundColor
         }
+        
+        if messageBackgroundView.image != nil {
+            messageBackgroundView.backgroundColor = UIColor.clear
+            leftArrowView.tintColor = UIColor.clear
+            rightArrowView.tintColor = UIColor.clear
+            messageBackgroundView.tintColor = backgroundColor
+        } else {
+            messageBackgroundView.tintColor = UIColor.clear
+            messageBackgroundView.backgroundColor = backgroundColor
+            leftArrowView.tintColor = backgroundColor
+            rightArrowView.tintColor = backgroundColor
+        }
         textLabel.textColor = textColor
-        messageBackgroundView.backgroundColor = backgroundColor
-        leftArrowView.tintColor = backgroundColor
-        rightArrowView.tintColor = backgroundColor
 
     }
 }

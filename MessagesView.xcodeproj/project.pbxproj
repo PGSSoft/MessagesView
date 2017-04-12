@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0553B2741E9CF92E00E76010 /* BubbleImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0553B2731E9CF92E00E76010 /* BubbleImage.swift */; };
+		0553B2781E9D3B0000E76010 /* MessagesGroupingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0553B2771E9D3B0000E76010 /* MessagesGroupingCoordinator.swift */; };
 		055DA17F1E9296600091279C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055DA17E1E9296600091279C /* AppDelegate.swift */; };
 		055DA1811E9296600091279C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055DA1801E9296600091279C /* ViewController.swift */; };
 		055DA1841E9296600091279C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 055DA1821E9296600091279C /* Main.storyboard */; };
@@ -65,6 +67,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0553B2731E9CF92E00E76010 /* BubbleImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleImage.swift; sourceTree = "<group>"; };
+		0553B2771E9D3B0000E76010 /* MessagesGroupingCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesGroupingCoordinator.swift; sourceTree = "<group>"; };
 		055DA17C1E9296600091279C /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		055DA17E1E9296600091279C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		055DA1801E9296600091279C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 				05ECAFA51E7ADFEF00833D84 /* MessagesView.swift */,
 				05ECAFA61E7ADFEF00833D84 /* MessagesView.xib */,
 				05ECAFAA1E7ADFEF00833D84 /* MessagesViewSettings.swift */,
+				0553B2731E9CF92E00E76010 /* BubbleImage.swift */,
+				0553B2771E9D3B0000E76010 /* MessagesGroupingCoordinator.swift */,
 			);
 			path = MessagesView;
 			sourceTree = "<group>";
@@ -374,8 +380,10 @@
 				05ECAFAF1E7ADFEF00833D84 /* MessagesInputToolbar.swift in Sources */,
 				05ECAFB21E7ADFEF00833D84 /* MessagesView.swift in Sources */,
 				05B94A351E842FC400CAB715 /* ColorUtils.swift in Sources */,
+				0553B2741E9CF92E00E76010 /* BubbleImage.swift in Sources */,
 				05ECAFAD1E7ADFEF00833D84 /* MessageEditorTextView.swift in Sources */,
 				05ECAFB71E7ADFEF00833D84 /* MessagesViewSettings.swift in Sources */,
+				0553B2781E9D3B0000E76010 /* MessagesGroupingCoordinator.swift in Sources */,
 				05ECAFAB1E7ADFEF00833D84 /* MessageCollectionViewCell.swift in Sources */,
 				05ECAFAE1E7ADFEF00833D84 /* MessagesCollectionView.swift in Sources */,
 			);
@@ -630,6 +638,7 @@
 				055DA1A21E9296600091279C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		05ECAF7E1E7ADF8400833D84 /* Build configuration list for PBXProject "MessagesView" */ = {
 			isa = XCConfigurationList;

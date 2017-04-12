@@ -76,6 +76,18 @@ public class MessagesView: UIView {
     public var delegate : MessagesViewDelegate?
     public var dataSource: MessagesViewDataSource?
     
+    var bubbleImageLeft: BubbleImage?
+    var bubbleImageRight: BubbleImage?
+    
+    fileprivate let groupingCoordinator = MessagesGroupingCoordinator()
+    
+    public func setBubbleImageWith(leftSettings: MessagesViewBubbleSettings, rightSettings: MessagesViewBubbleSettings) {
+        bubbleImageLeft = BubbleImage(settings: leftSettings)
+        bubbleImageLeft?.textMargin = leftSettings.textMargin
+        bubbleImageRight = BubbleImage(settings: rightSettings)
+        bubbleImageRight?.textMargin = rightSettings.textMargin
+    }
+    
     public var inputText: String {
         return messagesInputToolbar.messageText
     }
@@ -224,12 +236,17 @@ extension MessagesView : UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Key.messageCollectionViewCell, for: indexPath) as? MessageCollectionViewCell ?? MessageCollectionViewCell()
-        if let message = dataSource?.messages[indexPath.row] {
+        if let messages = dataSource?.messages {
+            let message = messages[indexPath.row]
             cell.message = message
             cell.addTails()
-            cell.applySettings(settings: settings)
             cell.showTail(side: message.onRight ? .right : .left)
-            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin) // TODO: check when messageMargin changes and move it if possible
+            let bubbleImage = message.onRight ? bubbleImageRight : bubbleImageLeft
+            if let image = bubbleImage {
+                cell.messageBackgroundView.image = self.groupingCoordinator.selectBackgroundFor(index: indexPath.row, inMessages: messages, withBubble: image)
+            }
+            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin, bubbleMargin: bubbleImage?.textMargin)
+            cell.applySettings(settings: settings)
         }
         cell.setNeedsLayout()
         return cell
