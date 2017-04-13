@@ -34,6 +34,10 @@ public class MessagesView: UIView {
     @IBOutlet weak var messagesCollectionView: MessagesCollectionView!
     @IBOutlet weak var messagesInputToolbar: MessagesInputToolbar!
     
+    @IBOutlet weak var messageInputToolbarBottomConstraint: NSLayoutConstraint!
+    
+    private var toolBarBottomConstraintWithoutKeyboard: CGFloat = 0
+    
     fileprivate let messageMargin : CGFloat = 60.0
     fileprivate let defaultCellSize : CGSize = CGSize(width: 250.0, height: 100.0)
 
@@ -113,6 +117,10 @@ public class MessagesView: UIView {
         setup()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     public override func awakeFromNib() {
         super.awakeFromNib()
         readSettingsFromInpectables(settings: &settings)
@@ -141,6 +149,9 @@ public class MessagesView: UIView {
         
         self.settings = set
         messagesInputToolbar.settings = settings
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
     }
     
     public func leftButton(show: Bool, animated: Bool) {
@@ -149,6 +160,45 @@ public class MessagesView: UIView {
     
     public func rightButton(show: Bool, animated: Bool) {
         messagesInputToolbar.rightButton(show: show, animated: animated)
+    }
+    
+    @objc private func keyboardWillShow(notification: Notification) {
+        
+        guard settings.shouldAdjustToKeyboard,
+            let userInfo = notification.userInfo,
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else {
+            return
+        }
+        
+        toolBarBottomConstraintWithoutKeyboard = messageInputToolbarBottomConstraint.constant
+        
+        let toolbarFrameInWindow = convert(messagesInputToolbar.frame, to: nil)
+        let keyboardFrameInWindow = convert(keyboardFrame, to: nil)
+        
+        let keyboardOverlap = toolbarFrameInWindow.origin.y - keyboardFrameInWindow.origin.y
+        
+        if keyboardOverlap > 0 {
+            messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard + keyboardOverlap + toolbarFrameInWindow.size.height
+        }
+        
+        UIView.animate(withDuration: animationDuration) {
+            self.layoutIfNeeded()
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: Notification) {
+        
+        guard settings.shouldAdjustToKeyboard,
+            let animationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else {
+            return
+        }
+        
+        messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard
+        
+        UIView.animate(withDuration: animationDuration) {
+            self.layoutIfNeeded()
+        }
     }
     
     private func pinSubviewToEdges(subview: UIView) {
@@ -176,9 +226,13 @@ public class MessagesView: UIView {
         messagesCollectionView.register(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Key.messagesCollectionViewFooter)
     }
     
-    public func refresh() {
+    public func refresh(scrollDown: Bool) {
         DispatchQueue.main.async {
             self.messagesCollectionView.reloadData()
+            
+            if scrollDown && self.messagesCollectionView.numberOfItems(inSection: 0) > 0 {
+                self.messagesCollectionView.scrollToItem(at: IndexPath(row: self.messagesCollectionView.numberOfItems(inSection: 0) - 1, section: 0), at: .top, animated: true)
+            }
         }
     }
     

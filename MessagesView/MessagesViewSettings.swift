@@ -37,6 +37,7 @@ public class MessagesViewSettings {
     
     var leftButtonHidesKeyboard  = false
     var rightButtonHidesKeyboard = false
+    var shouldAdjustToKeyboard = true
     
     var textInputScrollsToRecentMessage = true
     var messageCollectionViewHeaderHeight = 100.0

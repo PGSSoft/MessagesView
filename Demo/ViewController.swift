@@ -72,7 +72,7 @@ extension ViewController: MessagesViewDelegate {
     func didTapRightButton() {
         let text = messagesView.inputText
         TestData.exampleMessageText.append(text)
-        messagesView.refresh()
+        messagesView.refresh(scrollDown: true)
     }
 }
 
