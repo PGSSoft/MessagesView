@@ -71,13 +71,23 @@
                         <outlet property="delegate" destination="iN0-l3-epB" id="NV7-hY-BcX"/>
                     </connections>
                 </textView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6sK-3E-Ywq">
+                    <rect key="frame" x="0.0" y="0.0" width="432" height="2"/>
+                    <color key="backgroundColor" red="1" green="0.18394677359412159" blue="0.26406641836516775" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="2" id="8HU-Sz-6QT"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.45614521969999999" green="1" blue="0.94555178470000001" alpha="1" colorSpace="calibratedRGB"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="6sK-3E-Ywq" secondAttribute="trailing" id="EQH-K6-CDW"/>
                 <constraint firstItem="6Ec-dF-1Fn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="O8I-TR-3kN"/>
                 <constraint firstItem="PQK-3g-SCZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Pxs-M0-H80"/>
+                <constraint firstItem="6sK-3E-Ywq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="XLf-lq-6Et"/>
                 <constraint firstAttribute="trailing" secondItem="PQK-3g-SCZ" secondAttribute="trailing" constant="5" id="XRU-LU-oYt"/>
+                <constraint firstItem="6sK-3E-Ywq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Z7h-kQ-Khn"/>
                 <constraint firstItem="2fz-9A-LKF" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="fyX-rz-vog"/>
                 <constraint firstItem="PQK-3g-SCZ" firstAttribute="leading" secondItem="2fz-9A-LKF" secondAttribute="trailing" constant="8" id="t1t-co-ENK"/>
                 <constraint firstItem="6Ec-dF-1Fn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="t4L-Tu-3n9"/>
@@ -94,6 +104,8 @@
                 <outlet property="rightButtonContainerViewTrailingConstraint" destination="XRU-LU-oYt" id="K4T-hP-832"/>
                 <outlet property="rightButtonContainerViewWidthConstraint" destination="jYG-QT-6AO" id="Txy-QV-Wmr"/>
                 <outlet property="rightButtonLabel" destination="Su6-aD-T5D" id="I71-W1-QNP"/>
+                <outlet property="topSeparatorLineView" destination="6sK-3E-Ywq" id="YUT-6k-3WH"/>
+                <outlet property="topSeparatorLineViewHeightConstraint" destination="8HU-Sz-6QT" id="XPW-0O-U5K"/>
             </connections>
             <point key="canvasLocation" x="71" y="-195"/>
         </view>

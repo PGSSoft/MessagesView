@@ -9,6 +9,28 @@
 import Foundation
 import UIKit
 
+public class MessagesViewBubbleSettings {
+    var image = UIImage()
+    var wholeSlice: ImageSlice = ImageSlice(cropRect: CGRect(), resizeInsets: UIEdgeInsets())
+    var topSlice: ImageSlice?
+    var middleSlice: ImageSlice?
+    var bottomSlice: ImageSlice?
+    
+    public var textMargin = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    
+    public init(image: UIImage,
+                whole: ImageSlice,
+                top: ImageSlice?,
+                middle: ImageSlice?,
+                bottom: ImageSlice?) {
+        self.image = image
+        self.wholeSlice = whole
+        self.topSlice = top
+        self.middleSlice = middle
+        self.bottomSlice = bottom
+    }
+}
+
 public class MessagesViewSettings {
     var leftButtonActionName = ""
     var rightButtonActionName = ""
@@ -23,10 +45,18 @@ public class MessagesViewSettings {
     var messageCollectionViewFooterBackgroundColor = UIColor.blue
     
     //MARK: IBInspectables from MessageView
-    var messageCellTextColor: UIColor = UIColor.green
-    var messageCellBackgroundColor: UIColor = UIColor.blue
+    var leftMessageCellTextColor: UIColor = UIColor.pastelGrey
+    var leftMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    var rightMessageCellTextColor: UIColor = UIColor.pastelGrey
+    var rightMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    
+    var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
+    var textInputFieldTopSeparatorLineAlpha: CGFloat = 1.0
+    var textInputFieldTopSeparatorLineColor: UIColor = UIColor.pumpkin
+    
     var collectionViewBackgroundColor: UIColor = UIColor.yellow
     var textInputFieldTextColor: UIColor = UIColor.yellow
+    var textInputFieldTextPlaceholderText: String = "Write your message here"
     var textInputFieldBackgroundColor: UIColor = UIColor.yellow
     var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     

@@ -17,6 +17,8 @@ class MessagesToolbarContentView: UIView {
         // Drawing code
     }
     */
+    @IBOutlet weak var topSeparatorLineView: UIView!
+    @IBOutlet weak var topSeparatorLineViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var leftButtonContainerView: UIImageView!
     @IBOutlet weak var leftButtonLabel: UILabel!
@@ -129,6 +131,10 @@ class MessagesToolbarContentView: UIView {
         messageEditorTextView.applySettings(settings: settings)
         
         backgroundColor = settings.inputToolbarBackgroundColor
+        
+        topSeparatorLineView.backgroundColor = settings.textInputFieldTopSeparatorLineColor
+        topSeparatorLineView.alpha = settings.textInputFieldTopSeparatorLineAlpha
+        topSeparatorLineViewHeightConstraint.constant = settings.textInputFieldTopSeparatorLineHeight
         
         leftButtonLabel.text = settings.leftButtonText
         leftButtonLabel.textColor = settings.leftButtonTextColor

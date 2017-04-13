@@ -34,24 +34,32 @@ public class MessagesView: UIView {
     @IBOutlet weak var messagesCollectionView: MessagesCollectionView!
     @IBOutlet weak var messagesInputToolbar: MessagesInputToolbar!
     
-
     fileprivate let messageMargin : CGFloat = 60.0
     fileprivate let defaultCellSize : CGSize = CGSize(width: 250.0, height: 100.0)
 
-    @IBInspectable public var messageCellTextColor: UIColor = UIColor.green
-    @IBInspectable public var messageCellBackgroundColor: UIColor = UIColor.blue
-    @IBInspectable public var collectionViewBackgroundColor: UIColor = UIColor.yellow
+    @IBInspectable public var leftMessageCellTextColor: UIColor = UIColor.black
+    @IBInspectable public var leftMessageCellBackgroundColor: UIColor = UIColor.antiflashWhite
+    @IBInspectable public var rightMessageCellTextColor: UIColor = UIColor.antiflashWhite
+    @IBInspectable public var rightMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    
+    @IBInspectable public var collectionViewBackgroundColor: UIColor = UIColor.white
+    
     @IBInspectable public var textInputFieldTextColor: UIColor = UIColor.black
-    @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.yellow
+    @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.clear
+    @IBInspectable public var textInputFieldTextPlaceholderText: String = "Write your message here"
     @IBInspectable public var textInputFieldCornerRadius: CGFloat = 0.0
     @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
+    
+    @IBInspectable public var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
+    @IBInspectable public var textInputFieldTopSeparatorLineColor: UIColor = UIColor.pumpkin
+    @IBInspectable public var textInputFieldTopSeparatorLineAlpha: CGFloat = 0.3
     
     @IBInspectable public var buttonSlideAnimationDuration: TimeInterval = 0.5
     @IBInspectable public var inputToolbarBackgroundColor: UIColor = UIColor.white
     
     @IBInspectable public var leftButtonText: String = "Left"
-    @IBInspectable public var leftButtonShow: Bool = true
-    @IBInspectable public var leftButtonShowAnimated: Bool = true
+    @IBInspectable public var leftButtonShow: Bool = false
+    @IBInspectable public var leftButtonShowAnimated: Bool = false
     @IBInspectable public var leftButtonTextColor: UIColor = UIColor.black
     @IBInspectable public var leftButtonBackgroundColor: UIColor = UIColor.gray
     @IBInspectable public var leftButtonBackgroundImage: UIImage?
@@ -67,6 +75,16 @@ public class MessagesView: UIView {
     
     public var delegate : MessagesViewDelegate?
     public var dataSource: MessagesViewDataSource?
+    
+    var bubbleImageLeft: BubbleImage?
+    var bubbleImageRight: BubbleImage?
+    
+    public func setBubbleImageWith(leftSettings: MessagesViewBubbleSettings, rightSettings: MessagesViewBubbleSettings) {
+        bubbleImageLeft = BubbleImage(settings: leftSettings)
+        bubbleImageLeft?.textMargin = leftSettings.textMargin
+        bubbleImageRight = BubbleImage(settings: rightSettings)
+        bubbleImageRight?.textMargin = rightSettings.textMargin
+    }
     
     public var inputText: String {
         return messagesInputToolbar.messageText
@@ -164,12 +182,48 @@ public class MessagesView: UIView {
         }
     }
     
+    func selectBackgroundFor(index: Int, inMessages messages: [MessagesViewChatMessage], withBubble bubbbleImage: BubbleImage)->UIImage {
+        var result = UIImage()
+        let actualMessage = messages[index]
+        var isPreviousMessageOnTheSameSide = false
+        var isNextMessageOnTheSameSide = false
+        
+        if 0 <= index-1 {
+            isPreviousMessageOnTheSameSide = messages[index-1].onRight == actualMessage.onRight
+        }
+        if index+1 < messages.count {
+            isNextMessageOnTheSameSide = messages[index+1].onRight == actualMessage.onRight
+        }
+        
+        switch (isPreviousMessageOnTheSameSide, isNextMessageOnTheSameSide) {
+        case (false, false):
+            result = bubbbleImage.whole
+        case (false, true):
+            result = bubbbleImage.top ?? bubbbleImage.whole
+        case (true, false):
+            result = bubbbleImage.bottom ?? bubbbleImage.whole
+        case (true, true):
+            result = bubbbleImage.middle ?? bubbbleImage.whole
+        }
+        
+        return result
+    }
+    
     private func readSettingsFromInpectables(settings: inout MessagesViewSettings) {
-        settings.messageCellTextColor = self.messageCellTextColor
-        settings.messageCellBackgroundColor = self.messageCellBackgroundColor
+        settings.leftMessageCellTextColor = self.leftMessageCellTextColor
+        settings.leftMessageCellBackgroundColor = self.leftMessageCellBackgroundColor
+        settings.rightMessageCellTextColor = self.rightMessageCellTextColor
+        settings.rightMessageCellBackgroundColor = self.rightMessageCellBackgroundColor
+        
         settings.collectionViewBackgroundColor = self.collectionViewBackgroundColor
+        
         settings.textInputFieldTextColor = self.textInputFieldTextColor
         settings.textInputFieldBackgroundColor = self.textInputFieldBackgroundColor
+        
+        settings.textInputFieldTopSeparatorLineHeight = self.textInputFieldTopSeparatorLineHeight
+        settings.textInputFieldTopSeparatorLineAlpha = self.textInputFieldTopSeparatorLineAlpha
+        settings.textInputFieldTopSeparatorLineColor = self.textInputFieldTopSeparatorLineColor
+        settings.textInputFieldTextPlaceholderText = self.textInputFieldTextPlaceholderText
         
         settings.buttonSlideAnimationDuration = self.buttonSlideAnimationDuration
         settings.inputToolbarBackgroundColor = self.inputToolbarBackgroundColor
@@ -207,12 +261,17 @@ extension MessagesView : UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Key.messageCollectionViewCell, for: indexPath) as? MessageCollectionViewCell ?? MessageCollectionViewCell()
-        if let message = dataSource?.messages[indexPath.row] {
+        if let messages = dataSource?.messages {
+            let message = messages[indexPath.row]
             cell.message = message
             cell.addTails()
-            cell.applySettings(settings: settings)
             cell.showTail(side: message.onRight ? .right : .left)
-            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin)
+            let bubbleImage = message.onRight ? bubbleImageRight : bubbleImageLeft
+            if let image = bubbleImage {
+                cell.messageBackgroundView.image = self.selectBackgroundFor(index: indexPath.row, inMessages: messages, withBubble: image)
+            }
+            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin, bubbleMargin: bubbleImage?.textMargin)
+            cell.applySettings(settings: settings)
         }
         cell.setNeedsLayout()
         return cell
