@@ -28,10 +28,10 @@ class BubbleImage {
     private var middleSlice: ImageSlice?
     private var bottomSlice: ImageSlice?
     
-    lazy var whole: UIImage = self.getWholeImage()
-    lazy var top: UIImage? = self.getTopImage()
-    lazy var middle: UIImage? = self.getMiddleImage()
-    lazy var bottom: UIImage? = self.getBottomImage()
+    lazy var whole: UIImage = self.cropAndResize(slice: self.wholeSlice)
+    lazy var top: UIImage? = self.cropAndResize(slice: self.topSlice)
+    lazy var middle: UIImage? = self.cropAndResize(slice: self.middleSlice)
+    lazy var bottom: UIImage? = self.cropAndResize(slice: self.bottomSlice)
     
     var textMargin = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
@@ -47,40 +47,11 @@ class BubbleImage {
         self.init(image: settings.image, whole: settings.wholeSlice, top: settings.topSlice, middle: settings.middleSlice, bottom: settings.bottomSlice)
     }
     
-    private func getWholeImage()->UIImage {
-        let wholeImage = cropAndResize(slice: wholeSlice)
-        return wholeImage
-    }
-    
-    private func getTopImage()->UIImage? {
-        if let top = self.topSlice {
-            let topImage = cropAndResize(slice: top)
-            return topImage
+    private func cropAndResize(slice: ImageSlice?)->UIImage {
+        guard let slice = slice, let croppedImage = image.cgImage?.cropping(to: slice.cropRect) else {
+            return UIImage()
         }
-        return nil
-    }
-    
-    private func getMiddleImage()->UIImage? {
-        if let middle = middleSlice {
-            let middleImage = cropAndResize(slice: middle)
-            return middleImage
-        }
-        return nil
-    }
-    
-    private func getBottomImage()->UIImage? {
-        if let bottom = bottomSlice {
-            let bottomImage = cropAndResize(slice: bottom)
-            return bottomImage
-        }
-        return nil
-    }
-    
-    private func cropAndResize(slice: ImageSlice)->UIImage {
-        var result = UIImage()
-        if let croppedImage = image.cgImage?.cropping(to: slice.cropRect) {
-            result = UIImage(cgImage: croppedImage).resizableImage(withCapInsets: slice.resizeInsets, resizingMode: .stretch).withRenderingMode(.alwaysTemplate)
-        }
-        return result
+        
+        return UIImage(cgImage: croppedImage).resizableImage(withCapInsets: slice.resizeInsets, resizingMode: .stretch).withRenderingMode(.alwaysTemplate)
     }
 }

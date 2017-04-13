@@ -79,8 +79,6 @@ public class MessagesView: UIView {
     var bubbleImageLeft: BubbleImage?
     var bubbleImageRight: BubbleImage?
     
-    fileprivate let groupingCoordinator = MessagesGroupingCoordinator()
-    
     public func setBubbleImageWith(leftSettings: MessagesViewBubbleSettings, rightSettings: MessagesViewBubbleSettings) {
         bubbleImageLeft = BubbleImage(settings: leftSettings)
         bubbleImageLeft?.textMargin = leftSettings.textMargin
@@ -184,6 +182,33 @@ public class MessagesView: UIView {
         }
     }
     
+    func selectBackgroundFor(index: Int, inMessages messages: [MessagesViewChatMessage], withBubble bubbbleImage: BubbleImage)->UIImage {
+        var result = UIImage()
+        let actualMessage = messages[index]
+        var isPreviousMessageOnTheSameSide = false
+        var isNextMessageOnTheSameSide = false
+        
+        if 0 <= index-1 {
+            isPreviousMessageOnTheSameSide = messages[index-1].onRight == actualMessage.onRight
+        }
+        if index+1 < messages.count {
+            isNextMessageOnTheSameSide = messages[index+1].onRight == actualMessage.onRight
+        }
+        
+        switch (isPreviousMessageOnTheSameSide, isNextMessageOnTheSameSide) {
+        case (false, false):
+            result = bubbbleImage.whole
+        case (false, true):
+            result = bubbbleImage.top ?? bubbbleImage.whole
+        case (true, false):
+            result = bubbbleImage.bottom ?? bubbbleImage.whole
+        case (true, true):
+            result = bubbbleImage.middle ?? bubbbleImage.whole
+        }
+        
+        return result
+    }
+    
     private func readSettingsFromInpectables(settings: inout MessagesViewSettings) {
         settings.leftMessageCellTextColor = self.leftMessageCellTextColor
         settings.leftMessageCellBackgroundColor = self.leftMessageCellBackgroundColor
@@ -243,7 +268,7 @@ extension MessagesView : UICollectionViewDataSource {
             cell.showTail(side: message.onRight ? .right : .left)
             let bubbleImage = message.onRight ? bubbleImageRight : bubbleImageLeft
             if let image = bubbleImage {
-                cell.messageBackgroundView.image = self.groupingCoordinator.selectBackgroundFor(index: indexPath.row, inMessages: messages, withBubble: image)
+                cell.messageBackgroundView.image = self.selectBackgroundFor(index: indexPath.row, inMessages: messages, withBubble: image)
             }
             cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin, bubbleMargin: bubbleImage?.textMargin)
             cell.applySettings(settings: settings)
