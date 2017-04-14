@@ -39,6 +39,8 @@ public class MessagesViewSettings {
     var rightButtonHidesKeyboard = false
     var shouldAdjustToKeyboard = true
     
+    var textInputScrollsToRecentMessage = true
+    
     var messageCollectionViewHeaderHeight = 100.0
     var messageCollectionViewFooterHeight = 100.0
     var messageCollectionViewHeaderBackgroundColor = UIColor.green

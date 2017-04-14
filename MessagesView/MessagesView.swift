@@ -267,8 +267,16 @@ public class MessagesView: UIView {
         messagesCollectionView.register(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Key.messagesCollectionViewFooter)
     }
     
-    func selectBackgroundFor(index: Int, inMessages messages: [MessagesViewChatMessage], withBubble bubbbleImage: BubbleImage)->UIImage {
-        var result = UIImage()
+
+    public func refresh() {
+        DispatchQueue.main.async {
+            self.messagesCollectionView.reloadData()
+        }
+    }
+    
+    func selectBackgroundAndSpacingFor(index: Int, inMessages messages: [MessagesViewChatMessage], withBubble bubbbleImage: BubbleImage) -> (image: UIImage, spacing: UIEdgeInsets) {
+        var image = UIImage()
+        var spacing = UIEdgeInsets()
         let actualMessage = messages[index]
         var isPreviousMessageOnTheSameSide = false
         var isNextMessageOnTheSameSide = false
@@ -282,16 +290,20 @@ public class MessagesView: UIView {
         
         switch (isPreviousMessageOnTheSameSide, isNextMessageOnTheSameSide) {
         case (false, false):
-            result = bubbbleImage.whole
+            image = bubbbleImage.whole
+            spacing = bubbbleImage.wholeSlice.spacing
         case (false, true):
-            result = bubbbleImage.top ?? bubbbleImage.whole
+            image = bubbbleImage.top ?? bubbbleImage.whole
+            spacing = bubbbleImage.topSlice?.spacing ?? defaultCellSpacing
         case (true, false):
-            result = bubbbleImage.bottom ?? bubbbleImage.whole
+            image = bubbbleImage.bottom ?? bubbbleImage.whole
+            spacing = bubbbleImage.bottomSlice?.spacing ?? defaultCellSpacing
         case (true, true):
-            result = bubbbleImage.middle ?? bubbbleImage.whole
+            image = bubbbleImage.middle ?? bubbbleImage.whole
+            spacing = bubbbleImage.middleSlice?.spacing ?? defaultCellSpacing
         }
         
-        return result
+        return (image: image, spacing: spacing)
     }
     
     private func readSettingsFromInpectables(settings: inout MessagesViewSettings) {
@@ -356,7 +368,9 @@ extension MessagesView: UICollectionViewDataSource {
             cell.showTail(side: message.onRight ? .right : .left)
             let bubbleImage = message.onRight ? bubbleImageRight : bubbleImageLeft
             if let image = bubbleImage {
-                cell.messageBackgroundView.image = self.selectBackgroundFor(index: indexPath.row, inMessages: messages, withBubble: image)
+                let slice = self.selectBackgroundAndSpacingFor(index: indexPath.row, inMessages: messages, withBubble: image)
+                cell.messageBackgroundView.image = slice.image
+                cell.adjustSpacing(spacing: slice.spacing)
             }
             cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin, bubbleMargin: bubbleImage?.textMargin)
             cell.applySettings(settings: settings)
@@ -402,7 +416,8 @@ extension MessagesView: UICollectionViewDelegateFlowLayout {
         let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
         let requiredWidth = maxWidth - cellMargins
 
-        var size = cell.size(message: message, containerInsets: requiredWidth - messageMargin)
+        let bubbleImage = message.onRight ? bubbleImageRight : bubbleImageLeft
+        var size = cell.size(message: message.text, containerInsets: requiredWidth - messageMargin - (bubbleImage?.horizontalTextMargins ?? 0))
         size.width = requiredWidth
         return size
     }

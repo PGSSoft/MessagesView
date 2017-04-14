@@ -35,15 +35,18 @@ class ViewController: UIViewController {
         
         let topSliceCropRect = CGRect(x: 0, y: 0, width: 100, height: 30)
         let topSliceResizeInsets = UIEdgeInsets(top: 25, left: 30, bottom: 0, right: 30)
-        let topSlice = ImageSlice(cropRect: topSliceCropRect, resizeInsets: topSliceResizeInsets)
+        let topSliceSpacing = UIEdgeInsets(top: 6, left: 0, bottom: 1, right: 0)
+        let topSlice = ImageSlice(cropRect: topSliceCropRect, resizeInsets: topSliceResizeInsets, spacing: topSliceSpacing)
         
         let middleSliceCropRect = CGRect(x: 0, y: 10, width: 100, height: 20)
         let middleSliceResizeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 25, right: 25)
-        let middleSlice = ImageSlice(cropRect: middleSliceCropRect, resizeInsets: middleSliceResizeInsets)
+        let middleSliceSpacing = UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 0)
+        let middleSlice = ImageSlice(cropRect: middleSliceCropRect, resizeInsets: middleSliceResizeInsets, spacing: middleSliceSpacing)
         
         let bottomSliceCropRect = CGRect(x: 0, y: 20, width: 100, height: 90)
         let bottomSliceResizeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 25, right: 25)
-        let bottomSlice = ImageSlice(cropRect: bottomSliceCropRect, resizeInsets: bottomSliceResizeInsets)
+        let bottomSliceSpacing = UIEdgeInsets(top: 1, left: 0, bottom: 6, right: 0)
+        let bottomSlice = ImageSlice(cropRect: bottomSliceCropRect, resizeInsets: bottomSliceResizeInsets, spacing: bottomSliceSpacing)
         
         let leftBubbleSettings = MessagesViewBubbleSettings(image: leftBubbleBackgroundImage,
                                                             whole: wholeSlice,
@@ -58,6 +61,7 @@ class ViewController: UIViewController {
                                                              top: topSlice,
                                                              middle: middleSlice,
                                                              bottom: bottomSlice)
+        rightBubbleSettings.textMargin.right = 20
         
         messagesView.setBubbleImageWith(leftSettings: leftBubbleSettings, rightSettings: rightBubbleSettings)
     }
@@ -93,7 +97,7 @@ extension ViewController: MessagesViewDataSource {
     var messages: [MessagesViewChatMessage] {
         return TestData.exampleMessageText.enumerated().map { (index, element) in
             let peer = self.peers[index % peers.count]
-            return Message(text: element, sender: peer, onRight: index%2 == 0)
+            return Message(text: element, sender: peer, onRight: index != 0)
         }
     }
 }

@@ -8,13 +8,17 @@
 
 import Foundation
 
+let defaultCellSpacing = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+
 public struct ImageSlice {
     let cropRect: CGRect
     let resizeInsets: UIEdgeInsets
+    let spacing: UIEdgeInsets
     
-    public init(cropRect: CGRect, resizeInsets: UIEdgeInsets) {
+    public init(cropRect: CGRect, resizeInsets: UIEdgeInsets, spacing: UIEdgeInsets = defaultCellSpacing) {
         self.cropRect = cropRect
         self.resizeInsets = resizeInsets
+        self.spacing = spacing
     }
 }
 
@@ -23,10 +27,10 @@ public struct ImageSlice {
 class BubbleImage {
     private var image: UIImage
     
-    private var wholeSlice: ImageSlice
-    private var topSlice: ImageSlice?
-    private var middleSlice: ImageSlice?
-    private var bottomSlice: ImageSlice?
+    var wholeSlice: ImageSlice
+    var topSlice: ImageSlice?
+    var middleSlice: ImageSlice?
+    var bottomSlice: ImageSlice?
     
     lazy var whole: UIImage = self.cropAndResize(slice: self.wholeSlice)
     lazy var top: UIImage? = self.cropAndResize(slice: self.topSlice)
@@ -34,6 +38,9 @@ class BubbleImage {
     lazy var bottom: UIImage? = self.cropAndResize(slice: self.bottomSlice)
     
     var textMargin = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    var horizontalTextMargins: CGFloat {
+        return textMargin.left + textMargin.right
+    }
     
     required init(image: UIImage, whole: ImageSlice, top: ImageSlice?, middle: ImageSlice?, bottom: ImageSlice?) {
         self.image = image

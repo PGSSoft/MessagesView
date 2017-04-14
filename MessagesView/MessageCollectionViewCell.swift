@@ -43,6 +43,9 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var backgroundTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundLeadingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var topSpacingViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomSpacingViewHeightConstraint: NSLayoutConstraint!
+    
     static var leftArrowImage = MessageCollectionViewCell.createArrowImage(inSize: CGSize(width: 10.0, height: 10.0)) ?? UIImage()
     static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored).withRenderingMode(.alwaysTemplate)
     
@@ -126,6 +129,11 @@ class MessageCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    func adjustSpacing(spacing: UIEdgeInsets) {
+        topSpacingViewHeightConstraint.constant = spacing.top
+        bottomSpacingViewHeightConstraint.constant = spacing.bottom
+    }
+    
     static func createArrowImage(inSize size: CGSize) -> UIImage! {
         UIGraphicsBeginImageContext(size)
         let context = UIGraphicsGetCurrentContext()
@@ -166,7 +174,9 @@ class MessageCollectionViewCell: UICollectionViewCell {
         textLabel.preferredMaxLayoutWidth = containerInsets - labelMargins
         labelWidthLayoutConstraint.constant = containerInsets - labelMargins
         
-        return contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        var resultSize = contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        resultSize.height += topSpacingViewHeightConstraint.constant + bottomSpacingViewHeightConstraint.constant
+        return resultSize
     }
 
     func applySettings(settings: MessagesViewSettings) {
