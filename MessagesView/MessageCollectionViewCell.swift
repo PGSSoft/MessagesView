@@ -174,9 +174,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
         textLabel.preferredMaxLayoutWidth = containerInsets - labelMargins
         labelWidthLayoutConstraint.constant = containerInsets - labelMargins
         
-        var resultSize = contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-        resultSize.height += topSpacingViewHeightConstraint.constant + bottomSpacingViewHeightConstraint.constant
-        return resultSize
+        return contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
     }
 
     func applySettings(settings: MessagesViewSettings) {

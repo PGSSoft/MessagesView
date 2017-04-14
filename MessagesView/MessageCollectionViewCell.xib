@@ -43,7 +43,7 @@
                         <rect key="frame" x="4" y="5" width="308" height="120"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qa-5e-3Ca">
-                                <rect key="frame" x="15" y="15" width="278" height="90"/>
+                                <rect key="frame" x="15" y="6" width="278" height="108"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" identifier="LabelWidth" id="1hU-jZ-0oE"/>
                                 </constraints>
@@ -56,8 +56,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="2qa-5e-3Ca" secondAttribute="trailing" constant="15" identifier="LabelTrailing" id="50q-g0-tul"/>
-                            <constraint firstAttribute="bottom" secondItem="2qa-5e-3Ca" secondAttribute="bottom" constant="15" identifier="LabelBottom" id="FUU-Z0-img"/>
-                            <constraint firstItem="2qa-5e-3Ca" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="top" constant="15" identifier="LabelTop" id="biN-oX-Ydt"/>
+                            <constraint firstAttribute="bottom" secondItem="2qa-5e-3Ca" secondAttribute="bottom" constant="6" identifier="LabelBottom" id="FUU-Z0-img"/>
+                            <constraint firstItem="2qa-5e-3Ca" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="top" constant="6" identifier="LabelTop" id="biN-oX-Ydt"/>
                             <constraint firstItem="2qa-5e-3Ca" firstAttribute="leading" secondItem="uWC-cc-3na" secondAttribute="leading" constant="15" identifier="LabelLeading" id="xyj-dZ-MNv"/>
                         </constraints>
                     </view>
