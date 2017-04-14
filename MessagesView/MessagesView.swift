@@ -138,16 +138,14 @@ public class MessagesView: UIView {
         addSubview(view)
         pinSubviewToEdges(subview: view)
         registerCellNib()
-
-        let set = self.settings
-        set.setLeftButtonAction {
+        
+        settings.setLeftButtonAction {
             self.delegate?.didTapLeftButton()
         }
-        set.setRightButtonAction {
+        settings.setRightButtonAction {
             self.delegate?.didTapRightButton()
         }
         
-        self.settings = set
         messagesInputToolbar.settings = settings
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
@@ -174,15 +172,21 @@ public class MessagesView: UIView {
         toolBarBottomConstraintWithoutKeyboard = messageInputToolbarBottomConstraint.constant
         
         let toolbarFrameInWindow = convert(messagesInputToolbar.frame, to: nil)
-        let keyboardFrameInWindow = convert(keyboardFrame, to: nil)
         
-        let keyboardOverlap = toolbarFrameInWindow.origin.y - keyboardFrameInWindow.origin.y
+        let keyboardOverlap = toolbarFrameInWindow.origin.y - keyboardFrame.origin.y
         
-        if keyboardOverlap > 0 {
-            messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard + keyboardOverlap + toolbarFrameInWindow.size.height
+        guard keyboardOverlap > 0 else {
+            return
         }
         
+        let verticalAdjusttment = keyboardOverlap + toolbarFrameInWindow.size.height
+        
+        messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard + verticalAdjusttment
+        
         UIView.animate(withDuration: animationDuration) {
+            let contentOffset = self.messagesCollectionView.contentOffset
+            
+            self.messagesCollectionView.contentOffset = CGPoint(x: contentOffset.x, y: contentOffset.y + verticalAdjusttment)
             self.layoutIfNeeded()
         }
     }
@@ -226,14 +230,22 @@ public class MessagesView: UIView {
         messagesCollectionView.register(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Key.messagesCollectionViewFooter)
     }
     
-    public func refresh(scrollDown: Bool) {
+    public func refresh(scrollToLastMessage: Bool) {
         DispatchQueue.main.async {
             self.messagesCollectionView.reloadData()
             
-            if scrollDown && self.messagesCollectionView.numberOfItems(inSection: 0) > 0 {
-                self.messagesCollectionView.scrollToItem(at: IndexPath(row: self.messagesCollectionView.numberOfItems(inSection: 0) - 1, section: 0), at: .top, animated: true)
+            if scrollToLastMessage {
+                self.scrollToLastMessage(animated: true)
             }
         }
+    }
+    
+    public func scrollToLastMessage(animated: Bool) {
+        guard !self.messagesCollectionView.isDragging, self.messagesCollectionView.numberOfItems(inSection: 0) > 0 else {
+            return
+        }
+        
+        self.messagesCollectionView.scrollToItem(at: IndexPath(row: self.messagesCollectionView.numberOfItems(inSection: 0) - 1, section: 0), at: .top, animated: animated)
     }
     
     func selectBackgroundFor(index: Int, inMessages messages: [MessagesViewChatMessage], withBubble bubbbleImage: BubbleImage)->UIImage {
