@@ -68,6 +68,7 @@ public class MessagesViewSettings {
     var leftButtonShow: Bool = true
     var leftButtonShowAnimated: Bool = true
     var leftButtonTextColor: UIColor = UIColor.black
+    var leftButtonDisabledColor: UIColor = .darkGray
     var leftButtonBackgroundColor: UIColor = UIColor.gray
     var leftButtonBackgroundImage: UIImage?
     var leftButtonCornerRadius: CGFloat = 0.0
@@ -76,6 +77,7 @@ public class MessagesViewSettings {
     var rightButtonShow: Bool = true
     var rightButtonShowAnimated: Bool = true
     var rightButtonTextColor: UIColor = UIColor.black
+    var rightButtonDisabledColor: UIColor = .darkGray
     var rightButtonBackgroundColor: UIColor = UIColor.gray
     var rightButtonBackgroundImage: UIImage?
     var rightButtonCornerRadius: CGFloat = 0.0
