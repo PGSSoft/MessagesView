@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,24 +21,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="25Z-aw-jBj" customClass="MessagesView" customModule="MessagesView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="409"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="519"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="image" keyPath="rightButtonBackgroundImage" value="bubble_orange"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="rightButtonText" value=" "/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="rightButtonTextColor">
-                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="rightButtonBackgroundColor">
-                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.94117647058823528" green="0.95686274509803915" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="25Z-aw-jBj" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="GGl-8Z-VKD"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="25Z-aw-jBj" secondAttribute="bottom" constant="258" id="YWb-V3-Flr"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="25Z-aw-jBj" secondAttribute="bottom" constant="128" id="YWb-V3-Flr"/>
+                            <constraint firstItem="25Z-aw-jBj" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Ygx-82-ybx"/>
                             <constraint firstItem="25Z-aw-jBj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="bws-AH-jdv"/>
                             <constraint firstAttribute="trailing" secondItem="25Z-aw-jBj" secondAttribute="trailing" id="jsy-dG-gY5"/>
                         </constraints>

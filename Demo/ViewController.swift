@@ -15,16 +15,15 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
         messagesView.delegate = self
         messagesView.dataSource = self
-        
+
         addCustomMessageBubbles()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func viewDidAppear(_ animated: Bool) {
+        messagesView.scrollToLastMessage(animated: false)
     }
     
     func addCustomMessageBubbles() {
@@ -72,7 +71,7 @@ extension ViewController: MessagesViewDelegate {
     func didTapRightButton() {
         let text = messagesView.inputText
         TestData.exampleMessageText.append(text)
-        messagesView.refresh()
+        messagesView.refresh(scrollToLastMessage: true)
     }
 }
 
