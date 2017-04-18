@@ -44,7 +44,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var backgroundLeadingConstraint: NSLayoutConstraint!
     
     static var leftArrowImage = MessageCollectionViewCell.createArrowImage(inSize: CGSize(width: 10.0, height: 10.0)) ?? UIImage()
-    static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: UIScreen.main.scale, orientation: .upMirrored).withRenderingMode(.alwaysTemplate)
+    static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored).withRenderingMode(.alwaysTemplate)
     
     static let patternCell = MessageCollectionViewCell.fromNib()
     
