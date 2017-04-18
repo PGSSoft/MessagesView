@@ -85,7 +85,7 @@ public class MessagesView: UIView {
     public var delegate : MessagesViewDelegate?
     public var dataSource: MessagesViewDataSource?
     
-    //NARK:-
+    //MARK:-
     
     var bubbleImageLeft: BubbleImage?
     var bubbleImageRight: BubbleImage?
