@@ -8,57 +8,68 @@
 
 import Foundation
 
-let defaultCellSpacing = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
-
-public struct ImageSlice {
-    let cropRect: CGRect
-    let resizeInsets: UIEdgeInsets
-    let spacing: UIEdgeInsets
+public class BubbleImage {
     
-    public init(cropRect: CGRect, resizeInsets: UIEdgeInsets, spacing: UIEdgeInsets = defaultCellSpacing) {
-        self.cropRect = cropRect
-        self.resizeInsets = resizeInsets
-        self.spacing = spacing
-    }
-}
-
-// four slices: whole, top, middle, bottom
-
-class BubbleImage {
-    private var image: UIImage
-    
-    var wholeSlice: ImageSlice
-    var topSlice: ImageSlice?
-    var middleSlice: ImageSlice?
-    var bottomSlice: ImageSlice?
-    
-    lazy var whole: UIImage = self.cropAndResize(slice: self.wholeSlice)
-    lazy var top: UIImage? = self.cropAndResize(slice: self.topSlice)
-    lazy var middle: UIImage? = self.cropAndResize(slice: self.middleSlice)
-    lazy var bottom: UIImage? = self.cropAndResize(slice: self.bottomSlice)
-    
-    var textMargin = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    var horizontalTextMargins: CGFloat {
-        return textMargin.left + textMargin.right
+    private enum Slice {
+        case whole
+        case top
+        case middle
+        case bottom
     }
     
-    required init(image: UIImage, whole: ImageSlice, top: ImageSlice?, middle: ImageSlice?, bottom: ImageSlice?) {
+    public let image: UIImage
+    
+    public let resizeInsets: UIEdgeInsets
+    
+    public lazy var whole: UIImage? = self.cropAndResize(slice: .whole)
+    public lazy var top: UIImage? = self.cropAndResize(slice: .top)
+    public lazy var middle: UIImage? = self.cropAndResize(slice: .middle)
+    public lazy var bottom: UIImage? = self.cropAndResize(slice: .bottom)
+    
+    var flipped: BubbleImage {
+        
+        let flippedImage = image.flipped
+        let flippedInsets = UIEdgeInsets(top: resizeInsets.top,
+                                         left: resizeInsets.right,
+                                         bottom: resizeInsets.bottom,
+                                         right: resizeInsets.left)
+        
+        return BubbleImage(image: flippedImage, resizeInsets: flippedInsets)
+    }
+    
+    required public init(image: UIImage, resizeInsets: UIEdgeInsets) {
         self.image = image
-        self.wholeSlice = whole
-        self.topSlice = top
-        self.middleSlice = middle
-        self.bottomSlice = bottom
+        self.resizeInsets = resizeInsets
     }
-    
-    convenience init(settings: MessagesViewBubbleSettings) {
-        self.init(image: settings.image, whole: settings.wholeSlice, top: settings.topSlice, middle: settings.middleSlice, bottom: settings.bottomSlice)
-    }
-    
-    private func cropAndResize(slice: ImageSlice?)->UIImage {
-        guard let slice = slice, let croppedImage = image.cgImage?.cropping(to: slice.cropRect) else {
-            return UIImage()
+        
+    private func cropAndResize(slice: Slice) -> UIImage? {
+        
+        let capInsets: UIEdgeInsets
+        let cropRect: CGRect
+        
+        let width = image.size.width * image.scale
+        let height = image.size.height * image.scale
+        let middleHeight = height - resizeInsets.top - resizeInsets.bottom
+        
+        switch slice {
+        case .whole:
+            capInsets = resizeInsets
+            cropRect = CGRect(x: 0, y: 0, width: width, height: height)
+        case .top:
+            capInsets = UIEdgeInsets(top: resizeInsets.top, left: resizeInsets.left, bottom: 0, right: resizeInsets.right)
+            cropRect = CGRect(x: 0, y: 0, width: width, height: resizeInsets.top + middleHeight)
+        case .middle:
+            capInsets = UIEdgeInsets(top: 0, left: resizeInsets.left, bottom: 0, right: resizeInsets.right)
+            cropRect = CGRect(x: 0, y: resizeInsets.top, width: width, height: middleHeight)
+        case .bottom:
+            capInsets = UIEdgeInsets(top: 0, left: resizeInsets.left, bottom: resizeInsets.bottom, right: resizeInsets.right)
+            cropRect = CGRect(x: 0, y: resizeInsets.top, width: width, height: resizeInsets.bottom + middleHeight)
         }
         
-        return UIImage(cgImage: croppedImage).resizableImage(withCapInsets: slice.resizeInsets, resizingMode: .stretch).withRenderingMode(.alwaysTemplate)
+        guard let croppedImage = image.cgImage?.cropping(to: cropRect) else {
+            return nil
+        }
+        
+        return UIImage(cgImage: croppedImage).resizableImage(withCapInsets: capInsets, resizingMode: .stretch).withRenderingMode(.alwaysTemplate)
     }
 }

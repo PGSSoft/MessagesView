@@ -17,18 +17,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="316" height="130"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Sg-qW-fCh" userLabel="Top Spacing View">
-                        <rect key="frame" x="0.0" y="0.0" width="316" height="5"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="5" id="PPC-ga-elj"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="uWC-cc-3na" customClass="UIImageView">
-                        <rect key="frame" x="4" y="5" width="308" height="120"/>
+                        <rect key="frame" x="4" y="0.0" width="308" height="125"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qa-5e-3Ca">
-                                <rect key="frame" x="15" y="6" width="278" height="108"/>
+                                <rect key="frame" x="15" y="6" width="278" height="113"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" identifier="LabelWidth" id="1hU-jZ-0oE"/>
                                 </constraints>
@@ -73,17 +66,14 @@
             <constraints>
                 <constraint firstItem="CJS-15-32Z" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" constant="1" id="01B-Uk-1fE"/>
                 <constraint firstItem="PYG-YY-OT9" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="bottom" id="64f-jj-oVp"/>
-                <constraint firstAttribute="bottom" secondItem="VAr-8b-Ve6" secondAttribute="bottom" id="E9Q-zc-wLh"/>
+                <constraint firstItem="VAr-8b-Ve6" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="bottom" constant="-5" id="B2S-UG-1x5"/>
                 <constraint firstItem="PYG-YY-OT9" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" id="NOh-St-mzh"/>
                 <constraint firstAttribute="trailing" secondItem="VAr-8b-Ve6" secondAttribute="trailing" constant="1" id="RIQ-Rc-efU"/>
-                <constraint firstItem="1Sg-qW-fCh" firstAttribute="top" secondItem="LAY-9S-DAx" secondAttribute="top" id="SQn-1f-5QM"/>
+                <constraint firstItem="uWC-cc-3na" firstAttribute="top" secondItem="LAY-9S-DAx" secondAttribute="top" id="ZYW-pK-ObZ"/>
                 <constraint firstItem="uWC-cc-3na" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" constant="4" identifier="BackgroundLeading" id="crS-JE-wZw"/>
                 <constraint firstAttribute="trailing" secondItem="uWC-cc-3na" secondAttribute="trailing" constant="4" identifier="BackgroundTrailing" id="dcA-tX-vXV"/>
-                <constraint firstItem="1Sg-qW-fCh" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" id="g5V-o1-8D5"/>
-                <constraint firstItem="uWC-cc-3na" firstAttribute="top" secondItem="1Sg-qW-fCh" secondAttribute="bottom" id="kOm-eH-9yi"/>
-                <constraint firstAttribute="bottom" secondItem="CJS-15-32Z" secondAttribute="bottom" id="kma-mL-CjR"/>
-                <constraint firstAttribute="trailing" secondItem="1Sg-qW-fCh" secondAttribute="trailing" id="sgE-HZ-nIp"/>
                 <constraint firstAttribute="bottom" secondItem="PYG-YY-OT9" secondAttribute="bottom" id="w5j-Mb-XgG"/>
+                <constraint firstItem="CJS-15-32Z" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="bottom" constant="-5" id="wil-qY-3ok"/>
                 <constraint firstAttribute="trailing" secondItem="PYG-YY-OT9" secondAttribute="trailing" id="wpV-1W-Df4"/>
             </constraints>
             <size key="customSize" width="325" height="130"/>
@@ -105,14 +95,15 @@
                 <outlet property="backgroundLeadingConstraint" destination="crS-JE-wZw" id="DG4-eZ-1EV"/>
                 <outlet property="backgroundTrailingConstraint" destination="dcA-tX-vXV" id="5WS-s3-US3"/>
                 <outlet property="bottomSpacingViewHeightConstraint" destination="WUH-Vn-hHc" id="peo-i4-cvV"/>
+                <outlet property="labelBottomConstraint" destination="FUU-Z0-img" id="3fQ-gJ-x5u"/>
                 <outlet property="labelLeadingConstraint" destination="xyj-dZ-MNv" id="4Zl-t4-oIz"/>
+                <outlet property="labelTopConstraint" destination="biN-oX-Ydt" id="A6L-8w-hNi"/>
                 <outlet property="labelTrailingConstraint" destination="50q-g0-tul" id="66s-tE-UMV"/>
                 <outlet property="labelWidthLayoutConstraint" destination="1hU-jZ-0oE" id="xMw-2T-zhE"/>
                 <outlet property="leftArrowView" destination="CJS-15-32Z" id="uO2-I1-7AH"/>
                 <outlet property="messageBackgroundView" destination="uWC-cc-3na" id="4gE-KD-oIT"/>
                 <outlet property="rightArrowView" destination="VAr-8b-Ve6" id="tuR-Vo-0fM"/>
                 <outlet property="textLabel" destination="2qa-5e-3Ca" id="ufm-xg-g8Q"/>
-                <outlet property="topSpacingViewHeightConstraint" destination="PPC-ga-elj" id="JCj-QQ-E97"/>
             </connections>
             <point key="canvasLocation" x="-153" y="-854"/>
         </collectionViewCell>

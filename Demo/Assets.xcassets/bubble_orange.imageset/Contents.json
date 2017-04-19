@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bubble_orange.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "bubble_orange.png",
       "scale" : "2x"
     },
     {
