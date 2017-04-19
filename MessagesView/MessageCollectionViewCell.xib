@@ -24,21 +24,6 @@
                             <constraint firstAttribute="height" constant="5" id="PPC-ga-elj"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJS-15-32Z">
-                        <rect key="frame" x="0.0" y="120" width="10" height="10"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="10" id="4Q1-RF-B0g"/>
-                            <constraint firstAttribute="width" constant="10" id="Tup-lh-VlD"/>
-                        </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAr-8b-Ve6">
-                        <rect key="frame" x="306" y="120" width="10" height="10"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="10" id="4qM-vT-g0d"/>
-                            <constraint firstAttribute="height" constant="10" id="hFn-Lm-OWq"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="uWC-cc-3na" customClass="UIImageView">
                         <rect key="frame" x="4" y="5" width="308" height="120"/>
                         <subviews>
@@ -61,6 +46,21 @@
                             <constraint firstItem="2qa-5e-3Ca" firstAttribute="leading" secondItem="uWC-cc-3na" secondAttribute="leading" constant="15" identifier="LabelLeading" id="xyj-dZ-MNv"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJS-15-32Z" customClass="UIImageView">
+                        <rect key="frame" x="1" y="120" width="10" height="10"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="10" id="4Q1-RF-B0g"/>
+                            <constraint firstAttribute="width" constant="10" id="Tup-lh-VlD"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAr-8b-Ve6" customClass="UIImageView">
+                        <rect key="frame" x="305" y="120" width="10" height="10"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="10" id="4qM-vT-g0d"/>
+                            <constraint firstAttribute="height" constant="10" id="hFn-Lm-OWq"/>
+                        </constraints>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PYG-YY-OT9" userLabel="Bottom Spacing View">
                         <rect key="frame" x="0.0" y="125" width="316" height="5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -71,11 +71,11 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="CJS-15-32Z" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" id="01B-Uk-1fE"/>
+                <constraint firstItem="CJS-15-32Z" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" constant="1" id="01B-Uk-1fE"/>
                 <constraint firstItem="PYG-YY-OT9" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="bottom" id="64f-jj-oVp"/>
                 <constraint firstAttribute="bottom" secondItem="VAr-8b-Ve6" secondAttribute="bottom" id="E9Q-zc-wLh"/>
                 <constraint firstItem="PYG-YY-OT9" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" id="NOh-St-mzh"/>
-                <constraint firstAttribute="trailing" secondItem="VAr-8b-Ve6" secondAttribute="trailing" id="RIQ-Rc-efU"/>
+                <constraint firstAttribute="trailing" secondItem="VAr-8b-Ve6" secondAttribute="trailing" constant="1" id="RIQ-Rc-efU"/>
                 <constraint firstItem="1Sg-qW-fCh" firstAttribute="top" secondItem="LAY-9S-DAx" secondAttribute="top" id="SQn-1f-5QM"/>
                 <constraint firstItem="uWC-cc-3na" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" constant="4" identifier="BackgroundLeading" id="crS-JE-wZw"/>
                 <constraint firstAttribute="trailing" secondItem="uWC-cc-3na" secondAttribute="trailing" constant="4" identifier="BackgroundTrailing" id="dcA-tX-vXV"/>
@@ -89,7 +89,7 @@
             <size key="customSize" width="325" height="130"/>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                    <real key="value" value="10"/>
+                    <real key="value" value="8"/>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="textBackgroundColor">
                     <color key="value" red="0.21960217949999999" green="1" blue="0.87681885400000004" alpha="1" colorSpace="calibratedRGB"/>

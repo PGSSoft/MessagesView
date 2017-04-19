@@ -33,8 +33,8 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var messageBackgroundView: UIImageView!
     
-    @IBOutlet weak var leftArrowView: UIView!
-    @IBOutlet weak var rightArrowView: UIView!
+    @IBOutlet weak var leftArrowView: UIImageView!
+    @IBOutlet weak var rightArrowView: UIImageView!
     
     @IBOutlet weak var labelWidthLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var labelLeadingConstraint: NSLayoutConstraint!
@@ -46,8 +46,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var topSpacingViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomSpacingViewHeightConstraint: NSLayoutConstraint!
     
-    static var leftArrowImage = MessageCollectionViewCell.createArrowImage(inSize: CGSize(width: 10.0, height: 10.0)) ?? UIImage()
-    static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored).withRenderingMode(.alwaysTemplate)
+    static var leftArrowImage = MessageCollectionViewCell.createArrowImage(inSize: CGSize(width: 40.0, height: 40.0)) ?? UIImage()
     
     static let patternCell = MessageCollectionViewCell.fromNib()
     
@@ -93,11 +92,15 @@ class MessageCollectionViewCell: UICollectionViewCell {
     }
     
     func addTails() {
-        self.leftArrowView.subviews.forEach{$0.removeFromSuperview()}
-        self.leftArrowView.addSubview(UIImageView(image: MessageCollectionViewCell.leftArrowImage))
-        self.rightArrowView.subviews.forEach{$0.removeFromSuperview()}
-        self.rightArrowView.addSubview(UIImageView(image: MessageCollectionViewCell.rightArrowImage))
+        self.leftArrowView.image = MessageCollectionViewCell.leftArrowImage
+        self.rightArrowView.image = MessageCollectionViewCell.leftArrowImage
+        self.rightArrowView.transform = CGAffineTransform(scaleX: -1, y: 1)
     }
+    
+    override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+    }
+    
     
     func showTail(side: Side) {
         switch side {

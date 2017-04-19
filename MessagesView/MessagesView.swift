@@ -408,7 +408,7 @@ extension MessagesView: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        guard let message = dataSource?.messages[indexPath.row].text, let cell = MessageCollectionViewCell.fromNib() else {
+        guard let message = dataSource?.messages[indexPath.row], let cell = MessageCollectionViewCell.fromNib() else {
             return defaultCellSize
         }
         
