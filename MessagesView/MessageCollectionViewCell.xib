@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,10 +18,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="uWC-cc-3na" customClass="UIImageView">
-                        <rect key="frame" x="4" y="0.0" width="308" height="125"/>
+                        <rect key="frame" x="4" y="0.0" width="308" height="130"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qa-5e-3Ca">
-                                <rect key="frame" x="15" y="6" width="278" height="113"/>
+                                <rect key="frame" x="15" y="6" width="278" height="118"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" identifier="LabelWidth" id="1hU-jZ-0oE"/>
                                 </constraints>
@@ -39,42 +39,13 @@
                             <constraint firstItem="2qa-5e-3Ca" firstAttribute="leading" secondItem="uWC-cc-3na" secondAttribute="leading" constant="15" identifier="LabelLeading" id="xyj-dZ-MNv"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJS-15-32Z" customClass="UIImageView">
-                        <rect key="frame" x="1" y="120" width="10" height="10"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="10" id="4Q1-RF-B0g"/>
-                            <constraint firstAttribute="width" constant="10" id="Tup-lh-VlD"/>
-                        </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAr-8b-Ve6" customClass="UIImageView">
-                        <rect key="frame" x="305" y="120" width="10" height="10"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="10" id="4qM-vT-g0d"/>
-                            <constraint firstAttribute="height" constant="10" id="hFn-Lm-OWq"/>
-                        </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PYG-YY-OT9" userLabel="Bottom Spacing View">
-                        <rect key="frame" x="0.0" y="125" width="316" height="5"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="5" id="WUH-Vn-hHc"/>
-                        </constraints>
-                    </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="CJS-15-32Z" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" constant="1" id="01B-Uk-1fE"/>
-                <constraint firstItem="PYG-YY-OT9" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="bottom" id="64f-jj-oVp"/>
-                <constraint firstItem="VAr-8b-Ve6" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="bottom" constant="-5" id="B2S-UG-1x5"/>
-                <constraint firstItem="PYG-YY-OT9" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" id="NOh-St-mzh"/>
-                <constraint firstAttribute="trailing" secondItem="VAr-8b-Ve6" secondAttribute="trailing" constant="1" id="RIQ-Rc-efU"/>
                 <constraint firstItem="uWC-cc-3na" firstAttribute="top" secondItem="LAY-9S-DAx" secondAttribute="top" id="ZYW-pK-ObZ"/>
                 <constraint firstItem="uWC-cc-3na" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" constant="4" identifier="BackgroundLeading" id="crS-JE-wZw"/>
                 <constraint firstAttribute="trailing" secondItem="uWC-cc-3na" secondAttribute="trailing" constant="4" identifier="BackgroundTrailing" id="dcA-tX-vXV"/>
-                <constraint firstAttribute="bottom" secondItem="PYG-YY-OT9" secondAttribute="bottom" id="w5j-Mb-XgG"/>
-                <constraint firstItem="CJS-15-32Z" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="bottom" constant="-5" id="wil-qY-3ok"/>
-                <constraint firstAttribute="trailing" secondItem="PYG-YY-OT9" secondAttribute="trailing" id="wpV-1W-Df4"/>
+                <constraint firstAttribute="bottom" secondItem="uWC-cc-3na" secondAttribute="bottom" id="vf3-1F-E1j"/>
             </constraints>
             <size key="customSize" width="325" height="130"/>
             <userDefinedRuntimeAttributes>
@@ -94,15 +65,13 @@
             <connections>
                 <outlet property="backgroundLeadingConstraint" destination="crS-JE-wZw" id="DG4-eZ-1EV"/>
                 <outlet property="backgroundTrailingConstraint" destination="dcA-tX-vXV" id="5WS-s3-US3"/>
-                <outlet property="bottomSpacingViewHeightConstraint" destination="WUH-Vn-hHc" id="peo-i4-cvV"/>
+                <outlet property="bottomSpacingConstraint" destination="vf3-1F-E1j" id="hFw-SS-gVo"/>
                 <outlet property="labelBottomConstraint" destination="FUU-Z0-img" id="3fQ-gJ-x5u"/>
                 <outlet property="labelLeadingConstraint" destination="xyj-dZ-MNv" id="4Zl-t4-oIz"/>
                 <outlet property="labelTopConstraint" destination="biN-oX-Ydt" id="A6L-8w-hNi"/>
                 <outlet property="labelTrailingConstraint" destination="50q-g0-tul" id="66s-tE-UMV"/>
                 <outlet property="labelWidthLayoutConstraint" destination="1hU-jZ-0oE" id="xMw-2T-zhE"/>
-                <outlet property="leftArrowView" destination="CJS-15-32Z" id="uO2-I1-7AH"/>
                 <outlet property="messageBackgroundView" destination="uWC-cc-3na" id="4gE-KD-oIT"/>
-                <outlet property="rightArrowView" destination="VAr-8b-Ve6" id="tuR-Vo-0fM"/>
                 <outlet property="textLabel" destination="2qa-5e-3Ca" id="ufm-xg-g8Q"/>
             </connections>
             <point key="canvasLocation" x="-153" y="-854"/>

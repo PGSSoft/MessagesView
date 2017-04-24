@@ -28,15 +28,15 @@ public protocol MessagesViewPeer {
     var id : String {get}
 }
 
+enum MessagePositionInGroup {
+    case whole
+    case top
+    case middle
+    case bottom
+}
+
 @IBDesignable
 public class MessagesView: UIView {
-    
-    fileprivate enum MessagePositionInGroup {
-        case whole
-        case top
-        case middle
-        case bottom
-    }
 
     @IBOutlet weak var messagesCollectionView: MessagesCollectionView!
     @IBOutlet weak var messagesInputToolbar: MessagesInputToolbar!
@@ -91,8 +91,8 @@ public class MessagesView: UIView {
     
     //MARK:-
     
-    var bubbleImageLeft: BubbleImage?
-    var bubbleImageRight: BubbleImage?
+    var bubbleImageLeft: BubbleImage = BubbleImage(cornerRadius: 16)
+    var bubbleImageRight: BubbleImage = BubbleImage(cornerRadius: 16).flipped
     
     public func setBubbleImagesWith(left: BubbleImage, right: BubbleImage? = nil) {
         
@@ -368,32 +368,29 @@ extension MessagesView: UICollectionViewDataSource {
         
         let side: Side = messages[indexPath.row].onRight ? .right : .left
         cell.message = messages[indexPath.row]
+        
+        let bubbleImage = messages[indexPath.row].onRight ? bubbleImageRight : bubbleImageLeft
+        
+        let messagePosition = messagePositionInGroup(for: indexPath.row)
 
-        if let bubbleImage = messages[indexPath.row].onRight ? bubbleImageRight : bubbleImageLeft {
-            
-            switch messagePositionInGroup(for: indexPath.row) {
-            case .whole:
-                cell.messageBackgroundView.image = bubbleImage.whole
-                cell.adjustSpacing(spacing: settings.groupSeparationSpacing)
-            case .top:
-                cell.messageBackgroundView.image = bubbleImage.top
-                cell.adjustSpacing(spacing: settings.groupInternalSpacing)
-            case .middle:
-                cell.messageBackgroundView.image = bubbleImage.middle
-                cell.adjustSpacing(spacing: settings.groupInternalSpacing)
-            case .bottom:
-                cell.messageBackgroundView.image = bubbleImage.bottom
-                cell.adjustSpacing(spacing: settings.groupSeparationSpacing)
-            }
-
-            cell.addMessageMargin(side: side,
-                                  marginInsets: bubbleImage.resizeInsets,
-                                  minimalHorizontalSpacing: settings.minimalHorizontalSpacing)
-        } else {
+        switch messagePosition {
+        case .whole:
+            cell.messageBackgroundView.image = bubbleImage.whole
             cell.adjustSpacing(spacing: settings.groupSeparationSpacing)
-            cell.addTails()
-            cell.showTail(side: side)
+        case .top:
+            cell.messageBackgroundView.image = bubbleImage.top
+            cell.adjustSpacing(spacing: settings.groupInternalSpacing)
+        case .middle:
+            cell.messageBackgroundView.image = bubbleImage.middle
+            cell.adjustSpacing(spacing: settings.groupInternalSpacing)
+        case .bottom:
+            cell.messageBackgroundView.image = bubbleImage.bottom
+            cell.adjustSpacing(spacing: settings.groupSeparationSpacing)
         }
+        
+        cell.addMessageInsets(side: side,
+                              textInsets: bubbleImage.textInsets,
+                              minimalHorizontalSpacing: settings.minimalHorizontalSpacing, messagePositionInGroup: messagePosition)
         
         cell.applySettings(settings: settings)
         
@@ -437,15 +434,18 @@ extension MessagesView: UICollectionViewDelegateFlowLayout {
         let requiredWidth = maxWidth
         
         let bubble = message.onRight ? bubbleImageRight : bubbleImageLeft
+        let messagePosition = messagePositionInGroup(for: indexPath.row)
 
-        var size = cell.size(message: message.text, width: requiredWidth, bubbleImage: bubble, onRight: message.onRight, minimalHorizontalSpacing: settings.minimalHorizontalSpacing)
+        var size = cell.size(message: message.text, width: requiredWidth, bubbleImage: bubble, onRight: message.onRight, minimalHorizontalSpacing: settings.minimalHorizontalSpacing, messagePositionInGroup: messagePosition)
         size.width = requiredWidth
         
-        switch messagePositionInGroup(for: indexPath.row) {
-        case .top, .middle:
-            size.height += settings.groupInternalSpacing
+        switch messagePosition {
+            
         case .bottom, .whole:
             size.height += settings.groupSeparationSpacing
+            
+        case .top, .middle:
+            size.height += settings.groupInternalSpacing
         }
         
         return size
