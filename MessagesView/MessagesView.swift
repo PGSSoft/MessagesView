@@ -366,7 +366,6 @@ extension MessagesView: UICollectionViewDataSource {
                 return UICollectionViewCell()
         }
         
-        let side: Side = messages[indexPath.row].onRight ? .right : .left
         cell.message = messages[indexPath.row]
         
         let bubbleImage = messages[indexPath.row].onRight ? bubbleImageRight : bubbleImageLeft
@@ -376,21 +375,20 @@ extension MessagesView: UICollectionViewDataSource {
         switch messagePosition {
         case .whole:
             cell.messageBackgroundView.image = bubbleImage.whole
-            cell.adjustSpacing(spacing: settings.groupSeparationSpacing)
+            cell.bottomSpacing = settings.groupSeparationSpacing
         case .top:
             cell.messageBackgroundView.image = bubbleImage.top
-            cell.adjustSpacing(spacing: settings.groupInternalSpacing)
+            cell.bottomSpacing = settings.groupInternalSpacing
         case .middle:
             cell.messageBackgroundView.image = bubbleImage.middle
-            cell.adjustSpacing(spacing: settings.groupInternalSpacing)
+            cell.bottomSpacing = settings.groupInternalSpacing
         case .bottom:
             cell.messageBackgroundView.image = bubbleImage.bottom
-            cell.adjustSpacing(spacing: settings.groupSeparationSpacing)
+            cell.bottomSpacing =  settings.groupSeparationSpacing
         }
         
-        cell.addMessageInsets(side: side,
-                              textInsets: bubbleImage.textInsets,
-                              minimalHorizontalSpacing: settings.minimalHorizontalSpacing, messagePositionInGroup: messagePosition)
+        cell.positionInGroup = messagePosition
+        cell.textInsets = bubbleImage.textInsets
         
         cell.applySettings(settings: settings)
         
@@ -430,13 +428,12 @@ extension MessagesView: UICollectionViewDelegateFlowLayout {
             return .zero
         }
         
-        let maxWidth = collectionView.bounds.width - collectionView.contentInset.left - collectionView.contentInset.right
-        let requiredWidth = maxWidth
+        let requiredWidth = collectionView.bounds.width - collectionView.contentInset.left - collectionView.contentInset.right
         
         let bubble = message.onRight ? bubbleImageRight : bubbleImageLeft
         let messagePosition = messagePositionInGroup(for: indexPath.row)
 
-        var size = cell.size(message: message.text, width: requiredWidth, bubbleImage: bubble, onRight: message.onRight, minimalHorizontalSpacing: settings.minimalHorizontalSpacing, messagePositionInGroup: messagePosition)
+        var size = cell.size(message: message.text, width: requiredWidth, bubbleImage: bubble, minimalHorizontalSpacing: settings.minimalHorizontalSpacing, messagePositionInGroup: messagePosition)
         size.width = requiredWidth
         
         switch messagePosition {

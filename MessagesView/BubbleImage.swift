@@ -44,11 +44,19 @@ public class BubbleImage {
     
     convenience init(cornerRadius: CGFloat) {
         
-        let size = CGSize(width: cornerRadius * 3 + 1, height: cornerRadius * 3 + 1)
+        let size = CGSize(width: cornerRadius * 4 + 1, height: cornerRadius * 3 + 1)
         
         let image = BubbleImage.defaultBubbleImage(with: size, cornerRadius: cornerRadius)
-        let resizeInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius * 2, bottom: cornerRadius * 2, right: cornerRadius)
-        let textInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius * 2, right: cornerRadius)
+        
+        let resizeInsets = UIEdgeInsets(top: cornerRadius,
+                                        left: cornerRadius * 3,
+                                        bottom: cornerRadius * 2,
+                                        right: cornerRadius)
+        
+        let textInsets = UIEdgeInsets(top: cornerRadius * 0.5,
+                                      left: cornerRadius * 2.5,
+                                      bottom: cornerRadius * 0.5,
+                                      right: cornerRadius * 0.5)
         
         self.init(image: image, resizeInsets: resizeInsets, textInsets: textInsets)
     }
@@ -69,7 +77,6 @@ public class BubbleImage {
                                               left: resizeInsets.left * image.scale,
                                               bottom: resizeInsets.bottom * image.scale,
                                               right: resizeInsets.right * image.scale)
-        
         
         let middleHeight = height - scaledResizeInsets.top - scaledResizeInsets.bottom
         
@@ -99,7 +106,7 @@ public class BubbleImage {
         
         return cropped.resizableImage(withCapInsets: capInsets, resizingMode: .stretch).withRenderingMode(.alwaysTemplate)
     }
- 
+    
     public static func defaultBubbleImage(with size: CGSize, cornerRadius: CGFloat) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
@@ -107,11 +114,12 @@ public class BubbleImage {
         UIColor.red.setFill()
         UIColor.red.setStroke()
         
-        let tailSize = CGSize(width: cornerRadius * 2, height: cornerRadius)
-        let bubbleSize = CGSize(width: size.width, height: size.height - tailSize.height)
+        let tailSize = CGSize(width: cornerRadius * 2, height: cornerRadius * 2)
+        let bubbleSize = CGSize(width: size.width - tailSize.width, height: size.height)
         
-        let bubblePath = UIBezierPath(roundedRect: CGRect(origin: .zero, size: bubbleSize), cornerRadius: cornerRadius)
+        let bubblePath = UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: tailSize.width, y: 0), size: bubbleSize), byRoundingCorners: [.topLeft, .topRight, .bottomRight], cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
         bubblePath.fill()
+        bubblePath.lineWidth = 1
         bubblePath.stroke()
         
         let tailPath = createTailPathIn(origin: CGPoint(x: 0, y: size.height - tailSize.height), size: tailSize)
@@ -129,10 +137,13 @@ public class BubbleImage {
         let height = size.height
         
         let path = UIBezierPath()
+        
+        path.lineWidth = 1
+        
         path.move(to: CGPoint(x: 0.0, y: height))
-        path.addQuadCurve(to: CGPoint(x: 0.5 * width, y: -0.5 * height), controlPoint: CGPoint(x: 0.6 * width, y: 0.8 * height))
-        path.addLine(to: CGPoint(x: width, y: 0.0))
-        path.addQuadCurve(to: CGPoint(x: 0.0, y: height), controlPoint: CGPoint(x: 0.5 * width, y: height))
+        path.addQuadCurve(to: CGPoint(x: width, y: 0), controlPoint: CGPoint(x: width - 1, y: height - 1))
+        path.addLine(to: CGPoint(x: width, y: height))
+        path.close()
         
         path.apply(CGAffineTransform(translationX: origin.x, y: origin.y))
         

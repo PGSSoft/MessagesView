@@ -50,6 +50,10 @@ class MessageCollectionViewCell: UICollectionViewCell {
     static let patternCell = MessageCollectionViewCell.fromNib()
     
     var side: Side = .left
+    var positionInGroup: MessagePositionInGroup = .whole
+    var textInsets: UIEdgeInsets = .zero
+    var bottomSpacing: CGFloat = 0
+    var minimalHorizontalSpacing: CGFloat = 0
     
     var message : MessagesViewChatMessage? {
         didSet {
@@ -92,12 +96,15 @@ class MessageCollectionViewCell: UICollectionViewCell {
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
-    override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-    }
-    
-    func addMessageInsets(side: Side, textInsets: UIEdgeInsets, minimalHorizontalSpacing: CGFloat, messagePositionInGroup: MessagePositionInGroup) {
+    override func layoutSubviews() {
 
+        adjustConstraints()
+        
+        super.layoutSubviews()
+    }
+
+    private func adjustConstraints() {
+        
         switch side {
             
         case .left:
@@ -113,7 +120,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
             backgroundTrailingConstraint.constant = defaultBubbleMargin
         }
         
-        switch messagePositionInGroup {
+        switch positionInGroup {
         case .top:
             labelTopConstraint.constant = textInsets.top
             labelBottomConstraint.constant = additionalTextLabelVerticalSpacing
@@ -127,19 +134,17 @@ class MessageCollectionViewCell: UICollectionViewCell {
             labelTopConstraint.constant = textInsets.top
             labelBottomConstraint.constant = textInsets.bottom
         }
+        
+        bottomSpacingConstraint.constant = bottomSpacing
     }
     
-    func adjustSpacing(spacing: CGFloat) {
-        bottomSpacingConstraint.constant = spacing
-    }
-    
-    func size(message: String, width: CGFloat, bubbleImage: BubbleImage, onRight: Bool, minimalHorizontalSpacing: CGFloat,
+    func size(message: String, width: CGFloat, bubbleImage: BubbleImage, minimalHorizontalSpacing: CGFloat,
               messagePositionInGroup: MessagePositionInGroup) -> CGSize {
         
         var labelMargins = minimalHorizontalSpacing + defaultBubbleMargin
-        labelMargins += onRight ? bubbleImage.textInsets.left : bubbleImage.textInsets.right
+        labelMargins += bubbleImage.textInsets.left + bubbleImage.textInsets.right
 
-        let rect = message.boundingRect(with: CGSize(width: width - labelMargins, height: 2000),
+        let rect = message.boundingRect(with: CGSize(width: width - labelMargins, height: .infinity),
                                         options: [.usesLineFragmentOrigin],
                                         attributes: [NSFontAttributeName: textLabel.font], context: nil)
         
@@ -157,8 +162,6 @@ class MessageCollectionViewCell: UICollectionViewCell {
         case .whole:
             resultSize.height += bubbleImage.textInsets.top + bubbleImage.textInsets.bottom
         }
-        
-        print("result size for message \"\(message)\" - \(resultSize)")
 
         return resultSize
     }
@@ -180,5 +183,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
         messageBackgroundView.tintColor = backgroundColor
         
         textLabel.textColor = textColor
+        
+        minimalHorizontalSpacing = settings.minimalHorizontalSpacing
     }
 }
