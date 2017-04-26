@@ -15,18 +15,32 @@ public class MessagesViewSettings {
     
     var leftButtonHidesKeyboard  = false
     var rightButtonHidesKeyboard = false
+    var shouldAdjustToKeyboard = true
     
     var textInputScrollsToRecentMessage = true
+    
     var messageCollectionViewHeaderHeight = 100.0
     var messageCollectionViewFooterHeight = 100.0
     var messageCollectionViewHeaderBackgroundColor = UIColor.green
     var messageCollectionViewFooterBackgroundColor = UIColor.blue
     
+    var groupSeparationSpacing: CGFloat = 12
+    var groupInternalSpacing: CGFloat = 1
+    var minimalHorizontalSpacing: CGFloat = 80
+    
     //MARK: IBInspectables from MessageView
-    var messageCellTextColor: UIColor = UIColor.black
-    var messageCellBackgroundColor: UIColor = UIColor.red
+    var leftMessageCellTextColor: UIColor = UIColor.pastelGrey
+    var leftMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    var rightMessageCellTextColor: UIColor = UIColor.pastelGrey
+    var rightMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    
+    var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
+    var textInputFieldTopSeparatorLineAlpha: CGFloat = 1.0
+    var textInputFieldTopSeparatorLineColor: UIColor = UIColor.pumpkin
+    
     var collectionViewBackgroundColor: UIColor = UIColor.yellow
     var textInputFieldTextColor: UIColor = UIColor.yellow
+    var textInputFieldTextPlaceholderText: String = "Write your message here"
     var textInputFieldBackgroundColor: UIColor = UIColor.yellow
     var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     
@@ -38,6 +52,7 @@ public class MessagesViewSettings {
     var leftButtonShow: Bool = true
     var leftButtonShowAnimated: Bool = true
     var leftButtonTextColor: UIColor = UIColor.black
+    var leftButtonDisabledColor: UIColor = .darkGray
     var leftButtonBackgroundColor: UIColor = UIColor.gray
     var leftButtonBackgroundImage: UIImage?
     var leftButtonCornerRadius: CGFloat = 0.0
@@ -46,6 +61,7 @@ public class MessagesViewSettings {
     var rightButtonShow: Bool = true
     var rightButtonShowAnimated: Bool = true
     var rightButtonTextColor: UIColor = UIColor.black
+    var rightButtonDisabledColor: UIColor = .darkGray
     var rightButtonBackgroundColor: UIColor = UIColor.gray
     var rightButtonBackgroundImage: UIImage?
     var rightButtonCornerRadius: CGFloat = 0.0
@@ -89,7 +105,6 @@ public class MessagesViewSettings {
 
         //settings.leftButtonHidesKeyboard = true
         settings.rightButtonHidesKeyboard = true
-        settings.textInputScrollsToRecentMessage = true
         settings.messageCollectionViewHeaderHeight = 5
         settings.messageCollectionViewHeaderBackgroundColor = UIColor.clear
         settings.messageCollectionViewFooterHeight = 20
@@ -105,7 +120,6 @@ public class MessagesViewSettings {
         
         //settings.leftButtonHidesKeyboard = true
         settings.rightButtonHidesKeyboard = true
-        settings.textInputScrollsToRecentMessage = true
         settings.messageCollectionViewHeaderHeight = 5
         settings.messageCollectionViewHeaderBackgroundColor = UIColor.clear
         settings.messageCollectionViewFooterHeight = 20

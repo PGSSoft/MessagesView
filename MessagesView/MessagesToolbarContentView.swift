@@ -10,13 +10,8 @@ import UIKit
 
 class MessagesToolbarContentView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+    @IBOutlet weak var topSeparatorLineView: UIView!
+    @IBOutlet weak var topSeparatorLineViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var leftButtonContainerView: UIImageView!
     @IBOutlet weak var leftButtonLabel: UILabel!
@@ -36,6 +31,17 @@ class MessagesToolbarContentView: UIView {
     private var originalRightButtonContainerViewMargin = CGFloat(0)
     private var originalRightButtonContainerViewWidth = CGFloat(0)
     
+    private var leftButtonEnabled: Bool = true
+    private var rightButtonEnabled: Bool = true
+    
+    private var leftTintColor: UIColor {
+        return leftButtonEnabled ? settings.leftButtonTextColor : settings.leftButtonDisabledColor
+    }
+    
+    private var rightTintColor: UIColor {
+        return rightButtonEnabled ? settings.rightButtonTextColor : settings.rightButtonDisabledColor
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         saveOriginalConstraintValues()
@@ -48,16 +54,24 @@ class MessagesToolbarContentView: UIView {
         originalRightButtonContainerViewWidth = rightButtonContainerViewWidthConstraint.constant
     }
     
-    @IBAction func didPressRightButton(_ sender: AnyObject) {
-        settings.rightButtonAction()
-        if settings.rightButtonHidesKeyboard {
+    @IBAction func didPressLeftButton(_ sender: AnyObject) {
+        
+        if leftButtonEnabled {
+            settings.leftButtonAction()
+        }
+        
+        if settings.leftButtonHidesKeyboard {
             messageEditorTextView.resignFirstResponder()
         }
     }
     
-    @IBAction func didPressLeftButton(_ sender: AnyObject) {
-        settings.leftButtonAction()
-        if settings.leftButtonHidesKeyboard {
+    @IBAction func didPressRightButton(_ sender: AnyObject) {
+        
+        if rightButtonEnabled {
+            settings.rightButtonAction()
+        }
+        
+        if settings.rightButtonHidesKeyboard {
             messageEditorTextView.resignFirstResponder()
         }
     }
@@ -87,6 +101,20 @@ class MessagesToolbarContentView: UIView {
         move(view: self.leftButtonContainerView, animated: animated, constraint: self.leftButtonContainerViewLeadingConstraint, value: destination.margin, alpha: destination.alpha)
     }
     
+    func setLeftButton(enabled: Bool) {
+        leftButtonEnabled = enabled
+        
+        leftButtonLabel.textColor = leftTintColor
+        leftButtonContainerView.tintColor = leftTintColor
+    }
+    
+    func setRightButton(enabled: Bool) {
+        rightButtonEnabled = enabled
+        
+        rightButtonLabel.textColor = rightTintColor
+        rightButtonContainerView.tintColor = rightTintColor
+    }
+    
     private func calculateDestination(side: Side, show: Bool) -> (margin: CGFloat, alpha: CGFloat) {
         let xMargin: CGFloat
         let alpha: CGFloat
@@ -108,7 +136,7 @@ class MessagesToolbarContentView: UIView {
         return (xMargin, alpha)
     }
     
-    private func move( view: UIView, animated: Bool, constraint: NSLayoutConstraint, value: CGFloat, alpha: CGFloat) {
+    private func move(view: UIView, animated: Bool, constraint: NSLayoutConstraint, value: CGFloat, alpha: CGFloat) {
         let performTransition = {
             constraint.constant = value
             view.alpha = alpha
@@ -125,43 +153,41 @@ class MessagesToolbarContentView: UIView {
         }
     }
     
-    func apply(settings: MessagesViewSettings) {
+    private func apply(settings: MessagesViewSettings) {
         messageEditorTextView.applySettings(settings: settings)
         
         backgroundColor = settings.inputToolbarBackgroundColor
         
+        topSeparatorLineView.backgroundColor = settings.textInputFieldTopSeparatorLineColor
+        topSeparatorLineView.alpha = settings.textInputFieldTopSeparatorLineAlpha
+        topSeparatorLineViewHeightConstraint.constant = settings.textInputFieldTopSeparatorLineHeight
+        
         leftButtonLabel.text = settings.leftButtonText
-        leftButtonLabel.textColor = settings.leftButtonTextColor
+        leftButtonLabel.textColor = leftTintColor
+        leftButtonContainerView.tintColor = leftTintColor
         leftButtonContainerView.backgroundColor = settings.leftButtonBackgroundColor
-        leftButtonContainerView.image = settings.leftButtonBackgroundImage
+        leftButtonContainerView.image = settings.leftButtonBackgroundImage?.withRenderingMode(.alwaysTemplate)
         leftButtonContainerView.layer.cornerRadius = settings.leftButtonCornerRadius
         
         rightButtonLabel.text = settings.rightButtonText
-        rightButtonLabel.textColor = settings.rightButtonTextColor
+        rightButtonLabel.textColor = rightTintColor
+        rightButtonContainerView.tintColor = rightTintColor
         rightButtonContainerView.backgroundColor = settings.rightButtonBackgroundColor
-        rightButtonContainerView.image = settings.rightButtonBackgroundImage
-        rightButtonContainerView.layer.cornerRadius = settings.rightButtonCornerRadius        
+        rightButtonContainerView.image = settings.rightButtonBackgroundImage?.withRenderingMode(.alwaysTemplate)
+        rightButtonContainerView.layer.cornerRadius = settings.rightButtonCornerRadius
     }
 }
 
 extension MessagesToolbarContentView : UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        #if DEBUG
-            print(#function)
-        #endif
         return true
     }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        #if DEBUG
-            print(#function)
-        #endif
         return true
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        #if DEBUG
-            print(#function)
-        #endif
         return true
     }
 }

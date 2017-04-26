@@ -31,30 +31,39 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBInspectable var tailFillColor : UIColor = UIColor.blue
     
     @IBOutlet weak var textLabel: UILabel!
-    @IBOutlet weak var messageBackgroundView: UIView!
-    
-    @IBOutlet weak var leftArrowView: UIView!
-    @IBOutlet weak var rightArrowView: UIView!
+    @IBOutlet weak var messageBackgroundView: UIImageView!
     
     @IBOutlet weak var labelWidthLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var labelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var labelTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var labelTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var labelBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var backgroundTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundLeadingConstraint: NSLayoutConstraint!
     
-    static var leftArrowImage = MessageCollectionViewCell.createArrowImage(inSize: CGSize(width: 10.0, height: 10.0)) ?? UIImage()
-    static var rightArrowImage = UIImage(cgImage: (leftArrowImage.cgImage)!, scale: 1.0, orientation: .upMirrored).withRenderingMode(.alwaysTemplate)
+    @IBOutlet weak var bottomSpacingConstraint: NSLayoutConstraint!
+    
+    private let defaultBubbleMargin: CGFloat = 8
+    private let additionalTextLabelVerticalSpacing: CGFloat = 4
     
     static let patternCell = MessageCollectionViewCell.fromNib()
-    static var hostPeerSide = Side.right
+    
+    var side: Side = .left
+    var positionInGroup: MessagePositionInGroup = .whole
+    var textInsets: UIEdgeInsets = .zero
+    var bottomSpacing: CGFloat = 0
+    var minimalHorizontalSpacing: CGFloat = 0
+    
     var message : MessagesViewChatMessage? {
         didSet {
             textLabel.text = message?.text ?? ""
+            side = (message?.onRight ?? false) ? .right : .left
         }
     }
     
-    private var backgroundMarginConstant : CGFloat = 0.0
+    private var backgroundMarginConstant: CGFloat = 0.0
+    private var labelMarginConstant: CGFloat = 0.0
     
     class func fromNib() -> MessageCollectionViewCell?
     {
@@ -82,85 +91,99 @@ class MessageCollectionViewCell: UICollectionViewCell {
         messageBackgroundView.backgroundColor = self.textBackgroundColor
         messageBackgroundView.layer.cornerRadius = self.cornerRadius
         backgroundMarginConstant = self.backgroundTrailingConstraint.constant
+        labelMarginConstant = self.labelLeadingConstraint.constant
+        
+        autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
-    func addTails() {
-        self.leftArrowView.subviews.forEach{$0.removeFromSuperview()}
-        self.leftArrowView.addSubview(UIImageView(image: MessageCollectionViewCell.leftArrowImage))
-        self.rightArrowView.subviews.forEach{$0.removeFromSuperview()}
-        self.rightArrowView.addSubview(UIImageView(image: MessageCollectionViewCell.rightArrowImage))
+    override func layoutSubviews() {
+
+        adjustConstraints()
+        
+        super.layoutSubviews()
     }
-    
-    func showTail(side: Side) {
+
+    private func adjustConstraints() {
+        
         switch side {
+            
         case .left:
-            self.rightArrowView.isHidden = true
-            self.leftArrowView.isHidden = false
+            labelLeadingConstraint.constant = textInsets.left
+            labelTrailingConstraint.constant = textInsets.right
+            backgroundLeadingConstraint.constant = defaultBubbleMargin
+            backgroundTrailingConstraint.constant = minimalHorizontalSpacing
+            
         case .right:
-            self.rightArrowView.isHidden = false
-            self.leftArrowView.isHidden = true
+            labelLeadingConstraint.constant = textInsets.left
+            labelTrailingConstraint.constant = textInsets.right
+            backgroundLeadingConstraint.constant = minimalHorizontalSpacing
+            backgroundTrailingConstraint.constant = defaultBubbleMargin
         }
-    }
-    
-    func addMessageMargin(side: Side, margin: CGFloat) {
-        switch side {
-        case .left:
-            backgroundLeadingConstraint.constant = backgroundMarginConstant
-            backgroundTrailingConstraint.constant = backgroundMarginConstant + margin
-        case .right:
-            backgroundLeadingConstraint.constant = backgroundMarginConstant + margin
-            backgroundTrailingConstraint.constant = backgroundMarginConstant
+        
+        switch positionInGroup {
+        case .top:
+            labelTopConstraint.constant = textInsets.top
+            labelBottomConstraint.constant = additionalTextLabelVerticalSpacing
+        case .middle:
+            labelTopConstraint.constant = additionalTextLabelVerticalSpacing
+            labelBottomConstraint.constant = additionalTextLabelVerticalSpacing
+        case .bottom:
+            labelTopConstraint.constant = additionalTextLabelVerticalSpacing
+            labelBottomConstraint.constant = textInsets.bottom
+        case .whole:
+            labelTopConstraint.constant = textInsets.top
+            labelBottomConstraint.constant = textInsets.bottom
         }
+        
+        bottomSpacingConstraint.constant = bottomSpacing
     }
     
-    static func createArrowImage(inSize size: CGSize) -> UIImage! {
-        UIGraphicsBeginImageContext(size)
-        let context = UIGraphicsGetCurrentContext()
-        let tailStrokeColor = MessageCollectionViewCell.patternCell?.tailStrokeColor ?? UIColor.blue
-        let tailFillColor = MessageCollectionViewCell.patternCell?.tailFillColor ?? UIColor.blue
-        context?.setStrokeColor(tailStrokeColor.cgColor)
-        context?.setFillColor(tailFillColor.cgColor)
+    func size(message: String, width: CGFloat, bubbleImage: BubbleImage, minimalHorizontalSpacing: CGFloat,
+              messagePositionInGroup: MessagePositionInGroup) -> CGSize {
         
-        let tailPath = MessageCollectionViewCell.createTailPathIn(size: size)
-        context?.addPath(tailPath)
-        context?.fillPath()
-        context?.strokePath()
+        var labelMargins = minimalHorizontalSpacing + defaultBubbleMargin
+        labelMargins += bubbleImage.textInsets.left + bubbleImage.textInsets.right
+
+        let rect = message.boundingRect(with: CGSize(width: width - labelMargins, height: .infinity),
+                                        options: [.usesLineFragmentOrigin],
+                                        attributes: [NSFontAttributeName: textLabel.font], context: nil)
         
-        let result = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysTemplate)
-        UIGraphicsEndImageContext()
-        return result
-    }
-    
-    static func createTailPathIn(size: CGSize) -> CGPath {
-        let aWidth  = size.width
-        let aHeight = size.height
+        var resultSize = rect.integral.size
         
-        let mutablePath = CGMutablePath()
-        mutablePath.move(to: CGPoint(x: 0.0, y: 1.0*aHeight))
-        mutablePath.addQuadCurve(to: CGPoint(x: 0.5*aWidth, y: 0.0), control: CGPoint(x: 0.6*aWidth, y: 0.9*aHeight))
-        mutablePath.addLine(to: CGPoint(x: 1.0*aWidth, y: 0.0))
-        mutablePath.addLine(to: CGPoint(x: 1.0*aWidth, y: 0.5*aHeight))
-        mutablePath.addQuadCurve(to: CGPoint(x: 0.0, y: 1.0*aHeight), control: CGPoint(x: 0.5*aWidth, y: 1.0*aHeight))
-        mutablePath.closeSubpath()
+        resultSize.width += labelMargins
         
-        return mutablePath
-    }
-    
-    func size(message: String, containerInsets: CGFloat) -> CGSize {
-        let labelMargins = labelLeadingConstraint.constant + backgroundLeadingConstraint.constant + backgroundTrailingConstraint.constant + labelTrailingConstraint.constant
-        
-        textLabel.text = message
-        textLabel.preferredMaxLayoutWidth = containerInsets - labelMargins
-        labelWidthLayoutConstraint.constant = containerInsets - labelMargins
-        
-        return contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        switch messagePositionInGroup {
+        case .top:
+            resultSize.height += bubbleImage.textInsets.top + additionalTextLabelVerticalSpacing
+        case .middle:
+            resultSize.height += 2 * additionalTextLabelVerticalSpacing
+        case .bottom:
+            resultSize.height += bubbleImage.textInsets.bottom + additionalTextLabelVerticalSpacing
+        case .whole:
+            resultSize.height += bubbleImage.textInsets.top + bubbleImage.textInsets.bottom
+        }
+
+        return resultSize
     }
 
     func applySettings(settings: MessagesViewSettings) {
-        textLabel.textColor = settings.messageCellTextColor
-        messageBackgroundView.backgroundColor = settings.messageCellBackgroundColor
-        leftArrowView.tintColor = settings.messageCellBackgroundColor
-        rightArrowView.tintColor = settings.messageCellBackgroundColor
-
+        
+        let textColor, backgroundColor: UIColor
+        
+        switch side {
+        case .left:
+            textColor = settings.leftMessageCellTextColor
+            backgroundColor = settings.leftMessageCellBackgroundColor
+        case .right:
+            textColor = settings.rightMessageCellTextColor
+            backgroundColor = settings.rightMessageCellBackgroundColor
+        }
+        
+        messageBackgroundView.backgroundColor = UIColor.clear
+        messageBackgroundView.tintColor = backgroundColor
+        
+        textLabel.textColor = textColor
+        
+        minimalHorizontalSpacing = settings.minimalHorizontalSpacing
     }
 }

@@ -28,45 +28,77 @@ public protocol MessagesViewPeer {
     var id : String {get}
 }
 
+enum MessagePositionInGroup {
+    case whole
+    case top
+    case middle
+    case bottom
+}
+
 @IBDesignable
 public class MessagesView: UIView {
 
     @IBOutlet weak var messagesCollectionView: MessagesCollectionView!
     @IBOutlet weak var messagesInputToolbar: MessagesInputToolbar!
     
+    @IBOutlet weak var messageInputToolbarBottomConstraint: NSLayoutConstraint!
+    
+    private var toolBarBottomConstraintWithoutKeyboard: CGFloat = 0
+    
+    //MARK:- Public properties
 
-    fileprivate let messageMargin : CGFloat = 60.0
-    fileprivate let defaultCellSize : CGSize = CGSize(width: 250.0, height: 100.0)
-
-    @IBInspectable public var messageCellTextColor: UIColor = UIColor.black
-    @IBInspectable public var messageCellBackgroundColor: UIColor = UIColor.black
-    @IBInspectable public var collectionViewBackgroundColor: UIColor = UIColor.yellow
-    @IBInspectable public var textInputFieldTextColor: UIColor = UIColor.yellow
-    @IBInspectable public var textInputFieldBackgroundColor: UIColor = UIColor.yellow
+    @IBInspectable public var leftMessageCellTextColor: UIColor = .black
+    @IBInspectable public var leftMessageCellBackgroundColor: UIColor = .antiflashWhite
+    @IBInspectable public var rightMessageCellTextColor: UIColor = .antiflashWhite
+    @IBInspectable public var rightMessageCellBackgroundColor: UIColor = .pumpkin
+    
+    @IBInspectable public var collectionViewBackgroundColor: UIColor = .white
+    
+    @IBInspectable public var textInputFieldTextColor: UIColor = .black
+    @IBInspectable public var textInputFieldBackgroundColor: UIColor = .clear
+    @IBInspectable public var textInputFieldTextPlaceholderText: String = "Write your message here"
     @IBInspectable public var textInputFieldCornerRadius: CGFloat = 0.0
     @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
     
-    @IBInspectable public var buttonSlideAnimationDuration: TimeInterval = 0.5
+    @IBInspectable public var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
+    @IBInspectable public var textInputFieldTopSeparatorLineColor: UIColor = .pumpkin
+    @IBInspectable public var textInputFieldTopSeparatorLineAlpha: CGFloat = 0.3
+    
     @IBInspectable public var inputToolbarBackgroundColor: UIColor = UIColor.white
     
     @IBInspectable public var leftButtonText: String = "Left"
-    @IBInspectable public var leftButtonShow: Bool = true
-    @IBInspectable public var leftButtonShowAnimated: Bool = true
-    @IBInspectable public var leftButtonTextColor: UIColor = UIColor.black
-    @IBInspectable public var leftButtonBackgroundColor: UIColor = UIColor.gray
+    @IBInspectable public var leftButtonShow: Bool = false
+    @IBInspectable public var leftButtonShowAnimated: Bool = false
+    @IBInspectable public var leftButtonTextColor: UIColor = .black
+    @IBInspectable public var leftButtonDisabledColor: UIColor = .lightGray
+    @IBInspectable public var leftButtonBackgroundColor: UIColor = .clear
     @IBInspectable public var leftButtonBackgroundImage: UIImage?
     @IBInspectable public var leftButtonCornerRadius: CGFloat = 0.0
     
     @IBInspectable public var rightButtonText: String = "Right"
     @IBInspectable public var rightButtonShow: Bool = true
     @IBInspectable public var rightButtonShowAnimated: Bool = true
-    @IBInspectable public var rightButtonTextColor: UIColor = UIColor.black
-    @IBInspectable public var rightButtonBackgroundColor: UIColor = UIColor.gray
+    @IBInspectable public var rightButtonTextColor: UIColor = .pumpkin
+    @IBInspectable public var rightButtonDisabledColor: UIColor = .lightGray
+    @IBInspectable public var rightButtonBackgroundColor: UIColor = .clear
     @IBInspectable public var rightButtonBackgroundImage: UIImage?
     @IBInspectable public var rightButtonCornerRadius: CGFloat = 0.0
     
+    public var buttonSlideAnimationDuration: TimeInterval = 0.5
+    
     public var delegate : MessagesViewDelegate?
     public var dataSource: MessagesViewDataSource?
+    
+    //MARK:-
+    
+    var bubbleImageLeft: BubbleImage = BubbleImage(cornerRadius: 8)
+    var bubbleImageRight: BubbleImage = BubbleImage(cornerRadius: 8).flipped
+    
+    public func setBubbleImagesWith(left: BubbleImage, right: BubbleImage? = nil) {
+        
+        bubbleImageLeft = left
+        bubbleImageRight = right ?? left.flipped
+    }
     
     public var inputText: String {
         return messagesInputToolbar.messageText
@@ -90,6 +122,12 @@ public class MessagesView: UIView {
         setup()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    //MARK:- Public methods
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -107,22 +145,22 @@ public class MessagesView: UIView {
         apply(settings: settings)
     }
     
-    private func setup() {
-        view = loadFromNib()
-        addSubview(view)
-        pinSubviewToEdges(subview: view)
-        registerCellNib()
-
-        let set = self.settings
-        set.setLeftButtonAction {
-            self.delegate?.didTapLeftButton()
+    public func refresh(scrollToLastMessage: Bool) {
+        DispatchQueue.main.async {
+            self.messagesCollectionView.reloadData()
+            
+            if scrollToLastMessage {
+                self.scrollToLastMessage(animated: true)
+            }
         }
-        set.setRightButtonAction {
-            self.delegate?.didTapRightButton()
+    }
+    
+    public func scrollToLastMessage(animated: Bool) {
+        guard !self.messagesCollectionView.isDragging, self.messagesCollectionView.numberOfItems(inSection: 0) > 0 else {
+            return
         }
         
-        self.settings = set
-        messagesInputToolbar.settings = settings
+        self.messagesCollectionView.scrollToItem(at: IndexPath(row: self.messagesCollectionView.numberOfItems(inSection: 0) - 1, section: 0), at: .top, animated: animated)
     }
     
     public func leftButton(show: Bool, animated: Bool) {
@@ -131,6 +169,80 @@ public class MessagesView: UIView {
     
     public func rightButton(show: Bool, animated: Bool) {
         messagesInputToolbar.rightButton(show: show, animated: animated)
+    }
+    
+    public func setLeftButton(enabled: Bool) {
+        messagesInputToolbar.toolbarContentView.setLeftButton(enabled: enabled)
+    }
+    
+    public func setRightButton(enabled: Bool) {
+        messagesInputToolbar.toolbarContentView.setRightButton(enabled: enabled)
+    }
+    
+    //MARK:-
+    
+    private func setup() {
+        view = loadFromNib()
+        addSubview(view)
+        pinSubviewToEdges(subview: view)
+        registerCellNib()
+        
+        settings.setLeftButtonAction {
+            self.delegate?.didTapLeftButton()
+        }
+        settings.setRightButtonAction {
+            self.delegate?.didTapRightButton()
+        }
+        
+        messagesInputToolbar.settings = settings
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: Notification) {
+        
+        guard settings.shouldAdjustToKeyboard,
+            let userInfo = notification.userInfo,
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else {
+            return
+        }
+        
+        toolBarBottomConstraintWithoutKeyboard = messageInputToolbarBottomConstraint.constant
+        
+        let toolbarFrameInWindow = convert(messagesInputToolbar.frame, to: nil)
+        
+        let keyboardOverlap = toolbarFrameInWindow.origin.y - keyboardFrame.origin.y
+        
+        guard keyboardOverlap > 0 else {
+            return
+        }
+        
+        let verticalAdjusttment = keyboardOverlap + toolbarFrameInWindow.size.height
+        
+        messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard + verticalAdjusttment
+        
+        UIView.animate(withDuration: animationDuration) {
+            let contentOffset = self.messagesCollectionView.contentOffset
+            
+            self.messagesCollectionView.contentOffset = CGPoint(x: contentOffset.x, y: contentOffset.y + verticalAdjusttment)
+            self.layoutIfNeeded()
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: Notification) {
+        
+        guard settings.shouldAdjustToKeyboard,
+            let animationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else {
+            return
+        }
+        
+        messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard
+        
+        UIView.animate(withDuration: animationDuration) {
+            self.layoutIfNeeded()
+        }
     }
     
     private func pinSubviewToEdges(subview: UIView) {
@@ -158,18 +270,57 @@ public class MessagesView: UIView {
         messagesCollectionView.register(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Key.messagesCollectionViewFooter)
     }
     
+
     public func refresh() {
         DispatchQueue.main.async {
             self.messagesCollectionView.reloadData()
         }
     }
     
+    fileprivate func messagePositionInGroup(for index: Int) -> MessagePositionInGroup {
+        
+        guard let messages = dataSource?.messages else {
+            return .whole
+        }
+        
+        var isPreviousMessageOnTheSameSide = false
+        var isNextMessageOnTheSameSide = false
+        
+        if 0 <= index-1 {
+            isPreviousMessageOnTheSameSide = messages[index-1].onRight == messages[index].onRight
+        }
+        
+        if index+1 < messages.count {
+            isNextMessageOnTheSameSide = messages[index+1].onRight == messages[index].onRight
+        }
+        
+        switch (isPreviousMessageOnTheSameSide, isNextMessageOnTheSameSide) {
+        case (false, false):
+            return .whole
+        case (false, true):
+            return .top
+        case (true, false):
+            return .bottom
+        case (true, true):
+            return .middle
+        }
+    }
+    
     private func readSettingsFromInpectables(settings: inout MessagesViewSettings) {
-        settings.messageCellTextColor = self.messageCellTextColor
-        settings.messageCellBackgroundColor = self.messageCellBackgroundColor
+        settings.leftMessageCellTextColor = self.leftMessageCellTextColor
+        settings.leftMessageCellBackgroundColor = self.leftMessageCellBackgroundColor
+        settings.rightMessageCellTextColor = self.rightMessageCellTextColor
+        settings.rightMessageCellBackgroundColor = self.rightMessageCellBackgroundColor
+        
         settings.collectionViewBackgroundColor = self.collectionViewBackgroundColor
+        
         settings.textInputFieldTextColor = self.textInputFieldTextColor
         settings.textInputFieldBackgroundColor = self.textInputFieldBackgroundColor
+        
+        settings.textInputFieldTopSeparatorLineHeight = self.textInputFieldTopSeparatorLineHeight
+        settings.textInputFieldTopSeparatorLineAlpha = self.textInputFieldTopSeparatorLineAlpha
+        settings.textInputFieldTopSeparatorLineColor = self.textInputFieldTopSeparatorLineColor
+        settings.textInputFieldTextPlaceholderText = self.textInputFieldTextPlaceholderText
         
         settings.buttonSlideAnimationDuration = self.buttonSlideAnimationDuration
         settings.inputToolbarBackgroundColor = self.inputToolbarBackgroundColor
@@ -179,6 +330,7 @@ public class MessagesView: UIView {
         settings.leftButtonShow = self.leftButtonShow
         settings.leftButtonShowAnimated = self.leftButtonShowAnimated
         settings.leftButtonTextColor = self.leftButtonTextColor
+        settings.leftButtonDisabledColor = self.leftButtonDisabledColor
         settings.leftButtonBackgroundColor = self.leftButtonBackgroundColor
         settings.leftButtonBackgroundImage = self.leftButtonBackgroundImage
         settings.leftButtonCornerRadius = self.leftButtonCornerRadius
@@ -187,6 +339,7 @@ public class MessagesView: UIView {
         settings.rightButtonShow = self.rightButtonShow
         settings.rightButtonShowAnimated = self.rightButtonShowAnimated
         settings.rightButtonTextColor = self.rightButtonTextColor
+        settings.rightButtonDisabledColor = self.rightButtonDisabledColor
         settings.rightButtonBackgroundColor = self.rightButtonBackgroundColor
         settings.rightButtonBackgroundImage = self.rightButtonBackgroundImage
         settings.rightButtonCornerRadius = self.rightButtonCornerRadius
@@ -200,21 +353,45 @@ public class MessagesView: UIView {
     }
 }
 
-extension MessagesView : UICollectionViewDataSource {
+extension MessagesView: UICollectionViewDataSource {
+    
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource?.messages.count ?? 0
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Key.messageCollectionViewCell, for: indexPath) as? MessageCollectionViewCell ?? MessageCollectionViewCell()
-        if let message = dataSource?.messages[indexPath.row] {
-            cell.message = message
-            cell.addTails()
-            cell.applySettings(settings: settings)
-            cell.showTail(side: message.onRight ? .right : .left)
-            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin)
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Key.messageCollectionViewCell, for: indexPath) as? MessageCollectionViewCell,
+            let messages = dataSource?.messages else {
+                return UICollectionViewCell()
         }
-        cell.setNeedsLayout()
+        
+        cell.message = messages[indexPath.row]
+        
+        let bubbleImage = messages[indexPath.row].onRight ? bubbleImageRight : bubbleImageLeft
+        
+        let messagePosition = messagePositionInGroup(for: indexPath.row)
+
+        switch messagePosition {
+        case .whole:
+            cell.messageBackgroundView.image = bubbleImage.whole
+            cell.bottomSpacing = settings.groupSeparationSpacing
+        case .top:
+            cell.messageBackgroundView.image = bubbleImage.top
+            cell.bottomSpacing = settings.groupInternalSpacing
+        case .middle:
+            cell.messageBackgroundView.image = bubbleImage.middle
+            cell.bottomSpacing = settings.groupInternalSpacing
+        case .bottom:
+            cell.messageBackgroundView.image = bubbleImage.bottom
+            cell.bottomSpacing =  settings.groupSeparationSpacing
+        }
+        
+        cell.positionInGroup = messagePosition
+        cell.textInsets = bubbleImage.textInsets
+        
+        cell.applySettings(settings: settings)
+        
         return cell
     }
     
@@ -243,23 +420,31 @@ extension MessagesView : UICollectionViewDataSource {
     }
 }
 
-extension MessagesView : UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("selected")
-    }
-    
+extension MessagesView: UICollectionViewDelegateFlowLayout {
+
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard  let message = dataSource?.messages[indexPath.row].text,
-        let cell = MessageCollectionViewCell.fromNib() else {
-            return defaultCellSize
+        
+        guard let message = dataSource?.messages[indexPath.row], let cell = MessageCollectionViewCell.fromNib() else {
+            return .zero
         }
         
-        let maxWidth = collectionView.bounds.size.width - collectionView.contentInset.left - collectionView.contentInset.right
-        let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
-        let requiredWidth = maxWidth - cellMargins
+        let requiredWidth = collectionView.bounds.width - collectionView.contentInset.left - collectionView.contentInset.right
+        
+        let bubble = message.onRight ? bubbleImageRight : bubbleImageLeft
+        let messagePosition = messagePositionInGroup(for: indexPath.row)
 
-        var size = cell.size(message: message, containerInsets: requiredWidth - messageMargin)
+        var size = cell.size(message: message.text, width: requiredWidth, bubbleImage: bubble, minimalHorizontalSpacing: settings.minimalHorizontalSpacing, messagePositionInGroup: messagePosition)
         size.width = requiredWidth
+        
+        switch messagePosition {
+            
+        case .bottom, .whole:
+            size.height += settings.groupSeparationSpacing
+            
+        case .top, .middle:
+            size.height += settings.groupInternalSpacing
+        }
+        
         return size
     }
 }
