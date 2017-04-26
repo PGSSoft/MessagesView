@@ -11,35 +11,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MessageCollectionViewCell" id="LAY-9S-DAx" customClass="MessageCollectionViewCell" customModule="MessagesView">
-            <rect key="frame" x="0.0" y="0.0" width="316" height="120"/>
+            <rect key="frame" x="0.0" y="0.0" width="316" height="130"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="316" height="120"/>
+                <rect key="frame" x="0.0" y="0.0" width="316" height="130"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJS-15-32Z">
-                        <rect key="frame" x="0.0" y="110" width="10" height="10"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="10" id="4Q1-RF-B0g"/>
-                            <constraint firstAttribute="width" constant="10" id="Tup-lh-VlD"/>
-                        </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAr-8b-Ve6">
-                        <rect key="frame" x="306" y="110" width="10" height="10"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="10" id="4qM-vT-g0d"/>
-                            <constraint firstAttribute="height" constant="10" id="hFn-Lm-OWq"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="uWC-cc-3na" customClass="UIImageView">
-                        <rect key="frame" x="4" y="0.0" width="308" height="120"/>
+                        <rect key="frame" x="4" y="0.0" width="308" height="130"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qa-5e-3Ca">
-                                <rect key="frame" x="15" y="15" width="278" height="90"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" identifier="LabelWidth" id="1hU-jZ-0oE"/>
-                                </constraints>
+                                <rect key="frame" x="15" y="6" width="278" height="118"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget vehicula quam. Phasellus fermentum arcu et nibh vehicula vestibulum. Integer sed.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
@@ -49,27 +31,23 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="2qa-5e-3Ca" secondAttribute="trailing" constant="15" identifier="LabelTrailing" id="50q-g0-tul"/>
-                            <constraint firstAttribute="bottom" secondItem="2qa-5e-3Ca" secondAttribute="bottom" constant="15" identifier="LabelBottom" id="FUU-Z0-img"/>
-                            <constraint firstItem="2qa-5e-3Ca" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="top" constant="15" identifier="LabelTop" id="biN-oX-Ydt"/>
+                            <constraint firstAttribute="bottom" secondItem="2qa-5e-3Ca" secondAttribute="bottom" constant="6" identifier="LabelBottom" id="FUU-Z0-img"/>
+                            <constraint firstItem="2qa-5e-3Ca" firstAttribute="top" secondItem="uWC-cc-3na" secondAttribute="top" constant="6" identifier="LabelTop" id="biN-oX-Ydt"/>
                             <constraint firstItem="2qa-5e-3Ca" firstAttribute="leading" secondItem="uWC-cc-3na" secondAttribute="leading" constant="15" identifier="LabelLeading" id="xyj-dZ-MNv"/>
                         </constraints>
                     </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="CJS-15-32Z" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" id="01B-Uk-1fE"/>
-                <constraint firstAttribute="bottom" secondItem="uWC-cc-3na" secondAttribute="bottom" identifier="BackgroundBottom" id="AMf-il-HQw"/>
-                <constraint firstAttribute="bottom" secondItem="VAr-8b-Ve6" secondAttribute="bottom" id="E9Q-zc-wLh"/>
-                <constraint firstItem="uWC-cc-3na" firstAttribute="top" secondItem="LAY-9S-DAx" secondAttribute="top" identifier="BackgroundTop" id="NQ1-Nh-lTa"/>
-                <constraint firstAttribute="trailing" secondItem="VAr-8b-Ve6" secondAttribute="trailing" id="RIQ-Rc-efU"/>
+                <constraint firstItem="uWC-cc-3na" firstAttribute="top" secondItem="LAY-9S-DAx" secondAttribute="top" id="ZYW-pK-ObZ"/>
                 <constraint firstItem="uWC-cc-3na" firstAttribute="leading" secondItem="LAY-9S-DAx" secondAttribute="leading" constant="4" identifier="BackgroundLeading" id="crS-JE-wZw"/>
                 <constraint firstAttribute="trailing" secondItem="uWC-cc-3na" secondAttribute="trailing" constant="4" identifier="BackgroundTrailing" id="dcA-tX-vXV"/>
-                <constraint firstAttribute="bottom" secondItem="CJS-15-32Z" secondAttribute="bottom" id="kma-mL-CjR"/>
+                <constraint firstAttribute="bottom" secondItem="uWC-cc-3na" secondAttribute="bottom" id="vf3-1F-E1j"/>
             </constraints>
-            <size key="customSize" width="325" height="120"/>
+            <size key="customSize" width="325" height="130"/>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                    <real key="value" value="10"/>
+                    <real key="value" value="8"/>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="textBackgroundColor">
                     <color key="value" red="0.21960217949999999" green="1" blue="0.87681885400000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -84,15 +62,15 @@
             <connections>
                 <outlet property="backgroundLeadingConstraint" destination="crS-JE-wZw" id="DG4-eZ-1EV"/>
                 <outlet property="backgroundTrailingConstraint" destination="dcA-tX-vXV" id="5WS-s3-US3"/>
+                <outlet property="bottomSpacingConstraint" destination="vf3-1F-E1j" id="hFw-SS-gVo"/>
+                <outlet property="labelBottomConstraint" destination="FUU-Z0-img" id="3fQ-gJ-x5u"/>
                 <outlet property="labelLeadingConstraint" destination="xyj-dZ-MNv" id="4Zl-t4-oIz"/>
+                <outlet property="labelTopConstraint" destination="biN-oX-Ydt" id="A6L-8w-hNi"/>
                 <outlet property="labelTrailingConstraint" destination="50q-g0-tul" id="66s-tE-UMV"/>
-                <outlet property="labelWidthLayoutConstraint" destination="1hU-jZ-0oE" id="xMw-2T-zhE"/>
-                <outlet property="leftArrowView" destination="CJS-15-32Z" id="uO2-I1-7AH"/>
                 <outlet property="messageBackgroundView" destination="uWC-cc-3na" id="4gE-KD-oIT"/>
-                <outlet property="rightArrowView" destination="VAr-8b-Ve6" id="tuR-Vo-0fM"/>
                 <outlet property="textLabel" destination="2qa-5e-3Ca" id="ufm-xg-g8Q"/>
             </connections>
-            <point key="canvasLocation" x="-153" y="-878"/>
+            <point key="canvasLocation" x="-153" y="-854"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -9,28 +9,6 @@
 import Foundation
 import UIKit
 
-public class MessagesViewBubbleSettings {
-    var image = UIImage()
-    var wholeSlice: ImageSlice = ImageSlice(cropRect: CGRect(), resizeInsets: UIEdgeInsets())
-    var topSlice: ImageSlice?
-    var middleSlice: ImageSlice?
-    var bottomSlice: ImageSlice?
-    
-    public var textMargin = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    
-    public init(image: UIImage,
-                whole: ImageSlice,
-                top: ImageSlice?,
-                middle: ImageSlice?,
-                bottom: ImageSlice?) {
-        self.image = image
-        self.wholeSlice = whole
-        self.topSlice = top
-        self.middleSlice = middle
-        self.bottomSlice = bottom
-    }
-}
-
 public class MessagesViewSettings {
     var leftButtonActionName = ""
     var rightButtonActionName = ""
@@ -39,10 +17,16 @@ public class MessagesViewSettings {
     var rightButtonHidesKeyboard = false
     var shouldAdjustToKeyboard = true
     
+    var textInputScrollsToRecentMessage = true
+    
     var messageCollectionViewHeaderHeight = 100.0
     var messageCollectionViewFooterHeight = 100.0
     var messageCollectionViewHeaderBackgroundColor = UIColor.green
     var messageCollectionViewFooterBackgroundColor = UIColor.blue
+    
+    var groupSeparationSpacing: CGFloat = 12
+    var groupInternalSpacing: CGFloat = 1
+    var minimalHorizontalSpacing: CGFloat = 80
     
     //MARK: IBInspectables from MessageView
     var leftMessageCellTextColor: UIColor = UIColor.pastelGrey

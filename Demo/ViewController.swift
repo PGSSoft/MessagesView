@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         messagesView.delegate = self
         messagesView.dataSource = self
 
-        addCustomMessageBubbles()
+        //addCustomMessageBubbles()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -27,39 +27,12 @@ class ViewController: UIViewController {
     }
     
     func addCustomMessageBubbles() {
-        let leftBubbleBackgroundImage = UIImage(named: "left_bubble_orange") ?? UIImage()
         
-        let wholeCropRect = CGRect(origin: CGPoint(x: 0,y: 0), size: leftBubbleBackgroundImage.size)
-        let wholeResizeInsets = UIEdgeInsets(top: 25, left: 30, bottom: 25, right: 30)
-        let wholeSlice = ImageSlice(cropRect: wholeCropRect, resizeInsets: wholeResizeInsets)
+        let leftBubble = BubbleImage(image: UIImage(named: "bubble_left")!,
+                                     resizeInsets: UIEdgeInsets(top: 4, left: 21, bottom: 14, right: 4),
+                                     textInsets: UIEdgeInsets(top: 10, left: 22, bottom: 10, right: 6))
         
-        let topSliceCropRect = CGRect(x: 0, y: 0, width: 100, height: 30)
-        let topSliceResizeInsets = UIEdgeInsets(top: 25, left: 30, bottom: 0, right: 30)
-        let topSlice = ImageSlice(cropRect: topSliceCropRect, resizeInsets: topSliceResizeInsets)
-        
-        let middleSliceCropRect = CGRect(x: 0, y: 10, width: 100, height: 20)
-        let middleSliceResizeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 25, right: 25)
-        let middleSlice = ImageSlice(cropRect: middleSliceCropRect, resizeInsets: middleSliceResizeInsets)
-        
-        let bottomSliceCropRect = CGRect(x: 0, y: 20, width: 100, height: 90)
-        let bottomSliceResizeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 25, right: 25)
-        let bottomSlice = ImageSlice(cropRect: bottomSliceCropRect, resizeInsets: bottomSliceResizeInsets)
-        
-        let leftBubbleSettings = MessagesViewBubbleSettings(image: leftBubbleBackgroundImage,
-                                                            whole: wholeSlice,
-                                                            top: topSlice,
-                                                            middle: middleSlice,
-                                                            bottom: bottomSlice)
-        leftBubbleSettings.textMargin.left = 20
-        
-        let rightBubbleBackgroundImage = UIImage(named: "right_bubble_orange") ?? UIImage()
-        let rightBubbleSettings = MessagesViewBubbleSettings(image: rightBubbleBackgroundImage,
-                                                             whole: wholeSlice,
-                                                             top: topSlice,
-                                                             middle: middleSlice,
-                                                             bottom: bottomSlice)
-        
-        messagesView.setBubbleImageWith(leftSettings: leftBubbleSettings, rightSettings: rightBubbleSettings)
+        messagesView.setBubbleImagesWith(left: leftBubble)
     }
 }
 
@@ -93,7 +66,7 @@ extension ViewController: MessagesViewDataSource {
     var messages: [MessagesViewChatMessage] {
         return TestData.exampleMessageText.enumerated().map { (index, element) in
             let peer = self.peers[index % peers.count]
-            return Message(text: element, sender: peer, onRight: index%2 == 0)
+            return Message(text: element, sender: peer, onRight: index != 0)
         }
     }
 }

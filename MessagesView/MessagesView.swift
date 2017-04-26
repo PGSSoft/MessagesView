@@ -28,6 +28,13 @@ public protocol MessagesViewPeer {
     var id : String {get}
 }
 
+enum MessagePositionInGroup {
+    case whole
+    case top
+    case middle
+    case bottom
+}
+
 @IBDesignable
 public class MessagesView: UIView {
 
@@ -37,9 +44,6 @@ public class MessagesView: UIView {
     @IBOutlet weak var messageInputToolbarBottomConstraint: NSLayoutConstraint!
     
     private var toolBarBottomConstraintWithoutKeyboard: CGFloat = 0
-    
-    fileprivate let messageMargin : CGFloat = 60.0
-    fileprivate let defaultCellSize : CGSize = CGSize(width: 250.0, height: 100.0)
     
     //MARK:- Public properties
 
@@ -87,14 +91,13 @@ public class MessagesView: UIView {
     
     //MARK:-
     
-    var bubbleImageLeft: BubbleImage?
-    var bubbleImageRight: BubbleImage?
+    var bubbleImageLeft: BubbleImage = BubbleImage(cornerRadius: 8)
+    var bubbleImageRight: BubbleImage = BubbleImage(cornerRadius: 8).flipped
     
-    public func setBubbleImageWith(leftSettings: MessagesViewBubbleSettings, rightSettings: MessagesViewBubbleSettings) {
-        bubbleImageLeft = BubbleImage(settings: leftSettings)
-        bubbleImageLeft?.textMargin = leftSettings.textMargin
-        bubbleImageRight = BubbleImage(settings: rightSettings)
-        bubbleImageRight?.textMargin = rightSettings.textMargin
+    public func setBubbleImagesWith(left: BubbleImage, right: BubbleImage? = nil) {
+        
+        bubbleImageLeft = left
+        bubbleImageRight = right ?? left.flipped
     }
     
     public var inputText: String {
@@ -267,31 +270,40 @@ public class MessagesView: UIView {
         messagesCollectionView.register(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Key.messagesCollectionViewFooter)
     }
     
-    func selectBackgroundFor(index: Int, inMessages messages: [MessagesViewChatMessage], withBubble bubbbleImage: BubbleImage)->UIImage {
-        var result = UIImage()
-        let actualMessage = messages[index]
+
+    public func refresh() {
+        DispatchQueue.main.async {
+            self.messagesCollectionView.reloadData()
+        }
+    }
+    
+    fileprivate func messagePositionInGroup(for index: Int) -> MessagePositionInGroup {
+        
+        guard let messages = dataSource?.messages else {
+            return .whole
+        }
+        
         var isPreviousMessageOnTheSameSide = false
         var isNextMessageOnTheSameSide = false
         
         if 0 <= index-1 {
-            isPreviousMessageOnTheSameSide = messages[index-1].onRight == actualMessage.onRight
+            isPreviousMessageOnTheSameSide = messages[index-1].onRight == messages[index].onRight
         }
+        
         if index+1 < messages.count {
-            isNextMessageOnTheSameSide = messages[index+1].onRight == actualMessage.onRight
+            isNextMessageOnTheSameSide = messages[index+1].onRight == messages[index].onRight
         }
         
         switch (isPreviousMessageOnTheSameSide, isNextMessageOnTheSameSide) {
         case (false, false):
-            result = bubbbleImage.whole
+            return .whole
         case (false, true):
-            result = bubbbleImage.top ?? bubbbleImage.whole
+            return .top
         case (true, false):
-            result = bubbbleImage.bottom ?? bubbbleImage.whole
+            return .bottom
         case (true, true):
-            result = bubbbleImage.middle ?? bubbbleImage.whole
+            return .middle
         }
-        
-        return result
     }
     
     private func readSettingsFromInpectables(settings: inout MessagesViewSettings) {
@@ -348,20 +360,38 @@ extension MessagesView: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Key.messageCollectionViewCell, for: indexPath) as? MessageCollectionViewCell ?? MessageCollectionViewCell()
-        if let messages = dataSource?.messages {
-            let message = messages[indexPath.row]
-            cell.message = message
-            cell.addTails()
-            cell.showTail(side: message.onRight ? .right : .left)
-            let bubbleImage = message.onRight ? bubbleImageRight : bubbleImageLeft
-            if let image = bubbleImage {
-                cell.messageBackgroundView.image = self.selectBackgroundFor(index: indexPath.row, inMessages: messages, withBubble: image)
-            }
-            cell.addMessageMargin(side: message.onRight ? .right : .left, margin: messageMargin, bubbleMargin: bubbleImage?.textMargin)
-            cell.applySettings(settings: settings)
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Key.messageCollectionViewCell, for: indexPath) as? MessageCollectionViewCell,
+            let messages = dataSource?.messages else {
+                return UICollectionViewCell()
         }
-        cell.setNeedsLayout()
+        
+        cell.message = messages[indexPath.row]
+        
+        let bubbleImage = messages[indexPath.row].onRight ? bubbleImageRight : bubbleImageLeft
+        
+        let messagePosition = messagePositionInGroup(for: indexPath.row)
+
+        switch messagePosition {
+        case .whole:
+            cell.messageBackgroundView.image = bubbleImage.whole
+            cell.bottomSpacing = settings.groupSeparationSpacing
+        case .top:
+            cell.messageBackgroundView.image = bubbleImage.top
+            cell.bottomSpacing = settings.groupInternalSpacing
+        case .middle:
+            cell.messageBackgroundView.image = bubbleImage.middle
+            cell.bottomSpacing = settings.groupInternalSpacing
+        case .bottom:
+            cell.messageBackgroundView.image = bubbleImage.bottom
+            cell.bottomSpacing =  settings.groupSeparationSpacing
+        }
+        
+        cell.positionInGroup = messagePosition
+        cell.textInsets = bubbleImage.textInsets
+        
+        cell.applySettings(settings: settings)
+        
         return cell
     }
     
@@ -394,16 +424,27 @@ extension MessagesView: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        guard let message = dataSource?.messages[indexPath.row].text, let cell = MessageCollectionViewCell.fromNib() else {
-            return defaultCellSize
+        guard let message = dataSource?.messages[indexPath.row], let cell = MessageCollectionViewCell.fromNib() else {
+            return .zero
         }
         
-        let maxWidth = collectionView.bounds.size.width - collectionView.contentInset.left - collectionView.contentInset.right
-        let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
-        let requiredWidth = maxWidth - cellMargins
+        let requiredWidth = collectionView.bounds.width - collectionView.contentInset.left - collectionView.contentInset.right
+        
+        let bubble = message.onRight ? bubbleImageRight : bubbleImageLeft
+        let messagePosition = messagePositionInGroup(for: indexPath.row)
 
-        var size = cell.size(message: message, containerInsets: requiredWidth - messageMargin)
+        var size = cell.size(message: message.text, width: requiredWidth, bubbleImage: bubble, minimalHorizontalSpacing: settings.minimalHorizontalSpacing, messagePositionInGroup: messagePosition)
         size.width = requiredWidth
+        
+        switch messagePosition {
+            
+        case .bottom, .whole:
+            size.height += settings.groupSeparationSpacing
+            
+        case .top, .middle:
+            size.height += settings.groupInternalSpacing
+        }
+        
         return size
     }
 }
