@@ -1,7 +1,14 @@
+![Made with love by PGS](https://cloud.githubusercontent.com/assets/16896355/25438562/3c14f0f2-2a9a-11e7-82f1-53f49a48393e.png)
 # MessagesView
+
+[![Swift 3.0](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat)](https://swift.org/)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
 View for displaying messages similarly to iOS Messages system app. This view when deployed within your application will handle incoming and outgoing messages display.
 
 While using this module you don't need to handle messages view on your own. You're getting complete solution easy to configure and customize to your needs. If you think you can have more customisation, please tell us what you think via addess below.
+
+![Messages View](https://cloud.githubusercontent.com/assets/16896355/25438510/0b81e86e-2a9a-11e7-9981-df9030cda73d.png)
 
 
 ## Getting started
