@@ -25,7 +25,7 @@ public class MessagesViewSettings {
     var messageCollectionViewFooterBackgroundColor = UIColor.blue
     
     var groupSeparationSpacing: CGFloat = 12
-    var groupInternalSpacing: CGFloat = 2
+    var groupInternalSpacing: CGFloat = 1
     var minimalHorizontalSpacing: CGFloat = 80
     
     //MARK: IBInspectables from MessageView

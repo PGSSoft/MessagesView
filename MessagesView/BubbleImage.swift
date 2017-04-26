@@ -42,21 +42,19 @@ public class BubbleImage {
         self.textInsets = textInsets
     }
     
-    convenience init(cornerRadius: CGFloat) {
+    public convenience init(cornerRadius: CGFloat) {
         
-        let size = CGSize(width: cornerRadius * 4 + 1, height: cornerRadius * 3 + 1)
-        
-        let image = BubbleImage.defaultBubbleImage(with: size, cornerRadius: cornerRadius)
+        let image = BubbleImage.defaultBubbleImage(cornerRadius: cornerRadius)
         
         let resizeInsets = UIEdgeInsets(top: cornerRadius,
                                         left: cornerRadius * 3,
                                         bottom: cornerRadius * 2,
                                         right: cornerRadius)
         
-        let textInsets = UIEdgeInsets(top: cornerRadius * 0.5,
-                                      left: cornerRadius * 2.5,
-                                      bottom: cornerRadius * 0.5,
-                                      right: cornerRadius * 0.5)
+        let textInsets = UIEdgeInsets(top: cornerRadius,
+                                      left: cornerRadius * 3,
+                                      bottom: cornerRadius,
+                                      right: cornerRadius)
         
         self.init(image: image, resizeInsets: resizeInsets, textInsets: textInsets)
     }
@@ -107,7 +105,9 @@ public class BubbleImage {
         return cropped.resizableImage(withCapInsets: capInsets, resizingMode: .stretch).withRenderingMode(.alwaysTemplate)
     }
     
-    public static func defaultBubbleImage(with size: CGSize, cornerRadius: CGFloat) -> UIImage {
+    public static func defaultBubbleImage(cornerRadius: CGFloat) -> UIImage {
+        
+        let size = CGSize(width: cornerRadius * 4 + 1, height: cornerRadius * 3 + 1)
         
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         

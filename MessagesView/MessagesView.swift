@@ -91,8 +91,8 @@ public class MessagesView: UIView {
     
     //MARK:-
     
-    var bubbleImageLeft: BubbleImage = BubbleImage(cornerRadius: 16)
-    var bubbleImageRight: BubbleImage = BubbleImage(cornerRadius: 16).flipped
+    var bubbleImageLeft: BubbleImage = BubbleImage(cornerRadius: 8)
+    var bubbleImageRight: BubbleImage = BubbleImage(cornerRadius: 8).flipped
     
     public func setBubbleImagesWith(left: BubbleImage, right: BubbleImage? = nil) {
         
