@@ -29,8 +29,8 @@ class ViewController: UIViewController {
     func addCustomMessageBubbles() {
         
         let leftBubble = BubbleImage(image: UIImage(named: "bubble_left")!,
-                                     resizeInsets: UIEdgeInsets(top: 10, left: 42, bottom: 28, right: 42),
-                                     textInsets: UIEdgeInsets(top: 10, left: 42, bottom: 10, right: 42))
+                                     resizeInsets: UIEdgeInsets(top: 4, left: 21, bottom: 14, right: 4),
+                                     textInsets: UIEdgeInsets(top: 10, left: 22, bottom: 10, right: 6))
         
         messagesView.setBubbleImagesWith(left: leftBubble)
     }
