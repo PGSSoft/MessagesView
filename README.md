@@ -25,7 +25,7 @@ In order to start using this framework you need to:
 
 #### 1.1 Using Carthage
 In Cartfile put
-`github "pgs-dkanak/MessagesView"`
+`github "PGSSoft/MessagesView"`
 
 In project root directory say:
 > carthage update --no-use-binaries --platform iOS
