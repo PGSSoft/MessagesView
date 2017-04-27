@@ -27,7 +27,7 @@ public class BubbleImage {
     public lazy var middle: UIImage? = self.cropAndResize(slice: .middle)
     public lazy var bottom: UIImage? = self.cropAndResize(slice: .bottom)
     
-    var flipped: BubbleImage {
+    public var flipped: BubbleImage {
         
         let flippedImage = image.flipped
         let flippedResizeInsets = insetsFlippedHorizontally(resizeInsets)
@@ -132,7 +132,7 @@ public class BubbleImage {
         return result
     }
     
-    public static func createTailPathIn(origin: CGPoint, size: CGSize) -> UIBezierPath {
+    private static func createTailPathIn(origin: CGPoint, size: CGSize) -> UIBezierPath {
         let width  = size.width
         let height = size.height
         
