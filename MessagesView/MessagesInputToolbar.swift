@@ -8,19 +8,34 @@
 
 import UIKit
 
-class MessagesInputToolbar: UIToolbar {
+class MessagesInputToolbar: UIView {
 
     let toolbarContentView = MessagesToolbarContentView.fromNib()
     
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    var leftButtonAction: ()->() {
+        get {
+            return toolbarContentView.leftButtonAction
+        }
+        set {
+            toolbarContentView.leftButtonAction = newValue
+        }
     }
-    */
-    var messageText : String {
-        return toolbarContentView.messageText
+    var rightButtonAction: ()->() {
+        get {
+            return toolbarContentView.rightButtonAction
+        }
+        set {
+            toolbarContentView.rightButtonAction = newValue
+        }
+    }
+    
+    var inputText : String {
+        get {
+            return toolbarContentView.inputText
+        }
+        set {
+            toolbarContentView.inputText = newValue
+        }
     }
     
     var settings = MessagesViewSettings() {
