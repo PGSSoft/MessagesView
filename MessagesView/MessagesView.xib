@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,6 +23,7 @@
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3Nf-do-eXM" customClass="MessagesCollectionView" customModule="MessagesView" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="L0d-27-qxR">
                         <size key="itemSize" width="301" height="60"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -33,6 +34,7 @@
                     <connections>
                         <outlet property="dataSource" destination="-1" id="fQj-re-a1Y"/>
                         <outlet property="delegate" destination="-1" id="sFQ-em-SnE"/>
+                        <outletCollection property="gestureRecognizers" destination="a0M-QB-WkO" appends="YES" id="3xr-KD-IIO"/>
                     </connections>
                 </collectionView>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHh-JD-Gtu" customClass="MessagesInputToolbar" customModule="MessagesView" customModuleProvider="target">
@@ -46,6 +48,7 @@
                 </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="3Nf-do-eXM" firstAttribute="leading" secondItem="xMm-vM-6w5" secondAttribute="leading" id="2JO-E5-trk"/>
                 <constraint firstAttribute="bottom" secondItem="dHh-JD-Gtu" secondAttribute="bottom" id="CvQ-ma-VhN"/>
@@ -56,5 +59,10 @@
                 <constraint firstItem="dHh-JD-Gtu" firstAttribute="top" secondItem="3Nf-do-eXM" secondAttribute="bottom" id="y2z-Ik-10e"/>
             </constraints>
         </view>
+        <tapGestureRecognizer id="a0M-QB-WkO">
+            <connections>
+                <action selector="didTapCollectionViewArea:" destination="-1" id="X6m-rn-BDG"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

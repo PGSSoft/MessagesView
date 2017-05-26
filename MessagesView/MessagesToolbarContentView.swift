@@ -61,7 +61,7 @@ class MessagesToolbarContentView: UIView {
         }
         
         if settings.leftButtonHidesKeyboard {
-            messageEditorTextView.resignFirstResponder()
+            _ = resignFirstResponder()
         }
     }
     
@@ -72,8 +72,12 @@ class MessagesToolbarContentView: UIView {
         }
         
         if settings.rightButtonHidesKeyboard {
-            messageEditorTextView.resignFirstResponder()
+            _ = resignFirstResponder()
         }
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        return messageEditorTextView.resignFirstResponder()
     }
     
     class func fromNib() -> MessagesToolbarContentView {

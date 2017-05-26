@@ -273,6 +273,9 @@ public class MessagesView: UIView {
         messagesCollectionView.register(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Key.messagesCollectionViewFooter)
     }
     
+    @IBAction func didTapCollectionViewArea(_ sender: Any) {
+        _ = messagesInputToolbar.resignFirstResponder()
+    }
 
     public func refresh() {
         DispatchQueue.main.async {
