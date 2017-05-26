@@ -35,6 +35,10 @@ class MessagesInputToolbar: UIToolbar {
         toolbarContentView.frame = self.bounds
     }
     
+    override func resignFirstResponder() -> Bool {
+        return toolbarContentView.resignFirstResponder()
+    }
+    
     func rightButton(show: Bool, animated: Bool) {
         toolbarContentView.righButton(show: show, animated: animated)
     }

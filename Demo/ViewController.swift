@@ -44,7 +44,7 @@ extension ViewController: MessagesViewDelegate {
     func didTapRightButton() {
         let text = messagesView.inputText
         TestData.exampleMessageText.append(text)
-        messagesView.refresh(scrollToLastMessage: true)
+        messagesView.refresh(scrollToLastMessage: true, animateLastMessage: true)
     }
 }
 

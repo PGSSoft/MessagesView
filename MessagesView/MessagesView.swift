@@ -89,6 +89,8 @@ public class MessagesView: UIView {
     public var delegate : MessagesViewDelegate?
     public var dataSource: MessagesViewDataSource?
     
+    public var isLastMessageAnimated = false
+    
     //MARK:-
     
     var bubbleImageLeft: BubbleImage = BubbleImage(cornerRadius: 8)
@@ -145,8 +147,9 @@ public class MessagesView: UIView {
         apply(settings: settings)
     }
     
-    public func refresh(scrollToLastMessage: Bool) {
+    public func refresh(scrollToLastMessage: Bool, animateLastMessage: Bool = false) {
         DispatchQueue.main.async {
+            self.isLastMessageAnimated = animateLastMessage
             self.messagesCollectionView.reloadData()
             
             if scrollToLastMessage {
@@ -270,6 +273,9 @@ public class MessagesView: UIView {
         messagesCollectionView.register(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Key.messagesCollectionViewFooter)
     }
     
+    @IBAction func didTapCollectionViewArea(_ sender: Any) {
+        _ = messagesInputToolbar.resignFirstResponder()
+    }
 
     public func refresh() {
         DispatchQueue.main.async {
@@ -446,5 +452,19 @@ extension MessagesView: UICollectionViewDelegateFlowLayout {
         }
         
         return size
+    }
+    
+    func isLastMessage(indexPath: IndexPath)->Bool {
+        let lastMessageIndex = (dataSource?.messages.count ?? 0) - 1
+        return indexPath.row == lastMessageIndex
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? MessageCollectionViewCell else {
+            return
+        }
+        if isLastMessage(indexPath: indexPath) && isLastMessageAnimated {
+            cell.slideIn()
+        }
     }
 }

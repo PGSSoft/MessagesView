@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -60,9 +60,10 @@
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="backgroundBottomConstraint" destination="vf3-1F-E1j" id="FmE-JU-LtX"/>
                 <outlet property="backgroundLeadingConstraint" destination="crS-JE-wZw" id="DG4-eZ-1EV"/>
+                <outlet property="backgroundTopConstraint" destination="ZYW-pK-ObZ" id="MEW-aY-Y3B"/>
                 <outlet property="backgroundTrailingConstraint" destination="dcA-tX-vXV" id="5WS-s3-US3"/>
-                <outlet property="bottomSpacingConstraint" destination="vf3-1F-E1j" id="hFw-SS-gVo"/>
                 <outlet property="labelBottomConstraint" destination="FUU-Z0-img" id="3fQ-gJ-x5u"/>
                 <outlet property="labelLeadingConstraint" destination="xyj-dZ-MNv" id="4Zl-t4-oIz"/>
                 <outlet property="labelTopConstraint" destination="biN-oX-Ydt" id="A6L-8w-hNi"/>
