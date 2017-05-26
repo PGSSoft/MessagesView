@@ -39,10 +39,10 @@ class MessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var labelTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var labelBottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var backgroundTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundLeadingConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var bottomSpacingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var backgroundBottomConstraint: NSLayoutConstraint!
     
     private let defaultBubbleMargin: CGFloat = 8
     private let additionalTextLabelVerticalSpacing: CGFloat = 4
@@ -135,7 +135,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
             labelBottomConstraint.constant = textInsets.bottom
         }
         
-        bottomSpacingConstraint.constant = bottomSpacing
+        backgroundBottomConstraint.constant = bottomSpacing
     }
     
     func size(message: String, width: CGFloat, bubbleImage: BubbleImage, minimalHorizontalSpacing: CGFloat,
@@ -185,5 +185,27 @@ class MessageCollectionViewCell: UICollectionViewCell {
         textLabel.textColor = textColor
         
         minimalHorizontalSpacing = settings.minimalHorizontalSpacing
+    }
+    
+    func slideIn() {
+        let horizontalConstraint: NSLayoutConstraint!
+        switch self.side {
+        case .left:
+            horizontalConstraint = backgroundTrailingConstraint
+        case .right:
+            horizontalConstraint = backgroundLeadingConstraint
+        }
+        
+        let horizontal = horizontalConstraint.constant
+        let top = backgroundTopConstraint.constant
+        backgroundTopConstraint.constant = self.textLabel.frame.height
+        horizontalConstraint.constant = contentView.frame.size.width * 2 
+        layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.25) {
+            horizontalConstraint.constant = horizontal
+            self.backgroundTopConstraint.constant = top
+            self.contentView.layoutIfNeeded()
+        }
     }
 }
