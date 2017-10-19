@@ -16,6 +16,12 @@ public class MessagesViewSettings {
     public var leftButtonHidesKeyboard  = false
     public var rightButtonHidesKeyboard = false
     public var shouldAdjustToKeyboard = true
+    public var shouldDoRightActionWithReturnKey = true
+    
+    public var keyboardType: UIKeyboardType = .default
+    public var keyboardAppearance: UIKeyboardAppearance = .default
+    public var returnKeyType: UIReturnKeyType = .done
+    public var enablesReturnKeyAutomatically = false
     
     public var textInputScrollsToRecentMessage = true
     

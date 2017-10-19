@@ -44,6 +44,7 @@ public class MessagesView: UIView {
     @IBOutlet weak var messageInputToolbarBottomConstraint: NSLayoutConstraint!
     
     private var toolBarBottomConstraintWithoutKeyboard: CGFloat = 0
+    private var toolBarFrameWithoutKeyboard: CGRect = .zero
     
     //MARK:- Public properties
 
@@ -96,6 +97,8 @@ public class MessagesView: UIView {
     
     var bubbleImageLeft: BubbleImage = BubbleImage(cornerRadius: 8)
     var bubbleImageRight: BubbleImage = BubbleImage(cornerRadius: 8).flipped
+    
+    private var isKeyboardShown = false
     
     public func setBubbleImagesWith(left: BubbleImage, right: BubbleImage? = nil) {
         
@@ -207,49 +210,62 @@ public class MessagesView: UIView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: .UIKeyboardWillChangeFrame, object: nil)
     }
     
     @objc private func keyboardWillShow(notification: Notification) {
+        
+        guard !isKeyboardShown else {
+            return
+        }
+        
+        isKeyboardShown = true
+        
+        toolBarBottomConstraintWithoutKeyboard = messageInputToolbarBottomConstraint.constant
+        toolBarFrameWithoutKeyboard = convert(messagesInputToolbar.frame, to: nil)
+        
+        respondToKeyboardFrameChange(notification: notification)
+    }
+    
+    @objc private func keyboardWillChangeFrame(notification: Notification) {
+        
+        guard isKeyboardShown else {
+            return
+        }
+        
+        respondToKeyboardFrameChange(notification: notification)
+    }
+    
+    @objc private func keyboardWillHide(notification: Notification) {
+        
+        isKeyboardShown = false
+    }
+    
+    private func respondToKeyboardFrameChange(notification: Notification) {
         
         guard settings.shouldAdjustToKeyboard,
             let userInfo = notification.userInfo,
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
             let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else {
+                return
+        }
+        
+        let keyboardOverlap = toolBarFrameWithoutKeyboard.origin.y - keyboardFrame.origin.y
+        
+        let verticalAdjustment = keyboardOverlap > 0 ? keyboardOverlap + toolBarFrameWithoutKeyboard.size.height : 0
+        
+        let newBottomConstraint = toolBarBottomConstraintWithoutKeyboard + verticalAdjustment
+
+        guard newBottomConstraint != messageInputToolbarBottomConstraint.constant else {
             return
         }
         
-        toolBarBottomConstraintWithoutKeyboard = messageInputToolbarBottomConstraint.constant
-        
-        let toolbarFrameInWindow = convert(messagesInputToolbar.frame, to: nil)
-        
-        let keyboardOverlap = toolbarFrameInWindow.origin.y - keyboardFrame.origin.y
-        
-        guard keyboardOverlap > 0 else {
-            return
-        }
-        
-        let verticalAdjusttment = keyboardOverlap + toolbarFrameInWindow.size.height
-        
-        messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard + verticalAdjusttment
+        messageInputToolbarBottomConstraint.constant = newBottomConstraint
         
         UIView.animate(withDuration: animationDuration) {
             let contentOffset = self.messagesCollectionView.contentOffset
             
-            self.messagesCollectionView.contentOffset = CGPoint(x: contentOffset.x, y: contentOffset.y + verticalAdjusttment)
-            self.layoutIfNeeded()
-        }
-    }
-    
-    @objc private func keyboardWillHide(notification: Notification) {
-        
-        guard settings.shouldAdjustToKeyboard,
-            let animationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else {
-            return
-        }
-        
-        messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard
-        
-        UIView.animate(withDuration: animationDuration) {
+            self.messagesCollectionView.contentOffset = CGPoint(x: contentOffset.x, y: contentOffset.y + verticalAdjustment)
             self.layoutIfNeeded()
         }
     }

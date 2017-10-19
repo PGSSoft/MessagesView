@@ -34,8 +34,8 @@ class MessagesToolbarContentView: UIView {
     private var leftButtonEnabled: Bool = true
     private var rightButtonEnabled: Bool = true
     
-    var leftButtonAction: (Void) -> () = {}
-    var rightButtonAction: (Void) -> () = {}
+    var leftButtonAction: () -> () = {}
+    var rightButtonAction: () -> () = {}
     
     private var leftTintColor: UIColor {
         return leftButtonEnabled ? settings.leftButtonTextColor : settings.leftButtonDisabledColor
@@ -196,6 +196,11 @@ extension MessagesToolbarContentView : UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if settings.shouldDoRightActionWithReturnKey {
+            didPressRightButton(textField)
+        }
+        
         return true
     }
     
