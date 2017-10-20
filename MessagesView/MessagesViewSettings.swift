@@ -10,121 +10,71 @@ import Foundation
 import UIKit
 
 public class MessagesViewSettings {
-    var leftButtonActionName = ""
-    var rightButtonActionName = ""
+    public var leftButtonActionName = ""
+    public var rightButtonActionName = ""
     
-    var leftButtonHidesKeyboard  = false
-    var rightButtonHidesKeyboard = false
-    var shouldAdjustToKeyboard = true
+    public var leftButtonHidesKeyboard  = false
+    public var rightButtonHidesKeyboard = false
+    public var shouldAdjustToKeyboard = true
+    public var shouldDoRightActionWithReturnKey = true
     
-    var textInputScrollsToRecentMessage = true
+    public var keyboardType: UIKeyboardType = .default
+    public var keyboardAppearance: UIKeyboardAppearance = .default
+    public var returnKeyType: UIReturnKeyType = .done
+    public var enablesReturnKeyAutomatically = false
     
-    var messageCollectionViewHeaderHeight = 100.0
-    var messageCollectionViewFooterHeight = 100.0
-    var messageCollectionViewHeaderBackgroundColor = UIColor.green
-    var messageCollectionViewFooterBackgroundColor = UIColor.blue
+    public var textInputScrollsToRecentMessage = true
     
-    var groupSeparationSpacing: CGFloat = 12
-    var groupInternalSpacing: CGFloat = 1
-    var minimalHorizontalSpacing: CGFloat = 80
+    public var messageCollectionViewHeaderHeight = 5.0
+    public var messageCollectionViewFooterHeight = 20.0
+    public var messageCollectionViewHeaderBackgroundColor = UIColor.clear
+    public var messageCollectionViewFooterBackgroundColor = UIColor.clear
     
-    //MARK: IBInspectables from MessageView
-    var leftMessageCellTextColor: UIColor = UIColor.pastelGrey
-    var leftMessageCellBackgroundColor: UIColor = UIColor.pumpkin
-    var rightMessageCellTextColor: UIColor = UIColor.pastelGrey
-    var rightMessageCellBackgroundColor: UIColor = UIColor.pumpkin
+    public var leftMessageCellTextColor: UIColor = .black
+    public var leftMessageCellBackgroundColor: UIColor = .antiflashWhite
+    public var rightMessageCellTextColor: UIColor = .antiflashWhite
+    public var rightMessageCellBackgroundColor: UIColor = .pumpkin
     
-    var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
-    var textInputFieldTopSeparatorLineAlpha: CGFloat = 1.0
-    var textInputFieldTopSeparatorLineColor: UIColor = UIColor.pumpkin
+    public var collectionViewBackgroundColor: UIColor = .white
     
-    var collectionViewBackgroundColor: UIColor = UIColor.yellow
-    var textInputFieldTextColor: UIColor = UIColor.yellow
-    var textInputFieldTextPlaceholderText: String = "Write your message here"
-    var textInputFieldBackgroundColor: UIColor = UIColor.yellow
-    var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
+    public var textInputFieldTextColor: UIColor = .black
+    public var textInputFieldBackgroundColor: UIColor = .clear
+    public var textInputTintColor: UIColor = .pumpkin
+    public var textInputFieldTextPlaceholderText: String = "Write your message here"
+    public var textInputFieldCornerRadius: CGFloat = 0.0
+    public var textInputFieldFont: UIFont = .systemFont(ofSize: 10)
     
-    var buttonSlideAnimationDuration = TimeInterval(0.5)
-    var inputToolbarBackgroundColor = UIColor.white
-    var textInputFieldCornerRadius = CGFloat(0.0)
+    public var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
+    public var textInputFieldTopSeparatorLineColor: UIColor = .pumpkin
+    public var textInputFieldTopSeparatorLineAlpha: CGFloat = 1.0
     
-    var leftButtonText: String = "Left"
-    var leftButtonShow: Bool = true
-    var leftButtonShowAnimated: Bool = true
-    var leftButtonTextColor: UIColor = UIColor.black
-    var leftButtonDisabledColor: UIColor = .darkGray
-    var leftButtonBackgroundColor: UIColor = UIColor.gray
-    var leftButtonBackgroundImage: UIImage?
-    var leftButtonCornerRadius: CGFloat = 0.0
+    public var inputToolbarBackgroundColor = UIColor.white
+    
+    public var leftButtonText: String = ""
+    public var leftButtonShow: Bool = false
+    public var leftButtonShowAnimated: Bool = false
+    public var leftButtonTextColor: UIColor = .pumpkin
+    public var leftButtonDisabledColor: UIColor = .antiflashWhite
+    public var leftButtonBackgroundColor: UIColor = .clear
+    public var leftButtonBackgroundImage: UIImage?
+    public var leftButtonCornerRadius: CGFloat = 0.0
 
-    var rightButtonText: String = "Right"
-    var rightButtonShow: Bool = true
-    var rightButtonShowAnimated: Bool = true
-    var rightButtonTextColor: UIColor = UIColor.black
-    var rightButtonDisabledColor: UIColor = .darkGray
-    var rightButtonBackgroundColor: UIColor = UIColor.gray
-    var rightButtonBackgroundImage: UIImage?
-    var rightButtonCornerRadius: CGFloat = 0.0
+    public var rightButtonText: String = "Send"
+    public var rightButtonShow: Bool = true
+    public var rightButtonShowAnimated: Bool = true
+    public var rightButtonTextColor: UIColor = .pumpkin
+    public var rightButtonDisabledColor: UIColor = .antiflashWhite
+    public var rightButtonBackgroundColor: UIColor = .clear
+    public var rightButtonBackgroundImage: UIImage?
+    public var rightButtonCornerRadius: CGFloat = 0.0
     
-    // MARK: Presets
-    var action : [String : (Void)->() ] = [:]
-    var rightButtonAction : (Void)->() { return action[rightButtonActionName] ?? {} }
-    var leftButtonAction : (Void)->() { return action[leftButtonActionName] ?? {}}
+    public var buttonSlideAnimationDuration: TimeInterval = 0.5
     
-    struct Action {
-        static let send = "SEND"
-        static let sendFromMyself = "SEND_TO_MYSELF"
-        static let addPicture = "ADD_PICTURE"
-        static let printLeftDebug = "PRINT_LEFT_DEBUG"
-        static let printRightDebug = "PRINT_RIGHT_DEBUG"
-    }
+    public var groupSeparationSpacing: CGFloat = 12
+    public var groupInternalSpacing: CGFloat = 1
+    public var minimalHorizontalSpacing: CGFloat = 80
     
-    init() {
-        action[Action.send] = { print("sending message") }
-        action = [
-            Action.send         : { print("sending message") },
-            Action.sendFromMyself : { print("sending message from myself") },
-            Action.addPicture   : { print("adding picture") },
-            Action.printLeftDebug: { print("left action") },
-            Action.printRightDebug: { print("right action") }
-        ]
-    }
-    
-    public func setLeftButtonAction(newAction: @escaping (Void)->()) {
-        action[leftButtonActionName] = newAction
-    }
-    
-    public func setRightButtonAction(newAction: @escaping (Void)->()) {
-        action[rightButtonActionName] = newAction
-    }
-    
-    public static func defaultMessageViewSettings() -> MessagesViewSettings {
-        let settings = MessagesViewSettings()
-        settings.leftButtonActionName = Action.printLeftDebug
-        settings.rightButtonActionName = Action.send
-
-        //settings.leftButtonHidesKeyboard = true
-        settings.rightButtonHidesKeyboard = true
-        settings.messageCollectionViewHeaderHeight = 5
-        settings.messageCollectionViewHeaderBackgroundColor = UIColor.clear
-        settings.messageCollectionViewFooterHeight = 20
-        settings.messageCollectionViewFooterBackgroundColor = UIColor.clear
-        
-        return settings
-    }
-    
-    public static func testChatSettings() -> MessagesViewSettings {
-        let settings = MessagesViewSettings()
-        settings.leftButtonActionName = Action.sendFromMyself
-        settings.rightButtonActionName = Action.send
-        
-        //settings.leftButtonHidesKeyboard = true
-        settings.rightButtonHidesKeyboard = true
-        settings.messageCollectionViewHeaderHeight = 5
-        settings.messageCollectionViewHeaderBackgroundColor = UIColor.clear
-        settings.messageCollectionViewFooterHeight = 20
-        settings.messageCollectionViewFooterBackgroundColor = UIColor.clear
-        
-        return settings
+    public static var defaultSettings: MessagesViewSettings {
+        return MessagesViewSettings()
     }
 }

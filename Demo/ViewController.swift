@@ -42,7 +42,13 @@ extension ViewController: MessagesViewDelegate {
     }
     
     func didTapRightButton() {
-        let text = messagesView.inputText
+        
+        let text = messagesView.inputText.trimmingCharacters(in: .whitespaces)
+        
+        guard !text.isEmpty else {
+            return
+        }
+        
         TestData.exampleMessageText.append(text)
         messagesView.refresh(scrollToLastMessage: true, animateLastMessage: true)
     }

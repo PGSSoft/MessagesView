@@ -44,6 +44,7 @@ public class MessagesView: UIView {
     @IBOutlet weak var messageInputToolbarBottomConstraint: NSLayoutConstraint!
     
     private var toolBarBottomConstraintWithoutKeyboard: CGFloat = 0
+    private var toolBarFrameWithoutKeyboard: CGRect = .zero
     
     //MARK:- Public properties
 
@@ -56,13 +57,14 @@ public class MessagesView: UIView {
     
     @IBInspectable public var textInputFieldTextColor: UIColor = .black
     @IBInspectable public var textInputFieldBackgroundColor: UIColor = .clear
+    @IBInspectable public var textInputTintColor: UIColor = .pumpkin
     @IBInspectable public var textInputFieldTextPlaceholderText: String = "Write your message here"
     @IBInspectable public var textInputFieldCornerRadius: CGFloat = 0.0
-    @IBInspectable public var textInputFieldFont: UIFont = UIFont.systemFont(ofSize: 10)
+    @IBInspectable public var textInputFieldFont: UIFont = .systemFont(ofSize: 10)
     
     @IBInspectable public var textInputFieldTopSeparatorLineHeight: CGFloat = 1.0
     @IBInspectable public var textInputFieldTopSeparatorLineColor: UIColor = .pumpkin
-    @IBInspectable public var textInputFieldTopSeparatorLineAlpha: CGFloat = 0.3
+    @IBInspectable public var textInputFieldTopSeparatorLineAlpha: CGFloat = 1.0
     
     @IBInspectable public var inputToolbarBackgroundColor: UIColor = UIColor.white
     
@@ -96,6 +98,8 @@ public class MessagesView: UIView {
     var bubbleImageLeft: BubbleImage = BubbleImage(cornerRadius: 8)
     var bubbleImageRight: BubbleImage = BubbleImage(cornerRadius: 8).flipped
     
+    private var isKeyboardShown = false
+    
     public func setBubbleImagesWith(left: BubbleImage, right: BubbleImage? = nil) {
         
         bubbleImageLeft = left
@@ -103,13 +107,18 @@ public class MessagesView: UIView {
     }
     
     public var inputText: String {
-        return messagesInputToolbar.messageText
+        get {
+            return messagesInputToolbar.inputText
+        }
+        set {
+            messagesInputToolbar.inputText = newValue
+        }
     }
     
     var view: UIView!
-    public var settings = MessagesViewSettings.testChatSettings() {
+    public var settings = MessagesViewSettings() {
         didSet {
-            messagesInputToolbar.settings = settings
+            apply(settings: settings)
         }
     }
     
@@ -190,60 +199,73 @@ public class MessagesView: UIView {
         pinSubviewToEdges(subview: view)
         registerCellNib()
         
-        settings.setLeftButtonAction {
-            self.delegate?.didTapLeftButton()
+        messagesInputToolbar.leftButtonAction = { [weak self] _ in
+            self?.delegate?.didTapLeftButton()
         }
-        settings.setRightButtonAction {
-            self.delegate?.didTapRightButton()
+        messagesInputToolbar.rightButtonAction = { [weak self] _ in
+            self?.delegate?.didTapRightButton()
         }
         
         messagesInputToolbar.settings = settings
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: .UIKeyboardWillChangeFrame, object: nil)
     }
     
     @objc private func keyboardWillShow(notification: Notification) {
+        
+        guard !isKeyboardShown else {
+            return
+        }
+        
+        isKeyboardShown = true
+        
+        toolBarBottomConstraintWithoutKeyboard = messageInputToolbarBottomConstraint.constant
+        toolBarFrameWithoutKeyboard = convert(messagesInputToolbar.frame, to: nil)
+        
+        respondToKeyboardFrameChange(notification: notification)
+    }
+    
+    @objc private func keyboardWillChangeFrame(notification: Notification) {
+        
+        guard isKeyboardShown else {
+            return
+        }
+        
+        respondToKeyboardFrameChange(notification: notification)
+    }
+    
+    @objc private func keyboardWillHide(notification: Notification) {
+        
+        isKeyboardShown = false
+    }
+    
+    private func respondToKeyboardFrameChange(notification: Notification) {
         
         guard settings.shouldAdjustToKeyboard,
             let userInfo = notification.userInfo,
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
             let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else {
+                return
+        }
+        
+        let keyboardOverlap = toolBarFrameWithoutKeyboard.origin.y - keyboardFrame.origin.y
+        
+        let verticalAdjustment = keyboardOverlap > 0 ? keyboardOverlap + toolBarFrameWithoutKeyboard.size.height : 0
+        
+        let newBottomConstraint = toolBarBottomConstraintWithoutKeyboard + verticalAdjustment
+
+        guard newBottomConstraint != messageInputToolbarBottomConstraint.constant else {
             return
         }
         
-        toolBarBottomConstraintWithoutKeyboard = messageInputToolbarBottomConstraint.constant
-        
-        let toolbarFrameInWindow = convert(messagesInputToolbar.frame, to: nil)
-        
-        let keyboardOverlap = toolbarFrameInWindow.origin.y - keyboardFrame.origin.y
-        
-        guard keyboardOverlap > 0 else {
-            return
-        }
-        
-        let verticalAdjusttment = keyboardOverlap + toolbarFrameInWindow.size.height
-        
-        messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard + verticalAdjusttment
+        messageInputToolbarBottomConstraint.constant = newBottomConstraint
         
         UIView.animate(withDuration: animationDuration) {
             let contentOffset = self.messagesCollectionView.contentOffset
             
-            self.messagesCollectionView.contentOffset = CGPoint(x: contentOffset.x, y: contentOffset.y + verticalAdjusttment)
-            self.layoutIfNeeded()
-        }
-    }
-    
-    @objc private func keyboardWillHide(notification: Notification) {
-        
-        guard settings.shouldAdjustToKeyboard,
-            let animationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else {
-            return
-        }
-        
-        messageInputToolbarBottomConstraint.constant = toolBarBottomConstraintWithoutKeyboard
-        
-        UIView.animate(withDuration: animationDuration) {
+            self.messagesCollectionView.contentOffset = CGPoint(x: contentOffset.x, y: contentOffset.y + verticalAdjustment)
             self.layoutIfNeeded()
         }
     }
@@ -313,42 +335,46 @@ public class MessagesView: UIView {
     }
     
     private func readSettingsFromInpectables(settings: inout MessagesViewSettings) {
-        settings.leftMessageCellTextColor = self.leftMessageCellTextColor
-        settings.leftMessageCellBackgroundColor = self.leftMessageCellBackgroundColor
-        settings.rightMessageCellTextColor = self.rightMessageCellTextColor
-        settings.rightMessageCellBackgroundColor = self.rightMessageCellBackgroundColor
         
-        settings.collectionViewBackgroundColor = self.collectionViewBackgroundColor
+        settings.leftMessageCellTextColor = leftMessageCellTextColor
+        settings.leftMessageCellBackgroundColor = leftMessageCellBackgroundColor
+        settings.rightMessageCellTextColor = rightMessageCellTextColor
+        settings.rightMessageCellBackgroundColor = rightMessageCellBackgroundColor
         
-        settings.textInputFieldTextColor = self.textInputFieldTextColor
-        settings.textInputFieldBackgroundColor = self.textInputFieldBackgroundColor
+        settings.collectionViewBackgroundColor = collectionViewBackgroundColor
         
-        settings.textInputFieldTopSeparatorLineHeight = self.textInputFieldTopSeparatorLineHeight
-        settings.textInputFieldTopSeparatorLineAlpha = self.textInputFieldTopSeparatorLineAlpha
-        settings.textInputFieldTopSeparatorLineColor = self.textInputFieldTopSeparatorLineColor
-        settings.textInputFieldTextPlaceholderText = self.textInputFieldTextPlaceholderText
+        settings.textInputFieldTextColor = textInputFieldTextColor
+        settings.textInputFieldBackgroundColor = textInputFieldBackgroundColor
+        settings.textInputTintColor = textInputTintColor
+        settings.textInputFieldTextPlaceholderText = textInputFieldTextPlaceholderText
+        settings.textInputFieldCornerRadius = textInputFieldCornerRadius
+        settings.textInputFieldFont = textInputFieldFont
         
-        settings.buttonSlideAnimationDuration = self.buttonSlideAnimationDuration
-        settings.inputToolbarBackgroundColor = self.inputToolbarBackgroundColor
-        settings.textInputFieldCornerRadius = self.textInputFieldCornerRadius
+        settings.textInputFieldTopSeparatorLineHeight = textInputFieldTopSeparatorLineHeight
+        settings.textInputFieldTopSeparatorLineColor = textInputFieldTopSeparatorLineColor
+        settings.textInputFieldTopSeparatorLineAlpha = textInputFieldTopSeparatorLineAlpha
         
-        settings.leftButtonText = self.leftButtonText
-        settings.leftButtonShow = self.leftButtonShow
-        settings.leftButtonShowAnimated = self.leftButtonShowAnimated
-        settings.leftButtonTextColor = self.leftButtonTextColor
-        settings.leftButtonDisabledColor = self.leftButtonDisabledColor
-        settings.leftButtonBackgroundColor = self.leftButtonBackgroundColor
-        settings.leftButtonBackgroundImage = self.leftButtonBackgroundImage
-        settings.leftButtonCornerRadius = self.leftButtonCornerRadius
+        settings.inputToolbarBackgroundColor = inputToolbarBackgroundColor
         
-        settings.rightButtonText = self.rightButtonText
-        settings.rightButtonShow = self.rightButtonShow
-        settings.rightButtonShowAnimated = self.rightButtonShowAnimated
-        settings.rightButtonTextColor = self.rightButtonTextColor
-        settings.rightButtonDisabledColor = self.rightButtonDisabledColor
-        settings.rightButtonBackgroundColor = self.rightButtonBackgroundColor
-        settings.rightButtonBackgroundImage = self.rightButtonBackgroundImage
-        settings.rightButtonCornerRadius = self.rightButtonCornerRadius
+        settings.leftButtonText = leftButtonText
+        settings.leftButtonShow = leftButtonShow
+        settings.leftButtonShowAnimated = leftButtonShowAnimated
+        settings.leftButtonTextColor = leftButtonTextColor
+        settings.leftButtonDisabledColor = leftButtonDisabledColor
+        settings.leftButtonBackgroundColor = leftButtonBackgroundColor
+        settings.leftButtonBackgroundImage = leftButtonBackgroundImage
+        settings.leftButtonCornerRadius = leftButtonCornerRadius
+        
+        settings.rightButtonText = rightButtonText
+        settings.rightButtonShow = rightButtonShow
+        settings.rightButtonShowAnimated = rightButtonShowAnimated
+        settings.rightButtonTextColor = rightButtonTextColor
+        settings.rightButtonDisabledColor = rightButtonDisabledColor
+        settings.rightButtonBackgroundColor = rightButtonBackgroundColor
+        settings.rightButtonBackgroundImage = rightButtonBackgroundImage
+        settings.rightButtonCornerRadius = rightButtonCornerRadius
+        
+        settings.buttonSlideAnimationDuration = buttonSlideAnimationDuration
     }
     
     private func apply(settings: MessagesViewSettings) {
